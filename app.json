@@ -1,0 +1,12 @@
+{
+  "name": "chef-admin",
+  "displayName": "chef-admin",
+  "expo": {
+    "name": "chef-admin",
+    "slug": "chef-admin",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
