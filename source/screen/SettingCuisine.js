@@ -1,4 +1,4 @@
-import React,{useRef, useState} from 'react'
+import React,{useRef, useState, useEffect} from 'react'
 import { Image, ScrollView, StyleSheet, View, Text, Dimensions, Pressable, FlatList, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons ,AntDesign} from '@expo/vector-icons';
@@ -8,6 +8,8 @@ const{width, height} = Dimensions.get('window')
 import * as profileAction from '../../store/action/profile'
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Modalize } from 'react-native-modalize';
+import * as Location from 'expo-location';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'
 
 
 
@@ -17,17 +19,47 @@ const modalizeRef = useRef(null);
 const cuisine = useSelector(x=>x.profile.cuisine)
 const dispatch = useDispatch()
 
-const [current, setCurrent] = useState(null)
-const onOpen = () => {
+const [location, setLocation] = useState(null);
+const [errorMsg, setErrorMsg] = useState(null);
+const [room, setRoom] = useState('')
+
+const revereGeoCodeResponse = async(latitude,longitude) =>{
+    try{
+        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyDsDKH-37DS6ZnGY_oIi7t5YE0oAAZ-V88`)
+       // console.log(response.data);
+        const address =  response.data.results[0].formatted_address;
+        //setLoc(JSON.stringify( response.data.results[0].geometry.location))
+        const loc = JSON.stringify(response.data.results[0].address_components) ;
+        console.log('*************************',address);
+        console.log('*******city******************',loc);
+    }
+    catch(e){
+        console.log('error!', e)
+    }
+}
+
+  useEffect(() => {
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Permission to access location was denied');
+        return;
+      }
+
+
+    })();
+  }, []);
+
+
+const onOpen = async() => {
     modalizeRef.current?.open();
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location.coords);
+    await revereGeoCodeResponse(location.coords.latitude, location.coords.longitude)
 };
 const [typeIndex, setTypeIndex] = useState(0)
 
-const completeLoc = (data, details) => {
-    console.log(data, details);
-    setCurrent({value:{data, details}})
 
-}
 
   const cuisineHandler = (name) => {
 
@@ -142,11 +174,68 @@ const cuisineList= [
 
 
             <Modalize ref={modalizeRef}>
-                <View style={{width:width, height:height, alignSelf:'center'}}>
-                <View style={{height:height/3}}>
-            
+            <ScrollView>
+            {location?<View style={{width:width, height:height/3}}>
+                <MapView
+                    provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                    style={{width:'100%', height:'100%'}}
+                    region={{
+                        latitude: location.latitude,
+                        longitude: location.longitude,
+                        latitudeDelta: 0.0222,
+                        longitudeDelta: 0.0121,
+                    }}>
+        
+        <Marker
+          
+          coordinate={{latitude: location.latitude, longitude: location.longitude}}
+        />        
+        </MapView>
+        </View>:null}
+
+            <View style={{marginVertical:8}}>
+            <TextInput
+                type="flat"
+                label = 'House/Flat/Block No.'
+                theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+            />
             </View>
-                </View>
+
+            <View style={{marginVertical:8}}>
+            <TextInput
+                type="flat"
+                label = 'Landmark'
+                theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+            />
+            </View>
+
+            <View style={{marginVertical:8, width:width, flexDirection:'row', alignSelf:'center', padding:8, justifyContent:'space-between'}}>
+            <View>
+            <TextInput
+                type="flat"
+                label = 'Pincode'
+                theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: width*0.45, alignSelf:'center' }}
+            />
+            </View>
+
+            <View>
+            <TextInput
+                type="flat"
+                label = 'City'
+                theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: width*0.45, alignSelf:'center' }}
+            />
+            </View>
+            </View>
+
+            <Pressable onPress={onOpen} style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
+            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Address</Text>
+            </Pressable>
+            
+            </ScrollView>
             </Modalize>
             </ScrollView>   
         </SafeAreaView>
