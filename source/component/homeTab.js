@@ -14,7 +14,7 @@ const HomeTab = ({text, stext, index}) => {
         <View style={{width:width*0.94, height:height*0.25, alignSelf:'center', borderRadius:8, marginVertical:8}}>
         <View style={{width:'100%', height:'100%', backgroundColor:'black', opacity:0.6, borderRadius:8}}>
         <Image
-            blurRadius={0.5}
+            blurRadius={5}
             style={{height:'100%', width:'100%', borderRadius:8}} 
             source={{uri:filePath[index]}} 
         />
