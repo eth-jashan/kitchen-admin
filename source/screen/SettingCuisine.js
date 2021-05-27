@@ -10,12 +10,18 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import { Modalize } from 'react-native-modalize';
 import * as Location from 'expo-location';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 //api
 import GoogleLocationApi from '../api/GoogleLocationApi';
 
+//action
+import * as profileActions from '../../store/action/profile';
+
 
 const SettingCuisine = () => {
+
+
 
 const modalizeRef = useRef(null);
 const cuisine = useSelector(x=>x.profile.cuisine)
@@ -26,16 +32,30 @@ const[city,setCity] = useState(null);
 const[postal,setPostal] = useState(null);
 const[landmark,setLandMark] = useState(null);
 const[address,setAddress] = useState();
+const[userAddress,setUserAddress] = useState(null);
+
+const[name,setName] = useState(null);
+const[mail,setMail] = useState(null);
+const[phone,setPhone] = useState(null);
+
 
 const [errorMsg, setErrorMsg] = useState(null);
-const [room, setRoom] = useState('')
+const [room, setRoom] = useState('');
+
+const onSubmit = async() => {
+   await dispatch(profileAction.createAccount(name,mail,phone,cuisine,type,address,userAddress))
+}
 
 const readData = async () => {
     try {
       const data = await AsyncStorage.getItem('personalInfo')
+      console.log(data);
+     
   
       if (data !== null){
-          //
+        const userData = JSON.parse(data);
+        setName(userData.name);setMail(userData.mail);setPhone(userData.phone);
+        
       } 
     } catch (e) {
       console.log('error:'+e);
@@ -55,7 +75,7 @@ const revereGeoCodeResponse = async(latitude,longitude) =>{
         const city = response.data.results[0].address_components[length-4].long_name
         const postal = response.data.results[0].address_components[length-1].long_name
         
-        setAddress(address);
+        setAddress(address);setUserAddress(address);
         setCity(city);
         setPostal(postal);
         
@@ -190,6 +210,10 @@ const cuisineList= [
             <Pressable onPress={onOpen} style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Auto Location Fill📍</Text>
             </Pressable>
+            <Pressable onPress={onSubmit} style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'70%', alignSelf:'center', justifyContent:'center'}}>
+            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Submit</Text>
+            </Pressable>
+            
 
             
             </View>
@@ -230,7 +254,7 @@ const cuisineList= [
             <View style={{marginVertical:8}}>
             <TextInput
                 type="flat"
-                value={address}
+                value={userAddress}
                 label = 'House/Flat/Block No.'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}

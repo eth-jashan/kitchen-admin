@@ -1,8 +1,9 @@
 import Profile from "../../model/Profile"
-import { ADD_CUISINE, UPDATE_ACC } from "../action/profile"
+import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT } from "../action/profile"
 
 const initialState = {
     cuisine:[],
+    chef:[],
     name:null,
     number:null,
     email:null

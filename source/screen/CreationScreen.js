@@ -19,13 +19,14 @@ const CreationScreen = ({navigation}) => {
 
     const storeData = async () => {
         try {
-          const jsonValue = JSON.stringify({name,email,phone})
+          const jsonValue = JSON.stringify({name:name,mail:mail,phone:phone})
           await AsyncStorage.setItem('personalInfo', jsonValue)
         } 
         catch (e) {
           console.log('error:', e)
         }
     }
+    
     const signIn = async() => {
         try {
           const confirmation = await auth().signInWithPhoneNumber("+919820769479");
@@ -38,7 +39,7 @@ const CreationScreen = ({navigation}) => {
     ``
     useEffect(()=>{
         storeData()
-    },[])
+    },[name,phone,mail])
     
 
     return(
@@ -68,6 +69,7 @@ const CreationScreen = ({navigation}) => {
 
             <TextInput
                 type="flat"
+                onChangeText={setName}
                 label = 'Enter Name'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
