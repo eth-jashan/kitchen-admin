@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import {View, Text, Image, StyleSheet, Dimensions, ScrollView, Pressable, Button} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons ,AntDesign} from '@expo/vector-icons';
@@ -19,7 +19,7 @@ const CreationScreen = ({navigation}) => {
 
     const storeData = async () => {
         try {
-          const jsonValue = JSON.stringify({})
+          const jsonValue = JSON.stringify({name,email,phone})
           await AsyncStorage.setItem('personalInfo', jsonValue)
         } 
         catch (e) {
@@ -35,7 +35,10 @@ const CreationScreen = ({navigation}) => {
           console.log(error)
         }
     }
-    
+    ``
+    useEffect(()=>{
+        storeData()
+    },[])
     
 
     return(

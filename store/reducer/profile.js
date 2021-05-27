@@ -1,4 +1,5 @@
-import { ADD_CUISINE } from "../action/profile"
+import Profile from "../../model/Profile"
+import { ADD_CUISINE, UPDATE_ACC } from "../action/profile"
 
 const initialState = {
     cuisine:[],
@@ -29,7 +30,43 @@ export default (state = initialState, action) => {
                     cuisine:cuisine.concat(action.name)
                 }
             } 
-        
+            case SIGNUP_ACCOUNT:
+                const profile=new Profile(
+                    action.data.id,
+                    action.data.name,
+                    action.data.email,
+                    action.data.phone,
+                    action.data.cuisine,
+                    action.data.type,
+                    action.data.address,
+                    action.data.useraddress,
+                    action.data.created,
+                    action.data.kyc
+                ) 
+                return{
+                    ...state,
+                    chef:state.chef.concat(profile)
+                }
+            case UPDATE_ACC:
+                const cindex=state.chef.findIndex(c=>c.id==action.cid)
+                const chefcopy=[...state.chef]
+                const cprofile=new Profile(
+                    action.cid,
+                    state.chef[cindex].name,
+                    action.data.email,
+                    state.chef[cindex].phone,
+                    action.data.cuisine,
+                    action.data.type,
+                    state.chef[cindex].address,
+                    state.chef[cindex].useraddress,
+                    state.chef[cindex].created,
+                    state.chef[cindex].kyc
+                )
+                chefcopy[cindex]=cprofile
+                return{
+                    ...state,
+                    chef:chefcopy
+                }
         default:
             return state
     }

@@ -30,6 +30,18 @@ const[address,setAddress] = useState();
 const [errorMsg, setErrorMsg] = useState(null);
 const [room, setRoom] = useState('')
 
+const readData = async () => {
+    try {
+      const data = await AsyncStorage.getItem('personalInfo')
+  
+      if (data !== null){
+          //
+      } 
+    } catch (e) {
+      console.log('error:'+e);
+    }
+  }
+
 const revereGeoCodeResponse = async(latitude,longitude) =>{
     try{
         const response = await GoogleLocationApi.get(`geocode/json?latlng=${latitude},${longitude}&key=AIzaSyDsDKH-37DS6ZnGY_oIi7t5YE0oAAZ-V88`)
@@ -66,6 +78,9 @@ const revereGeoCodeResponse = async(latitude,longitude) =>{
 
     })();
   }, []);
+  useEffect(()=>{
+      readData()
+  },[])
 
 
 const onOpen = async() => {
