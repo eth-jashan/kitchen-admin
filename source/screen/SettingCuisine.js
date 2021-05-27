@@ -11,6 +11,8 @@ import { Modalize } from 'react-native-modalize';
 import * as Location from 'expo-location';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'
 
+//api
+import GoogleLocationApi from '../api/GoogleLocationApi';
 
 
 const SettingCuisine = () => {
@@ -20,16 +22,31 @@ const cuisine = useSelector(x=>x.profile.cuisine)
 const dispatch = useDispatch()
 
 const [location, setLocation] = useState(null);
+const[city,setCity] = useState(null);
+const[postal,setPostal] = useState(null);
+const[landmark,setLandMark] = useState(null);
+const[address,setAddress] = useState();
+
 const [errorMsg, setErrorMsg] = useState(null);
 const [room, setRoom] = useState('')
 
 const revereGeoCodeResponse = async(latitude,longitude) =>{
     try{
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyDsDKH-37DS6ZnGY_oIi7t5YE0oAAZ-V88`)
+        const response = await GoogleLocationApi.get(`geocode/json?latlng=${latitude},${longitude}&key=AIzaSyDsDKH-37DS6ZnGY_oIi7t5YE0oAAZ-V88`)
        // console.log(response.data);
         const address =  response.data.results[0].formatted_address;
-        //setLoc(JSON.stringify( response.data.results[0].geometry.location))
+       // setLoc(JSON.stringify( response.data.results[0].geometry.location))
         const loc = JSON.stringify(response.data.results[0].address_components) ;
+        
+        const array = response.data.results[0].address_components;
+        const length = array.length;
+        const city = response.data.results[0].address_components[length-4].long_name
+        const postal = response.data.results[0].address_components[length-1].long_name
+        
+        setAddress(address);
+        setCity(city);
+        setPostal(postal);
+        
         console.log('*************************',address);
         console.log('*******city******************',loc);
     }
@@ -55,7 +72,9 @@ const onOpen = async() => {
     modalizeRef.current?.open();
     let location = await Location.getCurrentPositionAsync({});
     setLocation(location.coords);
+    //console.log(location.coords.latitude, location.coords.longitude)
     await revereGeoCodeResponse(location.coords.latitude, location.coords.longitude)
+   
 };
 const [typeIndex, setTypeIndex] = useState(0)
 
@@ -196,6 +215,7 @@ const cuisineList= [
             <View style={{marginVertical:8}}>
             <TextInput
                 type="flat"
+                value={address}
                 label = 'House/Flat/Block No.'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
@@ -205,6 +225,7 @@ const cuisineList= [
             <View style={{marginVertical:8}}>
             <TextInput
                 type="flat"
+                value={landmark}
                 label = 'Landmark'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
@@ -215,6 +236,7 @@ const cuisineList= [
             <View>
             <TextInput
                 type="flat"
+                value={postal}
                 label = 'Pincode'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: width*0.45, alignSelf:'center' }}
@@ -224,6 +246,7 @@ const cuisineList= [
             <View>
             <TextInput
                 type="flat"
+                value={city}
                 label = 'City'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: width*0.45, alignSelf:'center' }}
