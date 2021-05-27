@@ -13,7 +13,7 @@ import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'
 
 
 
-const SettingCuisine = () => {
+const SettingCuisine = ({navigation}) => {
 
 const modalizeRef = useRef(null);
 const cuisine = useSelector(x=>x.profile.cuisine)
@@ -153,18 +153,15 @@ const cuisineList= [
             
             <Text style={{fontFamily:'medium', fontSize:18, marginTop:14, color:'black'}}>Store/Kitchen Location</Text>
             
-            <Pressable onPress={onOpen} style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
-            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Auto Location Fill📍</Text>
+            <Pressable onPress={onOpen} style={{marginVertical:12, backgroundColor:'white', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', borderWidth:0.75, borderColor:'#08818a'}}>
+            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'#08818a'}}>Auto Location Fill📍</Text>
             </Pressable>
-
-            
             </View>
-            {/* <View style={{width:'100%', flexDirection:'row', justifyContent:'space-between',}}>
-            <View/>
-                <Pressable onPress={()=>console.log('loca', current)} style={{backgroundColor:'#08818a', padding:8, borderRadius:8, width:60, alignSelf:'center', justifyContent:'center', height:60}}>
-                <AntDesign  name="arrowright" size={30} color="white" style={{alignSelf:'center', justifyContent:'center'}}/>
-                </Pressable>
-            </View> */}
+
+
+            <Pressable onPress={()=>navigation.navigate('Main')} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', marginVertical:20}}>
+            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Create Profile</Text>
+            </Pressable>
             
             
             
