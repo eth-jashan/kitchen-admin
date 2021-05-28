@@ -1,7 +1,9 @@
+import Kyc from "../../model/Kyc"
 import Profile from "../../model/Profile"
-import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT } from "../action/profile"
+import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT, ADD_KYC } from "../action/profile"
 
 const initialState = {
+    kyc:[],
     cuisine:[],
     chef:[],
     name:null,
@@ -67,6 +69,22 @@ export default (state = initialState, action) => {
                 return{
                     ...state,
                     chef:chefcopy
+                }
+            case ADD_KYC:
+                const kyc = new Kyc(
+                    action.kycDetails.id,
+                    action.kycDetails.name,
+                    action.kycDetails.phone,
+                    action.kycDetails.adharNo,
+                    action.kycDetails.adharURL,
+                    action.kycDetails.fssiNo,
+                    action.kycDetails.fssiUrl,
+                    action.kycDetails.panNo,
+                    action.kycDetails.panUrl
+                )
+                return{
+                    ...state,
+                    kyc:state.kyc.concat(kyc)
                 }
         default:
             return state
