@@ -4,7 +4,7 @@ export const addcategory=(name,description,imguri)=>{
     return async(dispatch,getState)=>{
         const response=await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/Category.json',{
             methods:'POST',
-            headers:{},
+            headers:{'Content-Type':'application\json'},
             body:JSON.stringify({
                 name,
                 description,
