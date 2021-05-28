@@ -6,7 +6,9 @@ const initialState = {
     chef:[],
     name:null,
     number:null,
-    email:null
+    email:null,
+    kyc:false,
+    status:false
 }
 
 export default (state = initialState, action) => {

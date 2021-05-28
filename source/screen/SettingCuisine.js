@@ -11,6 +11,7 @@ import { Modalize } from 'react-native-modalize';
 import * as Location from 'expo-location';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import {WaveIndicator} from 'react-native-indicators'
 
 //api
 import GoogleLocationApi from '../api/GoogleLocationApi';
@@ -210,9 +211,7 @@ const cuisineList= [
             <Pressable onPress={onOpen} style={{marginVertical:12, backgroundColor:'white', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', borderWidth:0.75, borderColor:'#08818a'}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'#08818a'}}>Auto Location Fill📍</Text>
             </Pressable>
-            <Pressable onPress={onSubmit} style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'70%', alignSelf:'center', justifyContent:'center'}}>
-            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Submit</Text>
-            </Pressable>
+            
             
 
             
@@ -248,8 +247,11 @@ const cuisineList= [
           coordinate={{latitude: location.latitude, longitude: location.longitude}}
         />        
         </MapView>
-        </View>:null}
-
+        </View>:null
+        }
+        <View style={{padding:8}}>
+        <Text style={{fontFamily:'book', fontSize:18}}>{address}</Text>
+        </View>
             <View style={{marginVertical:8}}>
             <TextInput
                 type="flat"
