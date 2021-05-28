@@ -7,10 +7,12 @@ import ReduxThunk from 'redux-thunk'
 
 //importing reducer
 import ProfileReducer from './store/reducer/profile'
+import CategoryReducer from './store/reducer/category'
 
 //-----initialising reducer---//
 const rootReducer = combineReducers({
-  profile:ProfileReducer  
+  profile:ProfileReducer,
+  catergory:CategoryReducer  
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
