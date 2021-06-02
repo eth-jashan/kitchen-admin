@@ -10,10 +10,9 @@ const{width, height} = Dimensions.get('window')
 
 const CreationScreen = ({navigation}) => {
 
-    const [confirm, setConfirm] = useState(null);
+    
     const [phone, setPhone] = useState('')
     const [name, setName] = useState('')
-    const [last, lastName] = useState('')
     const [mail, setMail] = useState('')
     
 
@@ -28,18 +27,13 @@ const CreationScreen = ({navigation}) => {
     }
     
     const signIn = async() => {
-        try {
-          const confirmation = await auth().signInWithPhoneNumber("+919820769479");
-          setConfirm(confirmation);
-        } catch (error) {
-          alert(error);
-          console.log(error)
-        }
+        
     }
-    ``
+   
     useEffect(()=>{
         storeData()
     },[name,phone,mail])
+
     
 
     return(

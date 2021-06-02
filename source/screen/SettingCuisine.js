@@ -6,12 +6,12 @@ import { TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 const{width, height} = Dimensions.get('window')
 import * as profileAction from '../../store/action/profile'
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import { Modalize } from 'react-native-modalize';
 import * as Location from 'expo-location';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {WaveIndicator} from 'react-native-indicators'
+import auth from '@react-native-firebase/auth';
 
 //api
 import GoogleLocationApi from '../api/GoogleLocationApi';
@@ -22,29 +22,55 @@ import * as profileActions from '../../store/action/profile';
 
 const SettingCuisine = ({navigation}) => {
 
-
-
 const modalizeRef = useRef(null);
 const cuisine = useSelector(x=>x.profile.cuisine)
 const dispatch = useDispatch()
-
 const [location, setLocation] = useState(null);
 const[city,setCity] = useState(null);
 const[postal,setPostal] = useState(null);
 const[landmark,setLandMark] = useState(null);
 const[address,setAddress] = useState();
 const[userAddress,setUserAddress] = useState(null);
-
-const[name,setName] = useState(null);
-const[mail,setMail] = useState(null);
-const[phone,setPhone] = useState(null);
-
-
-const [errorMsg, setErrorMsg] = useState(null);
+const [confirm, setConfirm] = useState(null);
+const [code, setCode] = useState(null);
 const [room, setRoom] = useState('');
+const [name, setName] = useState(null)
+const [mail, setMail] = useState(null)
+const [phone, setPhone] = useState(null)
+const [authenticated, setAuthenticated] = useState(false);
+
+
 
 const onSubmit = async() => {
-   await dispatch(profileAction.createAccount(name,mail,phone,cuisine,type,address,userAddress))
+    try {
+        const confirmation = await auth().signInWithPhoneNumber("+918104959930");
+        setConfirm(confirmation)
+
+      } catch (error) {
+        alert(error);
+        console.log(error)
+      }
+   
+}
+
+const createAccount = async(code) => {
+    console.log('Start')
+    auth().onAuthStateChanged( async(user) => {
+        if (user) {
+            console.log("number", auth().currentUser.phoneNumber)
+            console.log('Done')
+        } 
+        else 
+        {
+            try {
+               await confirm.confirm(code)
+            } catch (error) {
+                throw(error)
+            }
+        }})
+
+    // console.log('Done')
+    // navigation.navigate('Otp')
 }
 
 const readData = async () => {
@@ -59,9 +85,9 @@ const readData = async () => {
         
       } 
     } catch (e) {
-      console.log('error:'+e);
+      console.log('error:', e);
     }
-  }
+}
 
 const revereGeoCodeResponse = async(latitude,longitude) =>{
     try{
@@ -108,10 +134,9 @@ const onOpen = async() => {
     modalizeRef.current?.open();
     let location = await Location.getCurrentPositionAsync({});
     setLocation(location.coords);
-    //console.log(location.coords.latitude, location.coords.longitude)
-    await revereGeoCodeResponse(location.coords.latitude, location.coords.longitude)
-   
+    await revereGeoCodeResponse(location.coords.latitude, location.coords.longitude)   
 };
+
 const [typeIndex, setTypeIndex] = useState(0)
 
 
@@ -130,6 +155,28 @@ const cuisineList= [
     {title:'American', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2FAmerican-Traditional%20C.jpg?alt=media&token=32561b97-384b-4bf1-8c8c-c23c590441bb'}, {title:'Arabian',link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2FArabian%20C.jpg?alt=media&token=772555aa-b28e-4d61-92ee-63ca9f42e1ba'}, {title:'BBQ', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2FBBQ%20c.jpg?alt=media&token=9e8c62ef-c3e5-4fd2-a409-d24d10717194'}, {title:'British', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Fbritish%20Cu.jpg?alt=media&token=554e452a-3f5c-4f36-955b-c9c18aa4d9ca'}, {title:'Chettinad', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2FChettinad-cuisine.jpg?alt=media&token=91c98b14-da73-4407-919c-23f325e68a50'},
     {title:'French', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Ffrench%20C.jpg?alt=media&token=2eb8eca5-d5ed-4cc8-9ca3-46ebfe01cce5'}, {title:'European', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Feuropean%20C.jpeg?alt=media&token=686cdafe-6424-4324-abe7-95a5118eb4b6'}, {title:'Japanese', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Fjapanese%20CU.jpg?alt=media&token=484d0869-089e-4a99-ab55-8ddc4ebf4322'} 
 ]
+
+// if(confirm){
+
+//     return(
+//         <SafeAreaView style={{flex:1, backgroundColor:'#ffde17'}}>
+//             <View style={{justifyContent:'center', alignSelf:'center', width:'100%'}}>
+//             <TextInput
+//                 type="flat"
+//                 value={code}
+//                 onChangeText={setCode}
+//                 label = 'House/Flat/Block No.'
+//                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+//                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+//             />
+//             </View>
+//             <Pressable onPress={()=>createAccount(code)} style={{marginVertical:100, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
+//             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Join as chef</Text>
+//             </Pressable>
+//         </SafeAreaView>
+//     )
+
+// }
 
     return(
         <SafeAreaView>
@@ -152,6 +199,14 @@ const cuisineList= [
                 <Text style={{fontFamily:'medium', fontSize:30, color:'black'}}>Signup as Chef</Text>
                 <Text style={{fontFamily:'book', fontSize:18, marginTop:4}}>Setting up cuisine preference</Text>
             </View>
+            <TextInput
+                type="flat"
+                value={code}
+                onChangeText={setCode}
+                label = 'House/Flat/Block No.'
+                theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+            />
             
             <Text style={{fontFamily:'medium', fontSize:18, marginTop:20, color:'black'}}>Cuisine Selected ({`${cuisine.length}/${cuisineList.length}`})</Text>
             <View style={{marginVertical:8}}>
@@ -208,7 +263,7 @@ const cuisineList= [
             
             <Text style={{fontFamily:'medium', fontSize:18, marginTop:14, color:'black'}}>Store/Kitchen Location</Text>
             
-            <Pressable onPress={onOpen} style={{marginVertical:12, backgroundColor:'white', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', borderWidth:0.75, borderColor:'#08818a'}}>
+            <Pressable onPress={()=>createAccount(code)} style={{marginVertical:12, backgroundColor:'white', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', borderWidth:0.75, borderColor:'#08818a'}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'#08818a'}}>Auto Location Fill📍</Text>
             </Pressable>
             
@@ -218,7 +273,7 @@ const cuisineList= [
             </View>
 
 
-            <Pressable onPress={()=>navigation.navigate('Main')} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', marginVertical:20}}>
+            <Pressable onPress={onSubmit} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', marginVertical:20}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Create Profile</Text>
             </Pressable>
             
@@ -294,7 +349,7 @@ const cuisineList= [
             </View>
             </View>
 
-            <Pressable onPress={onOpen} style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
+            <Pressable  style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Address</Text>
             </Pressable>
             

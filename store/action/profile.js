@@ -17,6 +17,7 @@ export const addCuisine = (name) => {
 
 export const createAccount=(name,email,phone,cuisine,type,address,useraddress)=>{
     return async(dispatch,getState)=>{
+        
         const response=await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/Chef.json?',{
             method:'POST',
             headers:{'Content-Type':'application\json'},

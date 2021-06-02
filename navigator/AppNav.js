@@ -9,6 +9,7 @@ import HomeScreen from '../source/screen/HomeScreen';
 import ProfileScreen from '../source/screen/ProfileScreen';
 import { Entypo, Feather  } from '@expo/vector-icons';
 import {View} from 'react-native'
+import OtpScreen from '../source/screen/OtpScreen';
 
 
 const AuthStack = createStackNavigator();
@@ -19,6 +20,7 @@ const MyAuth =()=> {
     <AuthStack.Screen name="Welcome" component={WelcomeScreen} />
     <AuthStack.Screen name="Creation" component={CreationScreen} />
     <AuthStack.Screen name="CuinsineSetting" component={SettingCuisine} />
+    <AuthStack.Screen name="Otp" component={OtpScreen} />
     </AuthStack.Navigator>
   );
 }
