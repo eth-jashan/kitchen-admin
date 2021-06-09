@@ -1,6 +1,6 @@
 export const SIGNUP_ACCOUNT = 'SIGNUP_ACCOUNT'
 export const ADD_CUISINE = 'ADD_CUISINE'
-export const UPDATE_ACC='UPDATE_ACC'
+export const ACCOUNT_SETUP = 'ACCOUNT_SETUP'
 export const ADD_KYC = 'ADD_KYC'
 
 import storage from '@react-native-firebase/storage';
@@ -15,22 +15,18 @@ export const addCuisine = (name) => {
 
 }
 
-export const createAccount=(name,email,phone,cuisine,type,address,useraddress)=>{
+export const createAccount=(name,email,phone, uid, token)=>{
     return async(dispatch,getState)=>{
         
-        const response=await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/Chef.json?',{
+        const response=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/profile.json?`,{
             method:'POST',
             headers:{'Content-Type':'application\json'},
             body:JSON.stringify({
                 name,
                 email,
                 phone,
-                cuisine,
-                type,
-                address,
-                useraddress,
-                created:true,
-                Kyc:false
+                created:false,
+                kyc:false
             })
         })
         const resData=await response.json()
@@ -40,31 +36,40 @@ export const createAccount=(name,email,phone,cuisine,type,address,useraddress)=>
             name,
             email,
             phone,
-            cuisine,
-            type,
-            address,
-            useraddress,
-            created:true,
-            kyc:false
+            created:false,
+            kyc:false,
+            uid:uid,
+            token:token
         }})
     }
 }
 
-export const UpdateChef=(id,email,cuisine,type)=>{
+export const accountSetup=(cuisine, type, geoAddress, house, landmark, pincode, city )=>{
     return async(dispatch,getState)=>{
-        const response=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/Chef/${id}.json?`,{
-            method:'PATCH',
-            headers:{'Content-Type':'application\json'},
-            body:JSON.stringify({
-                email,
-                cuisine,
-                type
-            })
+        const id = getState().profile.profileId
+        const uid = getState().profile.uid
+
+        await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/profile/${id}.json?`,{
+                method:'PATCH',
+                headers:{'Content-Type':'application\json'},
+                body:JSON.stringify({
+                    cuisine, 
+                    // coords,
+                    geoAddress,
+                    house,
+                    landmark,
+                    pincode,
+                    city
+                })
         })
-        dispatch({type:UPDATE_ACC,cid:id,data:{
-            email,
-            cuisine,
-            type
+        dispatch({type:ACCOUNT_SETUP,data:{
+            cuisine, 
+            // coords,
+            geoAddress,
+            house,
+            landmark,
+            pincode,
+            city
         }})
     }
 }
@@ -72,7 +77,7 @@ export const UpdateChef=(id,email,cuisine,type)=>{
 export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) => {
     return async (getState,dispatch) => {
 
-        const uid = getState.auth.userId;
+        const uid = getState.user.userId;
 
         const adhar = await fetch(adharURI);
         const fssi = await fetch(fssiURI);

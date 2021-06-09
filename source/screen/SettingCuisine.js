@@ -11,7 +11,7 @@ import * as Location from 'expo-location';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import {WaveIndicator} from 'react-native-indicators'
-import auth from '@react-native-firebase/auth';
+
 
 //api
 import GoogleLocationApi from '../api/GoogleLocationApi';
@@ -30,48 +30,7 @@ const[city,setCity] = useState(null);
 const[postal,setPostal] = useState(null);
 const[landmark,setLandMark] = useState(null);
 const[address,setAddress] = useState();
-const[userAddress,setUserAddress] = useState(null);
-const [confirm, setConfirm] = useState(null);
-const [code, setCode] = useState(null);
-const [room, setRoom] = useState('');
-const [name, setName] = useState(null)
-const [mail, setMail] = useState(null)
-const [phone, setPhone] = useState(null)
-const [authenticated, setAuthenticated] = useState(false);
-
-
-
-const onSubmit = async() => {
-    try {
-        const confirmation = await auth().signInWithPhoneNumber("+918104959930");
-        setConfirm(confirmation)
-
-      } catch (error) {
-        alert(error);
-        console.log(error)
-      }
-   
-}
-
-const createAccount = async(code) => {
-    console.log('Start')
-    auth().onAuthStateChanged( async(user) => {
-        if (user) {
-            console.log("number", auth().currentUser.phoneNumber)
-            console.log('Done')
-        } 
-        else 
-        {
-            try {
-               await confirm.confirm(code)
-            } catch (error) {
-                throw(error)
-            }
-        }})
-
-    // console.log('Done')
-    // navigation.navigate('Otp')
-}
+const [house, setHouse] = useState(null);
 
 const readData = async () => {
     try {
@@ -102,7 +61,7 @@ const revereGeoCodeResponse = async(latitude,longitude) =>{
         const city = response.data.results[0].address_components[length-4].long_name
         const postal = response.data.results[0].address_components[length-1].long_name
         
-        setAddress(address);setUserAddress(address);
+        setAddress(address);
         setCity(city);
         setPostal(postal);
         
@@ -139,9 +98,13 @@ const onOpen = async() => {
 
 const [typeIndex, setTypeIndex] = useState(0)
 
+const setupAccount = async() => {
 
+    await dispatch(profileAction.accountSetup(cuisine,type[typeIndex],address, house, landmark, postal, city ))
+    navigation.navigate('Main')
+}
 
-  const cuisineHandler = (name) => {
+const cuisineHandler = (name) => {
 
     dispatch(profileAction.addCuisine(name))
 
@@ -156,31 +119,9 @@ const cuisineList= [
     {title:'French', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Ffrench%20C.jpg?alt=media&token=2eb8eca5-d5ed-4cc8-9ca3-46ebfe01cce5'}, {title:'European', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Feuropean%20C.jpeg?alt=media&token=686cdafe-6424-4324-abe7-95a5118eb4b6'}, {title:'Japanese', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Fjapanese%20CU.jpg?alt=media&token=484d0869-089e-4a99-ab55-8ddc4ebf4322'} 
 ]
 
-// if(confirm){
-
-//     return(
-//         <SafeAreaView style={{flex:1, backgroundColor:'#ffde17'}}>
-//             <View style={{justifyContent:'center', alignSelf:'center', width:'100%'}}>
-//             <TextInput
-//                 type="flat"
-//                 value={code}
-//                 onChangeText={setCode}
-//                 label = 'House/Flat/Block No.'
-//                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
-//                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
-//             />
-//             </View>
-//             <Pressable onPress={()=>createAccount(code)} style={{marginVertical:100, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
-//             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Join as chef</Text>
-//             </Pressable>
-//         </SafeAreaView>
-//     )
-
-// }
 
     return(
-        <SafeAreaView>
-        <ScrollView>
+        <SafeAreaView style={{flex:1}}>
             <Image
                 style={StyleSheet.absoluteFillObject}
                 source={require('../../android/app/src/main/assets/image/vector-yellow-abstract-background.jpg')}
@@ -193,21 +134,16 @@ const cuisineList= [
                 <Text style={{fontFamily:'black', color:'white', fontSize:24, marginVertical:8}}>Cuisine Details</Text>
                 <View style={{borderWidth:2, borderColor:'white', borderRadius:20, width:'30%', backgroundColor:'white'}}/>
             </View>
-            <View style={{height:height*1.1,backgroundColor:'white', top:height*0.1, borderTopLeftRadius:20, borderTopRightRadius:20, padding:10}}>
+            {!location?null:<Pressable onPress={setupAccount}  style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
+            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Create Profile</Text>
+            </Pressable>}
+            <ScrollView style={{backgroundColor:'white', top:20, borderTopLeftRadius:20, borderTopRightRadius:20, paddingHorizontal:10,flex:1}}>
             
             <View style={{marginTop:30, marginHorizontal:10}}>
                 <Text style={{fontFamily:'medium', fontSize:30, color:'black'}}>Signup as Chef</Text>
                 <Text style={{fontFamily:'book', fontSize:18, marginTop:4}}>Setting up cuisine preference</Text>
             </View>
-            <TextInput
-                type="flat"
-                value={code}
-                onChangeText={setCode}
-                label = 'House/Flat/Block No.'
-                theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
-                style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
-            />
-            
+                        
             <Text style={{fontFamily:'medium', fontSize:18, marginTop:20, color:'black'}}>Cuisine Selected ({`${cuisine.length}/${cuisineList.length}`})</Text>
             <View style={{marginVertical:8}}>
             <FlatList
@@ -255,7 +191,7 @@ const cuisineList= [
                 renderItem={({item, index}) =>{
                     return<Pressable onPress={()=>setTypeIndex(index)} style={{ backgroundColor:typeIndex===index?'#08818a':'white', padding:1, borderRadius:4, width:100, alignSelf:'center', justifyContent:'center', borderColor:typeIndex === index?null:'#08818a', height:50, }}>
                         <Text style={{fontFamily:'light', fontSize:18, alignSelf:'center', color:typeIndex===index?'white':'#08818a'}}>{item}</Text>
-                        </Pressable>
+                    </Pressable>
                 }}
             />
             
@@ -263,28 +199,35 @@ const cuisineList= [
             
             <Text style={{fontFamily:'medium', fontSize:18, marginTop:14, color:'black'}}>Store/Kitchen Location</Text>
             
-            <Pressable onPress={()=>createAccount(code)} style={{marginVertical:12, backgroundColor:'white', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', borderWidth:0.75, borderColor:'#08818a'}}>
+            {!location?<Pressable onPress={onOpen} style={{marginVertical:12, backgroundColor:'white', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', borderWidth:0.75, borderColor:'#08818a'}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'#08818a'}}>Auto Location Fill📍</Text>
-            </Pressable>
+            </Pressable>://
+            <TouchableOpacity onPress={onOpen} style={{width:width*0.8, height:height/3, alignSelf:'center',marginVertical:12,}}>
+                <MapView
+                    provider={PROVIDER_GOOGLE} // remove if not using Google Maps
+                    style={{width:'100%', height:'100%'}}
+                    region={{
+                        latitude: location.latitude,
+                        longitude: location.longitude,
+                        latitudeDelta: 0.0222,
+                        longitudeDelta: 0.0121,
+                    }}>
+        
+        <Marker
+          coordinate={{latitude: location.latitude, longitude: location.longitude}}
+        />        
+        </MapView>
+        </TouchableOpacity>
+            }
             
             
 
             
-            </View>
+        </View>            
+        </ScrollView>
 
 
-            <Pressable onPress={onSubmit} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', marginVertical:20}}>
-            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Create Profile</Text>
-            </Pressable>
-            
-            
-            
-            
-            
-            </View>
-
-
-            <Modalize ref={modalizeRef}>
+        <Modalize ref={modalizeRef}>
             <ScrollView>
             {location?<View style={{width:width, height:height/3}}>
                 <MapView
@@ -298,7 +241,6 @@ const cuisineList= [
                     }}>
         
         <Marker
-          
           coordinate={{latitude: location.latitude, longitude: location.longitude}}
         />        
         </MapView>
@@ -310,7 +252,8 @@ const cuisineList= [
             <View style={{marginVertical:8}}>
             <TextInput
                 type="flat"
-                value={userAddress}
+                value={house}
+                onChangeText={setHouse}
                 label = 'House/Flat/Block No.'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
@@ -321,6 +264,7 @@ const cuisineList= [
             <TextInput
                 type="flat"
                 value={landmark}
+                onChangeText={setLandMark}
                 label = 'Landmark'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
@@ -332,6 +276,7 @@ const cuisineList= [
             <TextInput
                 type="flat"
                 value={postal}
+                onChangeText={setPostal}
                 label = 'Pincode'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: width*0.45, alignSelf:'center' }}
@@ -342,6 +287,7 @@ const cuisineList= [
             <TextInput
                 type="flat"
                 value={city}
+                onChangeText={setCity}
                 label = 'City'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: width*0.45, alignSelf:'center' }}
@@ -349,13 +295,13 @@ const cuisineList= [
             </View>
             </View>
 
-            <Pressable  style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
+            <Pressable style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Address</Text>
             </Pressable>
             
             </ScrollView>
             </Modalize>
-            </ScrollView>   
+              
         </SafeAreaView>
     )
 

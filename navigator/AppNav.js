@@ -10,6 +10,7 @@ import ProfileScreen from '../source/screen/ProfileScreen';
 import { Entypo, Feather  } from '@expo/vector-icons';
 import {View} from 'react-native'
 import OtpScreen from '../source/screen/OtpScreen';
+import KycScreen from '../source/screen/kycScreen';
 
 
 const AuthStack = createStackNavigator();
@@ -72,6 +73,7 @@ const MainComp = () => {
   return(
     <MainStack.Navigator screenOptions={{headerShown:false}}>
       <MainStack.Screen name='Home' component={BottomStack} />
+      <MainStack.Screen name='Kyc' component={KycScreen} />
     </MainStack.Navigator>
   )
 

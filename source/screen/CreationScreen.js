@@ -3,8 +3,9 @@ import {View, Text, Image, StyleSheet, Dimensions, ScrollView, Pressable, Button
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons ,AntDesign} from '@expo/vector-icons';
 import { TextInput } from 'react-native-paper';
+import * as profileAction from '../../store/action/profile'
+import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
-import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const{width, height} = Dimensions.get('window')
 
@@ -14,32 +15,78 @@ const CreationScreen = ({navigation}) => {
     const [phone, setPhone] = useState('')
     const [name, setName] = useState('')
     const [mail, setMail] = useState('')
+    const [confirm, setConfirm] = useState(false)
+    const [code, setCode] = useState()
+    const dispatch = useDispatch()
     
-
-    const storeData = async () => {
+    const onSubmit = async() => {
         try {
-          const jsonValue = JSON.stringify({name:name,mail:mail,phone:phone})
-          await AsyncStorage.setItem('personalInfo', jsonValue)
-        } 
-        catch (e) {
-          console.log('error:', e)
-        }
-    }
+            let number  = "+91"+ phone.toString() 
+            const confirmation = await auth().signInWithPhoneNumber(number);
+            setConfirm(confirmation)
+            // navigation.navigate('Otp',{confirmation:confirmation, name:name, mail:mail, number:number})
     
-    const signIn = async() => {
+          } catch (error) {
+            alert(error);
+            console.log(error)
+        }
+        // navigation.navigate('Main')
+    }   
+
+    const createAccount = async(code) => {
+        console.log('Start')
+        auth().onAuthStateChanged( async(user) => {
+            if (user) {
+                console.log("uid", )
+                const uid = auth().currentUser.uid                
+                const token = await auth().currentUser.getIdToken(true)
+                await dispatch(profileAction.createAccount(name, mail, phone, uid, token ))
+                navigation.navigate('CuinsineSetting')
+            } 
+            else 
+            {
+                try {
+                   await confirmation.confirm(code)
+                   navigation.navigate('CuinsineSetting')
+                } catch (error) {
+                    throw(error)
+                }
+            }})
+    
+        console.log('Done')
         
     }
-   
-    useEffect(()=>{
-        storeData()
-    },[name,phone,mail])
 
-    
+    if(confirm){
+
+        return(
+            <SafeAreaView style={{flex:1}}>
+            <View style={{alignSelf:'center', marginTop:22}}>
+                <Text style={{fontFamily:'book', color:'black', fontSize:20}}>Hello <Text style={{fontFamily:'book', color:'#08818a'}}>{`${name}`}</Text></Text>
+                <Text style={{fontFamily:'medium', color:'black', fontSize:22}}>Otp sent to <Text style={{fontFamily:'book', color:'#ffde17',fontSize:22}}>{phone}</Text></Text>
+            </View>
+            <View style={{marginVertical:12, alignSelf:'center'}}>
+            <TextInput
+                value={code}
+                onChangeText={setCode}
+                type="flat"
+                label = 'Enter Code'
+                theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+            />
+            </View>
+            <Pressable onPress={createAccount} style={{marginVertical:100, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
+            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Join as chef</Text>
+            </Pressable>
+            </SafeAreaView>
+        )
+
+    }
 
     return(
-        <SafeAreaView>
+        <SafeAreaView style={{flex:1}}>
         
-        <ScrollView style={{}} >
+        <ScrollView>
             <Image
                 style={StyleSheet.absoluteFillObject}
                 source={require('../../android/app/src/main/assets/image/vector-yellow-abstract-background.jpg')}
@@ -90,7 +137,7 @@ const CreationScreen = ({navigation}) => {
             
             <View style={{width:'100%', flexDirection:'row', justifyContent:'space-between'}}>
             <View/>
-                <Pressable onPress={()=>navigation.navigate('CuinsineSetting')} style={{backgroundColor:'#08818a', padding:8, borderRadius:8, width:60, alignSelf:'center', justifyContent:'center', height:60}}>
+                <Pressable onPress={onSubmit} style={{backgroundColor:'#08818a', padding:8, borderRadius:8, width:60, alignSelf:'center', justifyContent:'center', height:60}}>
                 <AntDesign  name="arrowright" size={30} color="white" style={{alignSelf:'center', justifyContent:'center'}}/>
                 </Pressable>
             </View>

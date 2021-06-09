@@ -9,33 +9,34 @@ import { TextInput } from 'react-native-paper'
 const OtpScreen = ({navigation, route}) => {
 
     const dispatch = useDispatch()
-
-    // const {name,mail,phone,cuisine,types,address,useraddress, confirmation} = route.params
+    const {confirmation} = route.params
     const [code, setCode] = useState()
 
-    useEffect( () => {
-        firebase.auth().onAuthStateChanged( (user) => {
+    const createAccount = async(code) => {
+        console.log('Start')
+        auth().onAuthStateChanged( async(user) => {
             if (user) {
-                // Obviously, you can add more statements here, 
-                //       e.g. call an action creator if you use Redux. 
-    
-                // navigate the user away from the login screens: 
+                console.log("uid", auth().currentUser.uid)
+                console.log("uid",await auth().currentUser.getIdToken(true))
                 console.log('Done')
+                navigation.navigate('CuinsineSetting')
             } 
             else 
             {
-                // reset state if you need to  
-                navigation.navigate('CuinsineSetting')
-            }
-        });
-    }, []);  
-
-    const createAccount = async() => {
-
-        auth().signOut()
-        navigation.navigate('CuinsineSetting')
-
+                try {
+                   await confirmation.confirm(code)
+                   navigation.navigate('CuinsineSetting')
+                } catch (error) {
+                    throw(error)
+                }
+            }})
+    
+        console.log('Done')
+        
     }
+    
+
+    
 
 
     return(

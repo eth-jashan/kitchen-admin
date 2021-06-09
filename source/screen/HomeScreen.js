@@ -12,22 +12,9 @@ const HomeScreen = ({navigation}) => {
         <SafeAreaView style={{flex:1}}>
             <ScrollView>
 
-                <View style={{width:width*0.94, borderRadius:8, padding:12, height:height*0.25, alignSelf:'center', marginTop:10, alignItems:'center', justifyContent:'center'}}>
-                <LinearGradient
-                    // Background Linear Gradient
-                    colors={['#ffcb2a', '#ffa611']}
-                    style={{position: 'absolute', left: 0, right: 0, top: 0, height:'100%', borderRadius:8}}
-                />
-                <Text style={{fontFamily:'medium', fontSize:20, alignSelf:'center', color:'brown'}}>Make Your Store Online</Text>
-                <Text style={{fontFamily:'book', fontSize:18, alignSelf:'center', color:'white'}}>Complete the kyc process to go online</Text>
-
-                <View style={{width:75, height:75, alignSelf:'center'}}>
-                    <Image
-                        source={require('../../android/app/src/main/assets/image/closed(1).png')}
-                        style={{height:'100%', width:'100%'}}
-                    />
-                </View>
-                </View>
+                <Pressable onPress={()=>navigation.navigate('Kyc')} style={{width:width*0.94, borderRadius:8, padding:12, height:60, alignSelf:'center', marginTop:10, justifyContent:'center', backgroundColor:'#ffcb2a'}}>
+                <Text style={{fontFamily:'book', fontSize:20, alignSelf:'center', color:'white', justifyContent:'center'}}>Make Your Store Online</Text>
+                </Pressable>
 
                 <HomeTab
                     index={0}

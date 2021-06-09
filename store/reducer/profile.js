@@ -3,14 +3,19 @@ import Profile from "../../model/Profile"
 import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT, ADD_KYC } from "../action/profile"
 
 const initialState = {
+
     kyc:[],
     cuisine:[],
     chef:[],
     name:null,
     number:null,
     email:null,
-    kyc:false,
-    status:false
+    kycStatus:false,
+    created:false,
+    profileId:null,
+    uid:null,
+    token:null
+
 }
 
 export default (state = initialState, action) => {
@@ -36,42 +41,21 @@ export default (state = initialState, action) => {
                 }
             } 
             case SIGNUP_ACCOUNT:
-                const profile=new Profile(
-                    action.data.id,
-                    action.data.name,
-                    action.data.email,
-                    action.data.phone,
-                    action.data.cuisine,
-                    action.data.type,
-                    action.data.address,
-                    action.data.useraddress,
-                    action.data.created,
-                    action.data.kyc
-                ) 
+
+                console.log("reducer", action.data.uid, action.data.id)
+                
                 return{
                     ...state,
-                    chef:state.chef.concat(profile)
+                    name:action.data.name,
+                    number:action.data.number,
+                    email:action.data.email,
+                    profileId:action.data.id,
+                    kycStatus:false,
+                    created:false,
+                    uid:action.data.uid,
+                    token:action.data.token
                 }
-            case UPDATE_ACC:
-                const cindex=state.chef.findIndex(c=>c.id==action.cid)
-                const chefcopy=[...state.chef]
-                const cprofile=new Profile(
-                    action.cid,
-                    state.chef[cindex].name,
-                    action.data.email,
-                    state.chef[cindex].phone,
-                    action.data.cuisine,
-                    action.data.type,
-                    state.chef[cindex].address,
-                    state.chef[cindex].useraddress,
-                    state.chef[cindex].created,
-                    state.chef[cindex].kyc
-                )
-                chefcopy[cindex]=cprofile
-                return{
-                    ...state,
-                    chef:chefcopy
-                }
+
             case ADD_KYC:
                 const kyc = new Kyc(
                     action.kycDetails.id,
