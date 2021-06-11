@@ -37,7 +37,7 @@ const ImageTaker = (props) => {
     }
     const imgFile = await  ImagePicker.launchCameraAsync({
         allowsEditing:true,
-        aspect:[40,40],
+        aspect:[50,50],
         quality:1
     });
     setImage(imgFile.uri);

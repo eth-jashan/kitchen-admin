@@ -28,7 +28,7 @@ const DishUploadScreen = (props) => {
         <SafeAreaView style={{flex:1}} >
             <ScrollView>
             <View style={{backgroundColor:'#ffffff'}}>
-                <AddImage text={'Add Images'} img={img} onPress = {onOpen}/>
+                <AddImage img={img} onPress = {onOpen}/>
             </View>
             <View style={{marginTop:10,borderTopLeftRadius:20,borderTopRightRadius:20}} >
                 <ScrollView>

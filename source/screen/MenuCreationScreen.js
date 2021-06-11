@@ -30,8 +30,9 @@ const MenuCreationScreen = () => {
         <SafeAreaView style={{flex:1}}>
             
             <View style={{padding:20}}>
-                <AddImage text={'Add Images'} img={img} onPress = {onOpen}/>
+                <AddImage  img={img} onPress = {onOpen}/>
             </View>
+            <View>
             <ScrollView>
             <View>
             <View style={{marginVertical:10, alignSelf:'center'}} >
@@ -65,10 +66,10 @@ const MenuCreationScreen = () => {
                 </View>
                
                 </ScrollView>
+            </View>
                 <Modalize ref={modalizeRef}>
                 <View>
                     <ImageTaker onImageTaken={imagetaken} />
- 
                 </View>
             </Modalize>
  
