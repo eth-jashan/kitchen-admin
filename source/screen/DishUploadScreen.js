@@ -1,9 +1,10 @@
-import React,{useState} from 'react';
+import React,{useState,useRef} from 'react';
 import { View,Text,ScrollView,Pressable, Dimensions,Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AddImage from '../component/addImage';
+import { Modalize } from 'react-native-modalize';
 
 const DishUploadScreen = (props) => {
     const[name,setName]=useState()
@@ -21,10 +22,11 @@ const DishUploadScreen = (props) => {
     
     return(
         <SafeAreaView style={{flex:1}} >
+            <ScrollView>
             <View style={{backgroundColor:'#ffffff'}}>
                 <AddImage text={'Add Images'} onPress = {onOpen}/>
             </View>
-            <View style={{marginTop:10,borderTopLeftRadius:20,borderTopRightRadius:20,backgroundColor:'#D3D3D3'}} >
+            <View style={{marginTop:10,borderTopLeftRadius:20,borderTopRightRadius:20}} >
                 <ScrollView>
                 <View style={{marginVertical:5, alignSelf:'center'}} >
                 <TextInput
@@ -47,7 +49,7 @@ const DishUploadScreen = (props) => {
                     style={{ fontFamily: 'medium', fontColor: '#08818a', width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                 />
                 </View>
-                <View style={{flexDirection:'row'}} >
+                <View style={{flexDirection:'column'}} >
                 <View style={{margin:5}} >
                 <TextInput
                     value={quantity}
@@ -56,7 +58,7 @@ const DishUploadScreen = (props) => {
                     keyboardType='number-pad'
                     label='Quantity'
                     theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
-                    style={{ fontFamily: 'medium', fontColor: '#08818a',height:70, width: Dimensions.get('screen').width*0.15, alignSelf:'center' }}
+                    style={{ fontFamily: 'medium', fontColor: '#08818a', width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                 />
                 </View>
                 <View style={{margin:5}} >
@@ -67,37 +69,34 @@ const DishUploadScreen = (props) => {
                     label='Price'
                     keyboardType='number-pad'
                     theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
-                    style={{ fontFamily: 'medium', fontColor: '#08818a',height:70, width: Dimensions.get('screen').width*0.55, alignSelf:'center' }}
+                    style={{ fontFamily: 'medium', fontColor: '#08818a', width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
  
                 />
                 </View>
                 </View>
                 <View style={{flexDirection:'row'}} >
                     <View style={{margin:5}} >
-                    <Text>Maximum Serves: </Text>
-                    </View>
-                    <View style={{margin:5}} >
                     <TextInput
                         value={price}
                         onChangeText={setPrice}
                         mode='flat'
-                        label='Price'
+                        label='Maximum Serves'
                         keyboardType='number-pad'
                         theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
-                        style={{ fontFamily: 'medium', fontColor: '#08818a',height:70, width: Dimensions.get('screen').width*0.45, alignSelf:'center' }}
+                        style={{ fontFamily: 'medium', fontColor: '#08818a', width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
  
                     />
                     </View>
                 </View>
-                <View style={{flexDirection:'row'}} >
-                <View style={{margin:5}} >
-                <Pressable onPress={}  style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'40%', alignSelf:'center', justifyContent:'center'}} >
-                <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}} >Pre-Order</Text>
+                <View style={{flexDirection:'row',justifyContent:'space-between',marginVertical:10,marginHorizontal:10}} >
+                <View >
+                <Pressable onPress={()=>{}}  style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'100%', alignSelf:'center', justifyContent:'center'}} >
+                <Text style={{fontFamily:'book', fontSize:20, alignSelf:'center', color:'white'}} >Pre-Order</Text>
                 </Pressable>
                 </View>
-                <View style={{margin:5}} >
-                <Pressable  style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'40%', alignSelf:'center', justifyContent:'center'}} >
-                <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}} >On-Demand</Text>
+                <View>
+                <Pressable  style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'100%', alignSelf:'center', justifyContent:'center'}} >
+                <Text style={{fontFamily:'book', fontSize:20, alignSelf:'center', color:'white'}} >On-Demand</Text>
                 </Pressable>
                 </View>
                 </View>
@@ -108,6 +107,7 @@ const DishUploadScreen = (props) => {
                 </View>
                 </ScrollView>
             </View>
+            
             <Modalize ref={modalizeRef}>
                 <View>
                     <Pressable style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
@@ -118,6 +118,7 @@ const DishUploadScreen = (props) => {
                     </Pressable>
                 </View>
             </Modalize>
+            </ScrollView>
         </SafeAreaView>
     )
 };
