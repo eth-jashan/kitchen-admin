@@ -8,11 +8,12 @@ import ReduxThunk from 'redux-thunk'
 //importing reducer
 import ProfileReducer from './store/reducer/profile'
 import CategoryReducer from './store/reducer/category'
-
+import DishReducer from './store/reducer/dish'
 //-----initialising reducer---//
 const rootReducer = combineReducers({
   profile:ProfileReducer,
-  catergory:CategoryReducer  
+  catergory:CategoryReducer,
+  dish:DishReducer
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))

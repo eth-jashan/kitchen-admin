@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dimensions, Image,  Text, View,TouchableOpacity } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'; 
+import { AntDesign  } from '@expo/vector-icons'; 
 
 const {width, height} = Dimensions.get('window')
 
@@ -9,20 +9,20 @@ const addImage = (props) => {
 
     return(
         
-            <View style={{width:width*0.94, height:height*0.35, alignSelf:'center', borderRadius:8, marginVertical:8}}>
-            <View style={{width:'100%', height:'100%', backgroundColor:'black', opacity:0.6, borderRadius:8}}>
-            <Image
+        <TouchableOpacity onPress={props.onPress} style={{width:width*0.94, height:height*0.35, alignSelf:'center', borderRadius:8, marginVertical:8, justifyContent:'center'}}>
+        <View style={{width:'100%', height:'100%', backgroundColor:'black',  borderRadius:8,justifyContent:'center'}}>
+        <Image
             blurRadius={props.img?null:4}
-            style={{height:'100%', width:'100%', borderRadius:8}} 
+            style={{height:'100%', width:'100%', borderRadius:8, position:'absolute',opacity:props.img?null:0.8}} 
             source={{uri:props.img?props.img:filePath}} 
+            resizeMode={props.img?'cover':null}
         />
-         <View style={{position:'absolute', justifyContent:'center',alignItems:'center',padding:10}}>
-         <TouchableOpacity style={{backgroundColor:'#08818a',height:60,width:60,borderRadius:30,justifyContent:'center',alignItems:'center'}}  onPress = {props.onPress}>
-            <Ionicons name="md-add" size={45} color="white" />
-         </TouchableOpacity>
+        {props.img?null:
+            <AntDesign  name="pluscircle" size={45} color={'white'} style={{alignSelf:'center'}}/>
+        }
+
         </View>
-        </View>
-        </View>
+        </TouchableOpacity>
         
 
     )

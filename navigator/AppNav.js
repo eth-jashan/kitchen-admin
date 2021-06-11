@@ -12,8 +12,8 @@ import {View} from 'react-native'
 import OtpScreen from '../source/screen/OtpScreen';
 import KycScreen from '../source/screen/kycScreen';
 import DishUploadScreen from '../source/screen/DishUploadScreen';
-import MenuCreationScreen from '../source/screen/MenuCreationScreen';
 import BannerUploadScreen from '../source/screen/BannerUploadScreen';
+import CategoryUpload from '../source/screen/CategoryUpload';
 
 
 const AuthStack = createStackNavigator();
@@ -31,17 +31,7 @@ const MyAuth =()=> {
 
 const HomeStack = createStackNavigator();
 
-const MyHome = () => {
-  return(
-    <HomeStack.Navigator initialRouteName = {"Home"} screenOptions = {{headerShown:false}}>
-      <HomeStack.Screen name = "Home" component={HomeScreen}/>
-      <HomeStack.Screen name="DishUpload" component={DishUploadScreen}/>
-      <HomeStack.Screen name="MenuCreation" component = {MenuCreationScreen}/>
-      <HomeStack.Screen name="BannerUpload" component = {BannerUploadScreen}/>
 
-    </HomeStack.Navigator>
-  )
-}
 
 const Tab = createMaterialBottomTabNavigator()
 
@@ -59,7 +49,7 @@ const BottomStack = () => {
           <Tab.Screen
             
             name="Home"
-            component={MyHome}
+            component={HomeScreen}
             options={{
               tabBarLabel: 'Home',
               tabBarIcon: ({ color }) => (
@@ -91,6 +81,9 @@ const MainComp = () => {
     <MainStack.Navigator screenOptions={{headerShown:false}}>
       <MainStack.Screen name='Home' component={BottomStack} />
       <MainStack.Screen name='Kyc' component={KycScreen} />
+      <MainStack.Screen name="DishUpload" component={DishUploadScreen}/>
+      <MainStack.Screen name="MenuCreation" component = {CategoryUpload}/>
+      <MainStack.Screen name="BannerUpload" component = {BannerUploadScreen}/>
     </MainStack.Navigator>
   )
 

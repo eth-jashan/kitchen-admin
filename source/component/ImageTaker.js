@@ -3,7 +3,7 @@ import {
   StyleSheet, View, Text, Image,TouchableOpacity,Dimensions,Pressable,Alert
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons'; 
+import { Entypo } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -21,23 +21,25 @@ const ImageTaker = (props) => {
   };
 
   const fileHandler = async () => {
-    const permission = await permissionsHandler();
+    const permission = await ImagePicker.getMediaLibraryPermissionsAsync();
     if (!permission) {
       return;
     }
-    const imgFile = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.All,quality: 1 });
+    const imgFile = await ImagePicker.launchImageLibraryAsync({ allowsEditing:true,
+      aspect:[2,2], mediaTypes: ImagePicker.MediaTypeOptions.Images,quality: 1 });
     setImage(imgFile.uri);
     props.onImageTaken(imgFile.uri);
   };
 
   const cameraHandler = async () => {
-    const permission = await permissionsHandler();
+    const permission = await ImagePicker.getCameraPermissionsAsync();
     if (!permission) {
       return;
     }
     const imgFile = await  ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing:true,
-        aspect:[50,50],
+        aspect:[2,2],
         quality:1
     });
     setImage(imgFile.uri);
@@ -46,11 +48,14 @@ const ImageTaker = (props) => {
 
   return (
     <View>
-    <Pressable onPress={fileHandler} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
-        <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>From Device</Text>
+    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', marginVertical:16, color:'black'}}>Image Uploads</Text>
+    <Pressable onPress={fileHandler} style={{borderColor:'gray', borderBottomWidth:1, padding:8, borderRadius:8, width:'100%', alignSelf:'center', marginVertical:15, flexDirection:'row', justifyContent:'space-between'}}>
+    <Entypo name="images" size={24} color="#08818a" style={{left:20}} />
+    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'#08818a',right:20}}>From Device</Text>
     </Pressable>
-    <Pressable onPress={cameraHandler} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
-        <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Open Camera</Text>
+    <Pressable onPress={cameraHandler} style={{borderColor:'gray',borderBottomWidth:1, padding:8, borderRadius:8, width:'100%', alignSelf:'center', marginVertical:15, flexDirection:'row', justifyContent:'space-between'}}>
+    <Entypo name="camera" size={24} color="#08818a" style={{left:20}} />
+        <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'#08818a', right:20}}>Open Camera</Text>
     </Pressable>
     </View>
   );
