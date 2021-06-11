@@ -11,9 +11,9 @@ const addImage = (props) => {
             <View style={{width:width*0.94, height:height*0.35, alignSelf:'center', borderRadius:8, marginVertical:8}}>
             <View style={{width:'100%', height:'100%', backgroundColor:'black', opacity:0.6, borderRadius:8}}>
             <Image
-            blurRadius={4}
+            blurRadius={props.img?0:4}
             style={{height:'100%', width:'100%', borderRadius:8}} 
-            source={{uri:filePath}} 
+            source={{uri:props.img?props.img:filePath}} 
         />
          <View style={{position:'absolute', padding:10}}>
             <Text style={{fontFamily:'medium', fontSize:20, color:'white',alignSelf:'center'}}>{props.text}</Text>

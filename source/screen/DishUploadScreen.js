@@ -5,6 +5,7 @@ import Carousel from 'react-native-snap-carousel'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AddImage from '../component/addImage';
 import { Modalize } from 'react-native-modalize';
+import ImageTaker from '../component/ImageTaker';
 
 const DishUploadScreen = (props) => {
     const[name,setName]=useState()
@@ -17,6 +18,9 @@ const DishUploadScreen = (props) => {
     const onOpen = async() => {
         modalizeRef.current?.open();
     };
+    const imagetaken=(url)=>{
+        setImg(url)
+    }
     //const SLIDER_WIDTH = Dimensions.get('screen').width;
     //const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
     
@@ -24,7 +28,7 @@ const DishUploadScreen = (props) => {
         <SafeAreaView style={{flex:1}} >
             <ScrollView>
             <View style={{backgroundColor:'#ffffff'}}>
-                <AddImage text={'Add Images'} onPress = {onOpen}/>
+                <AddImage text={'Add Images'} img={img} onPress = {onOpen}/>
             </View>
             <View style={{marginTop:10,borderTopLeftRadius:20,borderTopRightRadius:20}} >
                 <ScrollView>
@@ -77,8 +81,8 @@ const DishUploadScreen = (props) => {
                 <View style={{flexDirection:'row'}} >
                     <View style={{margin:5}} >
                     <TextInput
-                        value={price}
-                        onChangeText={setPrice}
+                        value={serve}
+                        onChangeText={setServe}
                         mode='flat'
                         label='Maximum Serves'
                         keyboardType='number-pad'
@@ -110,12 +114,7 @@ const DishUploadScreen = (props) => {
             
             <Modalize ref={modalizeRef}>
                 <View>
-                    <Pressable style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
-                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>From Device</Text>
-                    </Pressable>
-                    <Pressable style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
-                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Open Camera</Text>
-                    </Pressable>
+                    <ImageTaker onImageTaken={imagetaken} />
                 </View>
             </Modalize>
             </ScrollView>

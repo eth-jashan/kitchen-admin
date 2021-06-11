@@ -6,18 +6,20 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import AddImage from '../component/addImage';
 
 import { Modalize } from 'react-native-modalize';
+import ImageTaker from '../component/ImageTaker';
 
 const MenuCreationScreen = () => {
     const modalizeRef = useRef(null);
 
     const[name,setName]=useState()
     const[description,setDescription]=useState()
-    const[img,setImg]=useState([])
-    const[isImage,setIsImage] = useState(false);
+    const[img,setImg]=useState()
 
-    const SLIDER_WIDTH = Dimensions.get('screen').width;
-    const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
-
+    //const SLIDER_WIDTH = Dimensions.get('screen').width;
+    //const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
+    const imagetaken=(url)=>{
+        setImg(url)
+    }
     const onOpen = async() => {
         modalizeRef.current?.open();
     
@@ -26,8 +28,8 @@ const MenuCreationScreen = () => {
 
     return(
         <SafeAreaView style={{flex:1}}>
-            <View style={{padding:20,backgroundColor:isImage? '#ffffff':null}}>
-                <AddImage text={'Add Images'} onPress = {onOpen}/>
+            <View style={{padding:20}}>
+                <AddImage text={'Add Images'} img={img} onPress = {onOpen}/>
             </View>
             <ScrollView>
             <View style={{marginVertical:10, alignSelf:'center'}} >
@@ -62,12 +64,7 @@ const MenuCreationScreen = () => {
                 </ScrollView>
                 <Modalize ref={modalizeRef}>
                 <View>
-                    <Pressable style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
-                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>From Device</Text>
-                    </Pressable>
-                    <Pressable style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
-                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Open Camera</Text>
-                    </Pressable>
+                    <ImageTaker onImageTaken={imagetaken} />
  
                 </View>
             </Modalize>

@@ -20,31 +20,34 @@ const ImageTaker = (props) => {
     return true;
   };
 
-  const imageHandler = async () => {
+  const fileHandler = async () => {
     const permission = await permissionsHandler();
     if (!permission) {
       return;
     }
-    
     const imgFile = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.All,quality: 0.5 });
     setImage(imgFile.uri);
-
     props.onImageTaken(imgFile.uri);
-    console.log(image);
+  };
+
+  const cameraHandler = async () => {
+    const permission = await permissionsHandler();
+    if (!permission) {
+      return;
+    }
+    const imgFile = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.CAMERA,quality: 0.5 });
+    setImage(imgFile.uri);
+    props.onImageTaken(imgFile.uri);
   };
 
   return (
     <View>
-
-      {!image ? <View></View> :
-          <View style={{
-   width: 100,margin:10, height: 100,justifyContent:'center',alignItems:'center'
-    }} >
-          <Image style={{ height: '100%', width: '100%'}} source={{ uri: image }} />
-          </View>}
-          <TouchableOpacity onPress={imageHandler} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, alignSelf:'center', justifyContent:'center'}}  >
-         <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}} ><Ionicons name="ios-camera" size={20} color="#ffffff" style={{borderRadius:10}} />{image?"Change Image":"Add Image"}</Text>
-         </TouchableOpacity>
+    <Pressable onPress={fileHandler} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
+        <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>From Device</Text>
+    </Pressable>
+    <Pressable onPress={cameraHandler} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
+        <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Open Camera</Text>
+    </Pressable>
     </View>
   );
 };
