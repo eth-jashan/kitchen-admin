@@ -3,21 +3,26 @@ import { View,Text,ScrollView,Pressable, Dimensions,Image } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import AddImage from '../component/addImage';
 
 const DishUploadScreen = (props) => {
     const[name,setName]=useState()
+    const modalizeRef = useRef(null);
     const[description,setDescription]=useState()
     const[img,setImg]=useState()
     const[quantity,setQuantity]=useState()
     const[price,setPrice]=useState()
     const[serve,setServe]=useState()
+    const onOpen = async() => {
+        modalizeRef.current?.open();
+    };
     //const SLIDER_WIDTH = Dimensions.get('screen').width;
     //const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
     
     return(
         <SafeAreaView style={{flex:1}} >
             <View style={{backgroundColor:'#ffffff'}}>
-                
+                <AddImage text={'Add Images'} onPress = {onOpen}/>
             </View>
             <View style={{marginTop:10,borderTopLeftRadius:20,borderTopRightRadius:20,backgroundColor:'#D3D3D3'}} >
                 <ScrollView>
@@ -103,6 +108,16 @@ const DishUploadScreen = (props) => {
                 </View>
                 </ScrollView>
             </View>
+            <Modalize ref={modalizeRef}>
+                <View>
+                    <Pressable style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
+                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>From Device</Text>
+                    </Pressable>
+                    <Pressable style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'80%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
+                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Open Camera</Text>
+                    </Pressable>
+                </View>
+            </Modalize>
         </SafeAreaView>
     )
 };
