@@ -11,6 +11,9 @@ import { Entypo, Feather  } from '@expo/vector-icons';
 import {View} from 'react-native'
 import OtpScreen from '../source/screen/OtpScreen';
 import KycScreen from '../source/screen/kycScreen';
+import DishUploadScreen from '../source/screen/DishUploadScreen';
+import MenuCreationScreen from '../source/screen/MenuCreationScreen';
+import BannerUploadScreen from '../source/screen/BannerUploadScreen';
 
 
 const AuthStack = createStackNavigator();
@@ -24,6 +27,20 @@ const MyAuth =()=> {
     <AuthStack.Screen name="Otp" component={OtpScreen} />
     </AuthStack.Navigator>
   );
+}
+
+const HomeStack = createStackNavigator();
+
+const MyHome = () => {
+  return(
+    <HomeStack.Navigator initialRouteName = {"Home"} screenOptions = {{headerShown:false}}>
+      <HomeStack.Screen name = "Home" component={HomeScreen}/>
+      <HomeStack.Screen name="DishUpload" component={DishUploadScreen}/>
+      <HomeStack.Screen name="MenuCreation" component = {MenuCreationScreen}/>
+      <HomeStack.Screen name="BannerUpload" component = {BannerUploadScreen}/>
+
+    </HomeStack.Navigator>
+  )
 }
 
 const Tab = createMaterialBottomTabNavigator()
@@ -42,7 +59,7 @@ const BottomStack = () => {
           <Tab.Screen
             
             name="Home"
-            component={HomeScreen}
+            component={MyHome}
             options={{
               tabBarLabel: 'Home',
               tabBarIcon: ({ color }) => (
@@ -86,7 +103,7 @@ const AppNav = () => {
     return(
         <NavigationContainer>
             <FlowStack.Navigator screenOptions={{headerShown:false}}>
-            <FlowStack.Screen name='Auth' component={MyAuth}  />
+            {/* <FlowStack.Screen name='Auth' component={MyAuth}  /> */}
             <FlowStack.Screen name='Main' component={MainComp}  />
             </FlowStack.Navigator>
         </NavigationContainer>

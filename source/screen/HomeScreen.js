@@ -20,16 +20,19 @@ const HomeScreen = ({navigation}) => {
                     index={0}
                     stext={'Create, Manage and Edit large categories with food'}
                     text={'Menu Creation'}
+                    OnPress = {()=>{navigation.navigate('MenuCreation')}}
                 />
                 <HomeTab
                     index={1}
                     stext={'Upload the only the dishes without the menu structure'}
                     text={'Dish Uploads'}
+                    OnPress = {()=>{navigation.navigate('DishUpload')}}
                 />
                 <HomeTab
                     index={2}
                     stext={'Create Customisable offer banner to make your store attractive'}
                     text={'Banner Upload'}
+                    OnPress = {()=>{navigation.navigate('BannerUpload')}}
                 />
             </ScrollView>
         </SafeAreaView>
