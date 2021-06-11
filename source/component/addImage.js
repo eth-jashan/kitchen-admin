@@ -1,5 +1,6 @@
 import React from 'react'
 import { Dimensions, Image,  Text, View,TouchableOpacity } from 'react-native'
+import { Ionicons } from '@expo/vector-icons'; 
 
 const {width, height} = Dimensions.get('window')
 
@@ -17,6 +18,7 @@ const addImage = (props) => {
         />
          <View style={{position:'absolute', padding:10}}>
             <Text style={{fontFamily:'medium', fontSize:20, color:'white',alignSelf:'center'}}>{props.text}</Text>
+            <Ionicons name="md-add" size={45} color="black" />
         </View>
         </View>
         </View>

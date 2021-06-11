@@ -28,10 +28,12 @@ const MenuCreationScreen = () => {
 
     return(
         <SafeAreaView style={{flex:1}}>
+            
             <View style={{padding:20}}>
                 <AddImage text={'Add Images'} img={img} onPress = {onOpen}/>
             </View>
             <ScrollView>
+            <View>
             <View style={{marginVertical:10, alignSelf:'center'}} >
             <TextInput
                     value={name}
@@ -60,7 +62,8 @@ const MenuCreationScreen = () => {
                     <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Dish</Text>
                 </Pressable>
                 </View>
-                
+                </View>
+               
                 </ScrollView>
                 <Modalize ref={modalizeRef}>
                 <View>
@@ -68,6 +71,7 @@ const MenuCreationScreen = () => {
  
                 </View>
             </Modalize>
+ 
 
         </SafeAreaView>
     )

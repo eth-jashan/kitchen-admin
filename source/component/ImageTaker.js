@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, Text, Image,TouchableOpacity,Dimensions,Pressable
+  StyleSheet, View, Text, Image,TouchableOpacity,Dimensions,Pressable,Alert
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'; 
@@ -25,7 +25,7 @@ const ImageTaker = (props) => {
     if (!permission) {
       return;
     }
-    const imgFile = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.All,quality: 0.8 });
+    const imgFile = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.All,quality: 1 });
     setImage(imgFile.uri);
     props.onImageTaken(imgFile.uri);
   };
@@ -38,7 +38,7 @@ const ImageTaker = (props) => {
     const imgFile = await  ImagePicker.launchCameraAsync({
         allowsEditing:true,
         aspect:[40,40],
-        quality:0.8
+        quality:1
     });
     setImage(imgFile.uri);
     props.onImageTaken(imgFile.uri);
