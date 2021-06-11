@@ -12,7 +12,7 @@ const WelcomeScreen = ({navigation}) => {
                 source={{uri:'https://pps.whatsapp.net/v/t61.24694-24/138439538_247936526731668_6214712210083773155_n.jpg?ccb=11-4&oh=34c11671276c192536fcb23f9edba0db&oe=60A708C8'}}
             />
             </View>
-            <Pressable onPress={()=>navigation.navigate('Main')} style={{marginVertical:100, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
+            <Pressable onPress={()=>navigation.navigate('Creation')} style={{marginVertical:100, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Join as chef</Text>
             </Pressable>
         </SafeAreaView>

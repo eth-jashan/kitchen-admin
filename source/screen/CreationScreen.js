@@ -46,7 +46,7 @@ const CreationScreen = ({navigation}) => {
             else 
             {
                 try {
-                   await confirmation.confirm(code)
+                   await confirm.confirm(code)
                    navigation.navigate('CuinsineSetting')
                 } catch (error) {
                     throw(error)
