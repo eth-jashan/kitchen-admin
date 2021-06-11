@@ -10,24 +10,11 @@ const DishUploadScreen = (props) => {
     const[img,setImg]=useState([])
     const SLIDER_WIDTH = Dimensions.get('screen').width;
     const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
-    const renderDish=itemData=>{
-        return(
-            <View>
-                <Image/>
-            </View>
-        )
-    }
+
     return(
         <SafeAreaView style={{flex:1}} >
             <View style={{height:Dimensions.get('screen').height*0.4,padding:20,backgroundColor:'#ffffff'}}>
                 {img?<View style={{flexDirection:'row'}}>
-                    <Carousel
-                        data={img}
-                        renderItem={renderDish}
-                        layout={'default'}
-                        sliderWidth={SLIDER_WIDTH}
-                        itemWidth={ITEM_WIDTH}
-                    />
                     <Pressable style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, alignSelf:'center', justifyContent:'center'}} >
                         <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}} >Add More Images</Text>
                     </Pressable>
