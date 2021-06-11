@@ -25,7 +25,7 @@ const ImageTaker = (props) => {
     if (!permission) {
       return;
     }
-    const imgFile = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.All,quality: 0.5 });
+    const imgFile = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.MediaTypeOptions.All,quality: 0.8 });
     setImage(imgFile.uri);
     props.onImageTaken(imgFile.uri);
   };
@@ -35,7 +35,11 @@ const ImageTaker = (props) => {
     if (!permission) {
       return;
     }
-    const imgFile = await ImagePicker.launchImageLibraryAsync({ mediaTypes: ImagePicker.CAMERA,quality: 0.5 });
+    const imgFile = await  ImagePicker.launchCameraAsync({
+        allowsEditing:true,
+        aspect:[40,40],
+        quality:0.8
+    });
     setImage(imgFile.uri);
     props.onImageTaken(imgFile.uri);
   };
