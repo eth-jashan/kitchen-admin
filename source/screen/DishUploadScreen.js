@@ -5,12 +5,12 @@ import Carousel from 'react-native-snap-carousel'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 const DishUploadScreen = (props) => {
-    const[name,setname]=useState()
-    const[description,setdescription]=useState()
-    const[img,setimg]=useState([])
+    const[name,setName]=useState()
+    const[description,setDescription]=useState()
+    const[img,setImg]=useState([])
     const SLIDER_WIDTH = Dimensions.get('screen').width;
     const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
-    const renderdish=itemData=>{
+    const renderDish=itemData=>{
         return(
             <View>
                 <Image/>
@@ -23,7 +23,7 @@ const DishUploadScreen = (props) => {
                 {img?<View style={{flexDirection:'row'}}>
                     <Carousel
                         data={img}
-                        renderItem={renderdish}
+                        renderItem={renderDish}
                         layout={'default'}
                         sliderWidth={SLIDER_WIDTH}
                         itemWidth={ITEM_WIDTH}
@@ -43,7 +43,7 @@ const DishUploadScreen = (props) => {
                 <View style={{marginVertical:5, alignSelf:'center'}} >
                 <TextInput
                 value={name}
-                onChangeText={setname}
+                onChangeText={setName}
                 mode='flat'
                 label="Enter Dish Name"
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
@@ -53,7 +53,7 @@ const DishUploadScreen = (props) => {
                 <View style={{marginVertical:10, alignSelf:'center'}} >
                 <TextInput
                     value={description}
-                    onChangeText={setdescription}
+                    onChangeText={setDescription}
                     mode='flat'
                     label="Dish Description"
                     theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
