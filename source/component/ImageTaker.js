@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, Text, Image,TouchableOpacity,Dimensions
+  StyleSheet, View, Text, Image,TouchableOpacity,Dimensions,Pressable
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'; 
