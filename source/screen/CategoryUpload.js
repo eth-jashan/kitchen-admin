@@ -7,14 +7,15 @@ import AddImage from '../component/addImage';
 
 import { Modalize } from 'react-native-modalize';
 import ImageTaker from '../component/ImageTaker';
+import { addcategory } from '../../store/action/category';
 
-const CategoryUpload = () => {
+const CategoryUpload = ({navigation}) => {
     const modalizeRef = useRef(null);
 
     const[name,setName]=useState()
     const[description,setDescription]=useState()
     const[img,setImg]=useState()
-
+    const dispatch=useDispatch()
     //const SLIDER_WIDTH = Dimensions.get('screen').width;
     //const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
     const imagetaken=(url)=>{
@@ -24,6 +25,9 @@ const CategoryUpload = () => {
         modalizeRef.current?.open();
     
     };
+    const addCategory=async()=>{
+        await dispatch(addcategory(name,description,img))
+    }
 
 
     return(
@@ -58,7 +62,7 @@ const CategoryUpload = () => {
 
                 </View>
             <View style={{width:'100%'}} >
-                <TouchableOpacity style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
+                <TouchableOpacity onPress={addCategory}  style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
                     <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Category</Text>
                 </TouchableOpacity>
                 </View>
