@@ -1,5 +1,5 @@
 import React,{useState,useRef} from 'react';
-import { View,Text,ScrollView,Pressable, Dimensions,Image, FlatList ,TouchableOpacity} from 'react-native';
+import { View,Text,ScrollView,Pressable, Dimensions,Image, FlatList ,TouchableOpacity, Alert} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AddImage from '../component/addImage';
@@ -11,7 +11,7 @@ import * as dishAction from '../../store/action/dish'
 const {width, height} = Dimensions.get('window')
 
 const DishUploadScreen = (props) => {
-    
+    const cuisine = useSelector(x => x.dish.cuisine)
     const[name,setName]=useState()
     const[description,setDescription]=useState()
     const[img,setImg]=useState()
@@ -32,6 +32,16 @@ const DishUploadScreen = (props) => {
         setImg(url)
     }
 
+    const uploadDish=async()=>{
+        if(name && description && price && spicy && serve && quantity && cuisine.length!=0)
+        {
+            await dispatch(dishAction.addDish(name,description,spicy,price,serve,quantity))
+        }
+        else{
+            Alert.alert('Error','Please Add all the details',[{text:'Okay'}])
+        }
+    }
+
     const cuisineHandler = (name) => {
 
         dispatch(dishAction.addCuisine(name))
@@ -41,7 +51,7 @@ const DishUploadScreen = (props) => {
         setSpicy(index)
     }
 
-    const cuisine = useSelector(x => x.dish.cuisine)
+    
     const spicyList = [{title:'no spicy 😚'},{title:'less spicy😌'}, {title:'medium spicy😓'}, {title:'high spicy🤐'}] 
     const cuisineList= [
 
@@ -136,8 +146,20 @@ const DishUploadScreen = (props) => {
                 />
             </View>
 
+            <View style={{marginVertical:10, alignSelf:'center'}} >
+                <TextInput
+                    multiline
+                    value={quantity}
+                    onChangeText={setQuantity}
+                    mode='flat'
+                    label="Total number of quantity tobe served (for eg. 10,50,etc.)"
+                    theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                    style={{ fontFamily: 'medium', fontColor: '#08818a', width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                />
+            </View>
+
             <View style={{width:'100%', marginVertical:16}}>
-                <Pressable style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
+                <Pressable onPress={uploadDish} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
                     <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Dish</Text>
                 </Pressable>
             </View>

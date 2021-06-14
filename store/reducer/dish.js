@@ -1,8 +1,11 @@
+import Dish from "../../model/Dish"
+import { ADD_DISH } from "../action/dish"
 import { ADD_CUISINE } from "../action/profile"
 
 const initialState = {
 
-    cuisine:[]
+    cuisine:[],
+    dish:[]
 
 }
 
@@ -27,6 +30,25 @@ export default (state = initialState, action) => {
                     ...state,
                     cuisine:cuisine.concat(action.name)
                 }
+            }
+        case ADD_DISH:
+            const newDish=new Dish(
+                action.data.id,
+                action.data.name,
+                action.data.description,
+                action.data.imguri,
+                action.data.spicy,
+                action.data.cuisine,
+                action.data.price,
+                action.data.noServe,
+                action.data.quantity,
+                action.data.categoryid,
+                action.data.categoryname,
+
+            )
+            return{
+                ...state,
+                dish:state.dish.concat(newDish)
             }
         default:
                 return state 
