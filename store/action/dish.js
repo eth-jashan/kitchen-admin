@@ -1,7 +1,9 @@
+import Dish from "../../model/Dish"
+
 export const ADD_CUISINE = 'ADD_CUISINE'
 export const ADD_DISH='ADD_DISH'
 export const FETCHDISH='FETCHDISH'
-import Dish from "../../model/Dish"
+
 export const addCuisine = (name) => {
 
     return async (dispatch, getState) => {
@@ -32,7 +34,7 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity)=>{
             })
         })
         const resData=await response.json()
-        const images = await fetch(imguri);
+        const images = await fetch(img);
         const blob = await images.blob();
         const ref = firebase.storage().ref(`${'dish/'}${resData.name}`);
         await ref.put(blob);
@@ -64,7 +66,7 @@ export const fetchDish=()=>{
     return async (dispatch,getState)=>{
         const cuisine=getState().dish.cuisine
         const uid=getState().profile.uid
-        //console.log(uid);
+
         const response=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish.json?`)
         const resData=await response.json()
         const list=[]

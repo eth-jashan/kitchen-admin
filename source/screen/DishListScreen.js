@@ -9,7 +9,8 @@ const ListScreen=(props)=>{
     const dish=useSelector(x=>x.dish.dish)
     //console.log(dish);
     const[search,setSearch]=useState()
-    const dispatch=useDispatch();
+
+    const dispatch=useDispatch()
     const renderDish=itemData=>{
         return(
             <View style={{margin:5}}>

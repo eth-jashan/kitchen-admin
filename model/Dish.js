@@ -1,4 +1,4 @@
-class Dish{
+export default class Dish{
     constructor(id,name,description,imguri,spicy,cuisine,price,noServe,quantity,categoryId,categoryName){
         this.id=id
         this.name=name
@@ -14,4 +14,3 @@ class Dish{
     }
 }
 
-export default Dish
