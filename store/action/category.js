@@ -1,4 +1,5 @@
 import Category from "../../model/Category";
+import storage from '@react-native-firebase/storage';
 
 export const ADD_CATEGORY='ADD_CATEGORY'
 export const FETCH_CATEGORY = 'FETCH_CATEGORY';
@@ -11,16 +12,17 @@ export const addcategory=(name,description,imguri)=>{
             headers:{'Content-Type':'application\json'},
             body:JSON.stringify({
                 name,
-                description
+                description,
+                imguri:''
             })
         })
         const resData=await response.json()
         const images = await fetch(imguri);
         const blob = await images.blob();
-        const ref = firebase.storage().ref(`${'category/'}${resData.name}`);
+        const ref = storage().ref(`${'category/'}${resData.name}`);
         await ref.put(blob);
-        const url= await firebase.storage().ref(`${resData.name}`).getDownloadURL();
-        const response1=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/category/${resData.name}.json`,{
+        const url= await storage().ref(`${'category/'}${resData.name}`).getDownloadURL();
+        await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/category/${resData.name}.json`,{
             method:'PATCH',
             headers:{'Content-Type':'application\json'},
             body:JSON.stringify({
