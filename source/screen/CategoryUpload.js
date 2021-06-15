@@ -8,6 +8,7 @@ import AddImage from '../component/addImage';
 import { Modalize } from 'react-native-modalize';
 import ImageTaker from '../component/ImageTaker';
 import { addcategory } from '../../store/action/category';
+import { useDispatch } from 'react-redux';
 
 const CategoryUpload = ({navigation}) => {
     const modalizeRef = useRef(null);
