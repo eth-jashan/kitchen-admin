@@ -14,6 +14,8 @@ import KycScreen from '../source/screen/kycScreen';
 import DishUploadScreen from '../source/screen/DishUploadScreen';
 import BannerUploadScreen from '../source/screen/BannerUploadScreen';
 import CategoryUpload from '../source/screen/CategoryUpload';
+import DishListScreen from '../source/screen/DishListScreen';
+import CategoryListScreen from '../source/screen/CategoryListScreen';
 
 
 const AuthStack = createStackNavigator();
@@ -81,6 +83,8 @@ const MainComp = () => {
     <MainStack.Navigator screenOptions={{headerShown:false}}>
       <MainStack.Screen name='Home' component={BottomStack} />
       <MainStack.Screen name='Kyc' component={KycScreen} />
+      <MainStack.Screen name='DishListScreen' component={DishListScreen} />
+      <MainStack.Screen name='CategoryListScreen' component={CategoryListScreen}/>
       <MainStack.Screen name="DishUpload" component={DishUploadScreen}/>
       <MainStack.Screen name="MenuCreation" component = {CategoryUpload}/>
       <MainStack.Screen name="BannerUpload" component = {BannerUploadScreen}/>

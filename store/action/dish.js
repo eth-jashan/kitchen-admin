@@ -1,5 +1,7 @@
 export const ADD_CUISINE = 'ADD_CUISINE'
 export const ADD_DISH='ADD_DISH'
+export const FETCHDISH='FETCHDISH'
+import Dish from "../../model/Dish"
 export const addCuisine = (name) => {
 
     return async (dispatch, getState) => {
@@ -55,5 +57,29 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity)=>{
             categoryid:false,
             categoryname:false
         }})
+    }
+}
+
+export const fetchDish=()=>{
+    return async (dispatch,getState)=>{
+        const cuisine=getState().dish.cuisine
+        const uid=getState().profile.uid
+        const response=fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish.json?`)
+        const resData=await response.json()
+        const list=[]
+        for(const key in resData){
+            list.push(new Dish(key,
+                resData[key].name,
+                resData[key].description,
+                resData[key].imguri,
+                resData[key].spicy,
+                resData[key].cuisine,
+                resData[key].price,
+                resData[key].noServe,
+                resData[key].quantity,
+                resData[key].categoryid,
+                resData[key].categoryname))
+        }
+        dispatch({type:FETCHDISH,data:list})
     }
 }

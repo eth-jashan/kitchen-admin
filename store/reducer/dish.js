@@ -1,5 +1,5 @@
 import Dish from "../../model/Dish"
-import { ADD_DISH } from "../action/dish"
+import { ADD_DISH, FETCHDISH } from "../action/dish"
 import { ADD_CUISINE } from "../action/profile"
 
 const initialState = {
@@ -49,6 +49,11 @@ export default (state = initialState, action) => {
             return{
                 ...state,
                 dish:state.dish.concat(newDish)
+            }
+        case FETCHDISH:
+            return{
+                ...state,
+                dish:action.data
             }
         default:
                 return state 
