@@ -18,29 +18,29 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity)=>{
     return async (dispatch,getState)=>{
         const cuisine=getState().dish.cuisine
         const uid=getState().profile.uid
-        const response=fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish.json?`,{
+        const response= await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish.json?`,{
             method:'POST',
             headers:{'Content-Type':'application\json'},
             body:JSON.stringify({
                 name,
                 description,
-                img:'-',
                 spicy,
                 cuisine,
                 price,
                 noServe,
                 quantity,
                 categoryid:false,
-                categoryname:false
+                categoryname:false,
+                imguri:''
             })
         })
         const resData=await response.json()
         const images = await fetch(img);
         const blob = await images.blob();
         const ref = storage().ref(`${'dish/'}${resData.name}`);
-        await ref.putFile(blob);
+        await ref.put(blob);
         const url= await storage().ref(`${'dish/'}${resData.name}`).getDownloadURL();
-        const response1=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish/${resData.name}.json?`,{
+        await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish/${resData.name}.json?`,{
             method:'PATCH',
             headers:{'Content-Type':'application\json'},
             body:JSON.stringify({

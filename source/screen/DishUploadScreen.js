@@ -35,7 +35,7 @@ const DishUploadScreen = (props) => {
     const uploadDish=async()=>{
         if(name && description && price && spicy && serve && quantity && cuisine.length!=0)
         {
-            await dispatch(dishAction.addDish(name,description,spicy,price,serve,quantity))
+            await dispatch(dishAction.addDish(name,description,img,spicy,price,serve,quantity))
         }
         else{
             Alert.alert('Error','Please Add all the details',[{text:'Okay'}])
