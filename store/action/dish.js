@@ -1,5 +1,5 @@
 import Dish from "../../model/Dish"
-
+import storage from '@react-native-firebase/storage';
 export const ADD_CUISINE = 'ADD_CUISINE'
 export const ADD_DISH='ADD_DISH'
 export const FETCHDISH='FETCHDISH'
@@ -37,9 +37,9 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity)=>{
         const resData=await response.json()
         const images = await fetch(img);
         const blob = await images.blob();
-        const ref = firebase.storage().ref(`${'dish/'}${resData.name}`);
-        await ref.put(blob);
-        const url= await firebase.storage().ref(`${'dish/'}${resData.name}`).getDownloadURL();
+        const ref = storage().ref(`${'dish/'}${resData.name}`);
+        await ref.putFile(blob);
+        const url= await storage().ref(`${'dish/'}${resData.name}`).getDownloadURL();
         const response1=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish/${resData.name}.json?`,{
             method:'PATCH',
             headers:{'Content-Type':'application\json'},
