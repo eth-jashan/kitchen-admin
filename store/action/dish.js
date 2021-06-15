@@ -24,6 +24,7 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity)=>{
             body:JSON.stringify({
                 name,
                 description,
+                img:'-',
                 spicy,
                 cuisine,
                 price,
@@ -38,7 +39,7 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity)=>{
         const blob = await images.blob();
         const ref = firebase.storage().ref(`${'dish/'}${resData.name}`);
         await ref.put(blob);
-        const url= await firebase.storage().ref(`${resData.name}`).getDownloadURL();
+        const url= await firebase.storage().ref(`${'dish/'}${resData.name}`).getDownloadURL();
         const response1=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish/${resData.name}.json?`,{
             method:'PATCH',
             headers:{'Content-Type':'application\json'},

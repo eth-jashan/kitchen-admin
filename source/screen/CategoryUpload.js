@@ -44,7 +44,7 @@ const CategoryUpload = ({navigation}) => {
                     value={name}
                     onChangeText={setName}
                     mode='flat'
-                    label="Enter Dish Name"
+                    label="Name"
                     theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                     style={{ fontFamily: 'medium', fontColor: '#08818a', width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                 />
@@ -55,7 +55,7 @@ const CategoryUpload = ({navigation}) => {
                     value={description}
                     onChangeText={setDescription}
                     mode='flat'
-                    label="Dish Description"
+                    label="Description"
                     multiline={true}
                     theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                     style={{ fontFamily: 'medium', fontColor: '#08818a', width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
