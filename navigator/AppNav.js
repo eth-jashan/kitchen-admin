@@ -100,7 +100,7 @@ const AppNav = () => {
     return(
         <NavigationContainer>
             <FlowStack.Navigator screenOptions={{headerShown:false}}>
-            {/* <FlowStack.Screen name='Auth' component={MyAuth}  /> */}
+            <FlowStack.Screen name='Auth' component={MyAuth}  />
             <FlowStack.Screen name='Main' component={MainComp}  />
             </FlowStack.Navigator>
         </NavigationContainer>

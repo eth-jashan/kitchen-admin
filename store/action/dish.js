@@ -64,7 +64,8 @@ export const fetchDish=()=>{
     return async (dispatch,getState)=>{
         const cuisine=getState().dish.cuisine
         const uid=getState().profile.uid
-        const response=fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish.json?`)
+        //console.log(uid);
+        const response=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish.json?`)
         const resData=await response.json()
         const list=[]
         for(const key in resData){
@@ -80,6 +81,7 @@ export const fetchDish=()=>{
                 resData[key].categoryid,
                 resData[key].categoryname))
         }
+        //console.log(resData);
         dispatch({type:FETCHDISH,data:list})
     }
 }
