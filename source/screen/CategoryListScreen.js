@@ -25,10 +25,10 @@ const CategoryListScreen=props=>{
     })
     return(
         <SafeAreaView style={{flex:1}} >
-            <SearchBar
-        placeholder='Search Category'
-        onChangeText={setSearch}
-        value={search}
+        <SearchBar
+            placeholder='Search Category'
+            onChangeText={setSearch}
+            value={search}
         />
         <View>
             <FlatList

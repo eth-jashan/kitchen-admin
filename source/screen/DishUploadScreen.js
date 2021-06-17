@@ -7,6 +7,7 @@ import { Modalize } from 'react-native-modalize';
 import ImageTaker from '../component/ImageTaker';
 import {useDispatch, useSelector} from 'react-redux'
 import * as dishAction from '../../store/action/dish'
+import TimeOrder from '../component/TimingOrder';
 
 const {width, height} = Dimensions.get('window')
 
@@ -19,15 +20,19 @@ const DishUploadScreen = (props) => {
     const[price,setPrice]=useState()
     const[serve,setServe]=useState()
     const [spicy, setSpicy] = useState(0)
+    const [type, setType] = useState(0)
 
     const modalizeRef = useRef(null);
+    const modalizeRef2 = useRef(null);
     const dispatch = useDispatch()
     
 
     const onOpen = async() => {
         modalizeRef.current?.open();
     };
-
+    const onOpen2 = async() => {
+        modalizeRef2.current?.open();
+    };
     const imagetaken=(url)=>{
         setImg(url)
     }
@@ -35,7 +40,7 @@ const DishUploadScreen = (props) => {
     const uploadDish=async()=>{
         if(name && description && price && spicy && serve && quantity && cuisine.length!=0)
         {
-            await dispatch(dishAction.addDish(name,description,img,spicy,price,serve,quantity))
+            await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity))
         }
         else{
             Alert.alert('Error','Please Add all the details',[{text:'Okay'}])
@@ -47,6 +52,9 @@ const DishUploadScreen = (props) => {
         dispatch(dishAction.addCuisine(name))
     
     }
+    const typeHandler = (index) => {
+        setType(index)
+    }
     const spicyHandler = (index) => {
         setSpicy(index)
     }
@@ -55,8 +63,7 @@ const DishUploadScreen = (props) => {
     const spicyList = [{title:'no spicy 😚'},{title:'less spicy😌'}, {title:'medium spicy😓'}, {title:'high spicy🤐'}] 
     const cuisineList= [
 
-        {title:'Breakfast', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Fchinese-C.jpg?alt=media&token=31600780-81bb-42ac-ad56-34a8dad6e3eb'},{title:"Appetizer", link:"https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Findian%20C.jpg?alt=media&token=a43b190c-6537-47a9-88d2-941141d3bfbf"}, {title:"Maincourse", link:"https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2FSeafood%20c.jpg?alt=media&token=303fd2c3-960e-42f2-84c1-e26010278947"}, {title:'Thali/Meal', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Fmaharashtrain%20C.png?alt=media&token=24920057-ce78-457d-8908-b7da35ba260b'},
-        {title:'Desert', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2FSouth%20Indian%20Cuisine.jpg?alt=media&token=781238cd-09a0-4b31-86a1-c1f9e6876766'}]
+        {title:'Breakfast 🍳'},{title:"Appetizer 🍤"}, {title:"Maincourse 🍲"}, {title:'Thali/Meal 🍱'},{title:'Desert 🍨'}]
     
     return(
         <SafeAreaView style={{flex:1,backgroundColor:'#ffffff'}} >
@@ -64,9 +71,13 @@ const DishUploadScreen = (props) => {
             <View style={{backgroundColor:'#ffffff'}}>
                 <AddImage img={img} onPress = {onOpen}/>
             </View>
-            <View style={{marginTop:10, backgroundColor:'white'}} >
-                
-                <View style={{marginVertical:5, alignSelf:'center'}} >
+
+            <View style={{marginTop:10, backgroundColor:'white',}} >
+                <Pressable onPress={onOpen2} style={{alignSelf:'center', width: Dimensions.get('screen').width*0.95, borderWidth:1, borderColor:'#08818a', padding:8, borderRadius:8}}>
+                    <Text style={{fontFamily:'medium', alignSelf:'center', fontSize:18}}>Delivery Preference</Text>
+                </Pressable>   
+
+                <View style={{marginVertical:5, alignSelf:'center'}}>
                 <TextInput
                 value={name}
                 onChangeText={setName}
@@ -93,18 +104,13 @@ const DishUploadScreen = (props) => {
                 showsHorizontalScrollIndicator={false}
                 data={cuisineList}
                 keyExtractor={(_,i)=>i.toString()}
-                renderItem={({item}) => {
-                    return<TouchableOpacity onPress={()=>cuisineHandler(item.title)}>
-                    <View style={{width:width*0.6, padding:8, borderRadius:8, alignSelf:'center', height:180}}>
-                        <Image
-                            
-                            style={{width:'100%', height:'90%',borderRadius:8, opacity:cuisine.includes(item.title)?1:0.2}}
-                            source={{uri:item.link}}
-                        />
-                        <View style={{position:'absolute', bottom:30, left:20}}>
-                        <Text style={{ fontFamily:'medium', fontSize:18, color:cuisine.includes(item.title)?"white":'black'}}>{item.title}</Text>
-                        </View>
-                    </View>
+                renderItem={({item, index}) => {
+                    return<TouchableOpacity onPress={()=>typeHandler(index)} style={{backgroundColor:index===type?'#ec0c41':null, width:160, padding:6, borderRadius:8, margin:6, }}>
+                    
+                     
+                        <Text style={{ fontFamily:'medium', fontSize:18, color:index === type?"white":'black', alignSelf:'center'}}>{item.title}</Text>
+                        
+                   
                     </TouchableOpacity>
 
                 }}
@@ -116,8 +122,8 @@ const DishUploadScreen = (props) => {
                 data={spicyList}
                 keyExtractor={(_,i)=>i.toString()}
                 renderItem={({item, index}) => {
-                    return<TouchableOpacity onPress={()=>spicyHandler(index)} style={{backgroundColor:index===spicy?'#ec0c41':null, width:150, padding:8, borderRadius:10, marginHorizontal:6, }}>
-                    <Text style={{fontFamily:'book', fontSize:20, color:index===spicy?'white':"black", alignSelf:'center'}}>{item.title}</Text>
+                    return<TouchableOpacity onPress={()=>spicyHandler(index)} style={{backgroundColor:index===spicy?'#ec0c41':null, width:160, padding:6, borderRadius:8, margin:6, }}>
+                    <Text style={{fontFamily:'book', fontSize:18, color:index===spicy?'white':"black", alignSelf:'center',}}>{item.title}</Text>
                     </TouchableOpacity>
                 }}
             />
@@ -170,6 +176,11 @@ const DishUploadScreen = (props) => {
             <Modalize  ref={modalizeRef}>
                 <View>
                     <ImageTaker onImageTaken={imagetaken} />
+                </View>
+            </Modalize>
+            <Modalize  ref={modalizeRef2}>
+                <View>
+                    <TimeOrder/>
                 </View>
             </Modalize>
         </SafeAreaView>

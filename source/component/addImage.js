@@ -9,7 +9,7 @@ const addImage = (props) => {
 
     return(
         
-        <TouchableOpacity onPress={props.onPress} style={{width:width*0.94, height:height*0.35, alignSelf:'center', borderRadius:8, marginVertical:8, justifyContent:'center'}}>
+        <TouchableOpacity onPress={props.onPress} style={{width:width*0.9, height:width*0.9, alignSelf:'center', borderRadius:8, marginVertical:8, justifyContent:'center'}}>
         <View style={{width:'100%', height:'100%', backgroundColor:'black',  borderRadius:8,justifyContent:'center'}}>
         <Image
             blurRadius={props.img?null:4}
