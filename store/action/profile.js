@@ -26,7 +26,8 @@ export const createAccount=(name,email,phone, uid, token)=>{
                 email,
                 phone,
                 created:false,
-                kyc:false
+                kyc:false,
+                uid:uid
             })
         })
         const resData=await response.json()
