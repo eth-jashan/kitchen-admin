@@ -18,4 +18,12 @@ target 'chefadmin' do
   #     flipper_post_install(installer)
   #   end
   # end
+  pod 'react-native-document-picker', :path => '../node_modules/react-native-document-picker'
+
+  pod 'RNFileViewer', :path => '../node_modules/react-native-file-viewer'
+
+  pod 'RNFS', :path => '../node_modules/react-native-fs'
+
+  pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+
 end
