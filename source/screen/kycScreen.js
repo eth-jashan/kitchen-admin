@@ -58,7 +58,7 @@ const KycScreen = () => {
             <Pressable onPress={()=>PreviewFile(props.type)} >
                 <View style={{padding:10,margin:10,width:Dimensions.get('screen').width*0.90,flexDirection:'row',borderRadius:5, borderWidth:0.5, borderColor:'#08818a'}} >
                 <View style={{marginRight:5}} >
-                <MaterialCommunityIcons name="pdf-box" size={30} color="Red" />
+                <MaterialCommunityIcons name="pdf-box" size={30} color="red" />
                 </View>
                 <View style={{marginLeft:5}}  >
                    <Text style={{fontFamily:'book', padding:5, color:'#08818a'}} > {props.type=='Aadhar'?'Aadhar Card':props.type=='Pan'?'Pan Card':'Fssi Details'} </Text>
@@ -99,7 +99,7 @@ const KycScreen = () => {
         />
         </View>
             <View style={{width:'100%', padding:8}}>
-                <Text style={{fontFamily:'medium', alignSelf:'center', fontSize:24}}>Aadhaar Details</Text>
+                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:24}}>Aadhaar Details</Text>
                 
                 <View style={{marginVertical:12, alignSelf:'center'}}>
                 <TextInput
@@ -112,13 +112,13 @@ const KycScreen = () => {
                 />
                 </View>
                 {aadharuri?<FileView type='Aadhar' />:null}
-                <Pressable onPress={FilePicker('Aadhar')}  style={{width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
+                <Pressable onPress={FilePicker('Aadhar')}  style={{margin:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
                     <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Upload Adhaar Card</Text>
                 </Pressable>
             </View>
 
             <View style={{width:'100%', padding:8}}>
-                <Text style={{fontFamily:'medium', alignSelf:'center', fontSize:24}}>Pan Card Details</Text>
+                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:24}}>Pan Card Details</Text>
                 
                 <View style={{marginVertical:12, alignSelf:'center'}}>
                 <TextInput
@@ -131,14 +131,14 @@ const KycScreen = () => {
                 />
                 </View>
                 {panuri?<FileView type='Pan' />:null}
-                <Pressable onPress={FilePicker('Pan')} style={{width:Dimensions.get('screen').width*0.95, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
+                <Pressable onPress={FilePicker('Pan')} style={{marginTop:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}} >
                     <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Upload Pancard</Text>
                 </Pressable>
 
             </View>
 
             <View style={{width:'100%', padding:8}}>
-                <Text style={{fontFamily:'medium', alignSelf:'center', fontSize:24}}>Fssi Details</Text>
+                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:24}}>Fssi Details</Text>
                 
                 <View style={{marginVertical:12, alignSelf:'center'}}>
                 <TextInput
@@ -151,11 +151,11 @@ const KycScreen = () => {
                 />
                 </View>
                 {fssiuri?<FileView type='fssi' />:null}
-                <Pressable onPress={FilePicker('fssi')} style={{width:Dimensions.get('screen').width*0.95, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
+                <Pressable onPress={FilePicker('fssi')} style={{marginTop:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
                     <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Upload Fssi</Text>
                 </Pressable>
 
-                <Pressable onPress={addData} style={{width:Dimensions.get('screen').width*0.95, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
+                <Pressable onPress={addData} style={{marginTop:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
                     <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Submit All Documents</Text>
                 </Pressable>
             </View>
