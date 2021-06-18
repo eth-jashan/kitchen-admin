@@ -8,6 +8,19 @@ import FileViewer from 'react-native-file-viewer';
 import { useDispatch } from 'react-redux';
 import { addKyc } from '../../store/action/profile';
 
+const FileView=props=>{
+    return(
+            <View style={{padding:10,margin:10,width:Dimensions.get('screen').width*0.90,flexDirection:'row',borderRadius:5, borderWidth:0.5, borderColor:'#08818a'}} >
+            <View style={{marginRight:5}} >
+            <MaterialCommunityIcons name="pdf-box" size={30} color="red" />
+            </View>
+            <View style={{marginLeft:5}}  >
+               <Text style={{fontFamily:'book', padding:5, color:'#08818a'}} > {props.type=='Aadhar'?'Aadhar Card':props.type=='Pan'?'Pan Card':'Fssi Details'} </Text>
+            </View>
+            </View>
+    )
+}
+
 const KycScreen = () => {
     const[name,setName]=useState()
     const[number,setNumber]=useState()
@@ -41,32 +54,19 @@ const KycScreen = () => {
           }
     }
 
-    const PreviewFile=async(type)=>{
+    const PreviewFile=(type)=>{
         if(type=='Aadhar'){
-            await FileViewer.open(aadharuri)
+            FileViewer.open(aadharuri)
         }
-        else if(type='Pan'){
-            await FileViewer.open(panuri)
+        else if(type=='Pan'){
+            FileViewer.open(panuri)
         }
         else{
-            await FileViewer.open(fssiuri)
+            FileViewer.open(fssiuri)
         } 
     }
     
-    const FileView=props=>{
-        return(
-            <Pressable onPress={()=>PreviewFile(props.type)} >
-                <View style={{padding:10,margin:10,width:Dimensions.get('screen').width*0.90,flexDirection:'row',borderRadius:5, borderWidth:0.5, borderColor:'#08818a'}} >
-                <View style={{marginRight:5}} >
-                <MaterialCommunityIcons name="pdf-box" size={30} color="red" />
-                </View>
-                <View style={{marginLeft:5}}  >
-                   <Text style={{fontFamily:'book', padding:5, color:'#08818a'}} > {props.type=='Aadhar'?'Aadhar Card':props.type=='Pan'?'Pan Card':'Fssi Details'} </Text>
-                </View>
-                </View>
-            </Pressable>
-        )
-    }
+    
     const addData=async()=>{
         if(!name || !number || !aadharuri || !Aadhar || !fssiuri || !fssi || !panuri || !panNumber)
         {
@@ -111,8 +111,11 @@ const KycScreen = () => {
                     style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                 />
                 </View>
-                {aadharuri?<FileView type='Aadhar' />:null}
-                <Pressable onPress={FilePicker('Aadhar')}  style={{margin:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
+                {aadharuri?
+                <Pressable onPress={()=>PreviewFile('Aadhar')} >
+                <FileView type='Aadhar' />
+                </Pressable>:null}
+                <Pressable onPress={()=>FilePicker('Aadhar')}  style={{margin:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
                     <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Upload Adhaar Card</Text>
                 </Pressable>
             </View>
@@ -130,8 +133,10 @@ const KycScreen = () => {
                     style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                 />
                 </View>
-                {panuri?<FileView type='Pan' />:null}
-                <Pressable onPress={FilePicker('Pan')} style={{marginTop:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}} >
+                {panuri?<Pressable onPress={()=>PreviewFile('Pan')} >
+                <FileView type='Pan' />
+                </Pressable>:null}
+                <Pressable onPress={()=>FilePicker('Pan')} style={{marginTop:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}} >
                     <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Upload Pancard</Text>
                 </Pressable>
 
@@ -150,8 +155,10 @@ const KycScreen = () => {
                     style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                 />
                 </View>
-                {fssiuri?<FileView type='fssi' />:null}
-                <Pressable onPress={FilePicker('fssi')} style={{marginTop:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
+                {fssiuri?<Pressable onPress={()=>PreviewFile('fssi')} >
+                <FileView type='fssi' />
+                </Pressable>:null}
+                <Pressable onPress={()=>FilePicker('fssi')} style={{marginTop:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
                     <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Upload Fssi</Text>
                 </Pressable>
 
