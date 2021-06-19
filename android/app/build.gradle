@@ -81,6 +81,7 @@ import com.android.build.OutputFile
 project.ext.react = [
     enableHermes: false
 ]
+// apply from: "../../node_modules/expo-updates/scripts/create-manifest-android.gradle"
 
 apply from: '../../node_modules/react-native-unimodules/gradle.groovy'
 apply from: "../../node_modules/react-native/react.gradle"

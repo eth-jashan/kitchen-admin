@@ -2,9 +2,8 @@ import React, { useEffect, useState } from 'react'
 import {View, StyleSheet,ScrollView, Text, Pressable, Dimensions, Alert} from 'react-native'
 import {TextInput} from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons,FontAwesome,MaterialIcons } from '@expo/vector-icons';
 import DocumentPicker from 'react-native-document-picker'
-import FileViewer from 'react-native-file-viewer';
 import { useDispatch } from 'react-redux';
 import { addKyc } from '../../store/action/profile';
 
@@ -21,7 +20,7 @@ const FileView=props=>{
     )
 }
 
-const KycScreen = () => {
+const KycScreen = ({navigation}) => {
     const[name,setName]=useState()
     const[number,setNumber]=useState()
     const [Aadhar, setAadhar] = useState('')
@@ -31,40 +30,53 @@ const KycScreen = () => {
     const[panuri,setPanuri]=useState()
     const[fssiuri,setFssiuri]=useState()
     const dispatch=useDispatch()
-    const FilePicker=async(type)=>{
+
+    const adhaarFrontUpload = async() => {
         try {
             const res = await DocumentPicker.pick({
               type: [DocumentPicker.types.pdf],
             });
-            if(type=='Aadhar'){
-                setAadharuri(res.uri)
-            }
-            else if(type='Pan'){
-                setPanuri(res.uri)
-            }
-            else{
-                setFssiuri(res.uri)
-            }
-          } catch (err) {
-            if (DocumentPicker.isCancel(err)) {
-              // User cancelled the picker
-            } else {
-              Alert.alert('Error','Something Went Wrong,Please Try Again',[{text:'Okay'}])
-            }
-          }
+        console.log("Console", res)
+        setAadharuri(res)
+        }catch(err){
+            Alert.alert('Something Went Wrong!!!')
+        }
+        
+
     }
 
-    const PreviewFile=(type)=>{
-        if(type=='Aadhar'){
-            FileViewer.open(aadharuri)
+    const panCardUpload = async() => {
+        try {
+            const res = await DocumentPicker.pick({
+              type: [DocumentPicker.types.pdf],
+            });
+        console.log("Console", res)
+        setPanuri(res)
+        }catch(err){
+            Alert.alert('Something Went Wrong!!!')
         }
-        else if(type=='Pan'){
-            FileViewer.open(panuri)
-        }
-        else{
-            FileViewer.open(fssiuri)
-        } 
+        
+
     }
+
+    const fssaiUpload = async() => {
+        try {
+            const res = await DocumentPicker.pick({
+              type: [DocumentPicker.types.pdf],
+            });
+        console.log("Console", res)
+        setFssiuri(res)
+        }catch(err){
+            Alert.alert('Something Went Wrong!!!')
+        }
+        
+
+    }
+
+
+    
+
+   
     
     
     const addData=async()=>{
@@ -84,7 +96,7 @@ const KycScreen = () => {
         <TextInput
             value={name}
             onChangeText={setName}
-            type='flat'
+            type='outline'
             label = 'Name'
             theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
             style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
@@ -99,7 +111,7 @@ const KycScreen = () => {
         />
         </View>
             <View style={{width:'100%', padding:8}}>
-                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:24}}>Aadhaar Details</Text>
+                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:22}}>Aadhaar Details</Text>
                 
                 <View style={{marginVertical:12, alignSelf:'center'}}>
                 <TextInput
@@ -111,17 +123,20 @@ const KycScreen = () => {
                     style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                 />
                 </View>
-                {aadharuri?
-                <Pressable onPress={()=>PreviewFile('Aadhar')} >
-                <FileView type='Aadhar' />
-                </Pressable>:null}
-                <Pressable onPress={()=>FilePicker('Aadhar')}  style={{margin:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
-                    <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Upload Adhaar Card</Text>
-                </Pressable>
+                {!aadharuri?<Pressable onPress={adhaarFrontUpload}  style={{borderColor:'#08818a', padding:10, borderRadius:4, width:'90%', alignSelf:'center',borderWidth:1}}>
+                    <Text style={{fontFamily:'medium', fontSize:18, color:'#08818a', alignSelf:'center'}}>Add Aadhaar Card</Text>
+                </Pressable>:
+                <View style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
+                <View style={{flexDirection:'row'}}>
+                <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
+                <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{aadharuri.name}</Text>
+                </View>
+                <MaterialIcons onPress={()=>setAadharuri(false)} name="cancel" size={24} color="#e4003e" />
+                </View>}
             </View>
 
             <View style={{width:'100%', padding:8}}>
-                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:24}}>Pan Card Details</Text>
+                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:22}}>Pan Card Details</Text>
                 
                 <View style={{marginVertical:12, alignSelf:'center'}}>
                 <TextInput
@@ -133,17 +148,21 @@ const KycScreen = () => {
                     style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                 />
                 </View>
-                {panuri?<Pressable onPress={()=>PreviewFile('Pan')} >
-                <FileView type='Pan' />
-                </Pressable>:null}
-                <Pressable onPress={()=>FilePicker('Pan')} style={{marginTop:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}} >
-                    <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Upload Pancard</Text>
-                </Pressable>
+                {!panuri?<Pressable onPress={panCardUpload}  style={{borderColor:'#08818a', padding:10, borderRadius:4, width:'90%', alignSelf:'center',borderWidth:1}}>
+                    <Text style={{fontFamily:'medium', fontSize:18, color:'#08818a', alignSelf:'center'}}>Add Pan Card</Text>
+                </Pressable>:
+                <View style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
+                <View style={{flexDirection:'row'}}>
+                <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
+                <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{panuri.name}</Text>
+                </View>
+                <MaterialIcons onPress={()=>setPanuri(false)} name="cancel" size={24} color="#e4003e" />
+                </View>}
 
             </View>
 
             <View style={{width:'100%', padding:8}}>
-                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:24}}>Fssi Details</Text>
+                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:22}}>Fssi Details</Text>
                 
                 <View style={{marginVertical:12, alignSelf:'center'}}>
                 <TextInput
@@ -155,16 +174,21 @@ const KycScreen = () => {
                     style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                 />
                 </View>
-                {fssiuri?<Pressable onPress={()=>PreviewFile('fssi')} >
-                <FileView type='fssi' />
-                </Pressable>:null}
-                <Pressable onPress={()=>FilePicker('fssi')} style={{marginTop:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
-                    <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Upload Fssi</Text>
+                {!fssiuri?<Pressable onPress={fssaiUpload} style={{borderColor:'#08818a', padding:10, borderRadius:4, width:'90%', alignSelf:'center',borderWidth:1}}>
+                    <Text style={{fontFamily:'medium', fontSize:18, color:'#08818a', alignSelf:'center'}}>Add FSSAI Certificate</Text>
+                </Pressable>:
+                <View style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
+                <View style={{flexDirection:'row'}}>
+                <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
+                <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{fssiuri.name}</Text>
+                </View>
+                <MaterialIcons onPress={()=>setFssiuri(false)} name="cancel" size={24} color="#e4003e" />
+                </View>}
+
+                <Pressable onPress={()=>navigation.navigate('Home')} style={{marginTop:16,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, backgroundColor:'#08818a',alignSelf:'center', marginVertical:10, justifyContent:'center'}}>
+                    <Text style={{fontFamily:'book', alignSelf:'center', color:'white'}}>Apply</Text>
                 </Pressable>
 
-                <Pressable onPress={addData} style={{marginTop:8,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, borderColor:'#08818a',alignSelf:'center'}}>
-                    <Text style={{fontFamily:'book', alignSelf:'center', color:'#08818a'}}>Submit All Documents</Text>
-                </Pressable>
             </View>
         </ScrollView>
         </SafeAreaView>

@@ -31,7 +31,7 @@ const MyAuth =()=> {
   );
 }
 
-const HomeStack = createStackNavigator();
+
 
 
 

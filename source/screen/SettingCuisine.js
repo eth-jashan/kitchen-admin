@@ -77,7 +77,6 @@ const revereGeoCodeResponse = async(latitude,longitude) =>{
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
         return;
       }
 
