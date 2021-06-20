@@ -58,15 +58,15 @@ export default (state = initialState, action) => {
 
             case ADD_KYC:
                 const kyc = new Kyc(
-                    action.kycDetails.id,
-                    action.kycDetails.name,
-                    action.kycDetails.phone,
-                    action.kycDetails.adharNo,
-                    action.kycDetails.adharURL,
-                    action.kycDetails.fssiNo,
-                    action.kycDetails.fssiUrl,
-                    action.kycDetails.panNo,
-                    action.kycDetails.panUrl
+                    action.kycDetailes.id,
+                    action.kycDetailes.name,
+                    action.kycDetailes.phone,
+                    action.kycDetailes.adharNo,
+                    action.kycDetailes.adharURL,
+                    action.kycDetailes.fssiNo,
+                    action.kycDetailes.fssiUrl,
+                    action.kycDetailes.panNo,
+                    action.kycDetailes.panUrl
                 )
                 return{
                     ...state,
