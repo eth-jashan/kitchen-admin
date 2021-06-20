@@ -1,4 +1,4 @@
-class Category{
+export default class Category{
     constructor(id,uid,name,description,imguri,lat,long){
         this.id=id
         this.uid=uid
@@ -9,5 +9,3 @@ class Category{
         this.long=long
     }
 }
-
-export default Category;

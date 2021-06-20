@@ -1,4 +1,4 @@
-import Category from "../../model/Category"
+import Category from '../../model/Category'
 import { ADD_CATEGORY, DELETE_CAT, EDIT_CATEGORY, EDIT_URL, FETCH_CATEGORY } from "../action/category"
 
 const initialState={
@@ -24,7 +24,7 @@ export default (state=initialState,action)=>{
         case FETCH_CATEGORY:
             return{
                 ...state,
-                category:action.data.filter(x=>x.uid==userid)
+                category:action.data.filter(x=>x.uid==action.userid)
             }
         case EDIT_CATEGORY:
             const catIndex = state.category.findIndex(
@@ -39,8 +39,8 @@ export default (state=initialState,action)=>{
                 action.data.lat,
                 action.data.long
             )
-            const Category=[...state.category]
-            Category[catIndex]=updatedcat
+            const Category1=[...state.category]
+            Category1[catIndex]=updatedcat
             return{
                 ...state,
                 category:Category
@@ -58,11 +58,11 @@ export default (state=initialState,action)=>{
                 action.data.lat,
                 action.data.long
             )
-            const Category1=[...state.category]
-            Category1[index]=updatedcategory
+            const Category2=[...state.category]
+            Category2[index]=updatedcategory
             return{
                 ...state,
-                category:Category1
+                category:Category2
             }
         case DELETE_CAT:
             return{
