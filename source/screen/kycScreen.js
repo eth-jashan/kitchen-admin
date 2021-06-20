@@ -7,18 +7,6 @@ import DocumentPicker from 'react-native-document-picker'
 import { useDispatch } from 'react-redux';
 import { addKyc } from '../../store/action/profile';
 
-const FileView=props=>{
-    return(
-            <View style={{padding:10,margin:10,width:Dimensions.get('screen').width*0.90,flexDirection:'row',borderRadius:5, borderWidth:0.5, borderColor:'#08818a'}} >
-            <View style={{marginRight:5}} >
-            <MaterialCommunityIcons name="pdf-box" size={30} color="red" />
-            </View>
-            <View style={{marginLeft:5}}  >
-               <Text style={{fontFamily:'book', padding:5, color:'#08818a'}} > {props.type=='Aadhar'?'Aadhar Card':props.type=='Pan'?'Pan Card':'Fssi Details'} </Text>
-            </View>
-            </View>
-    )
-}
 
 const KycScreen = ({navigation}) => {
     const[name,setName]=useState()
@@ -68,6 +56,7 @@ const KycScreen = ({navigation}) => {
         setFssiuri(res)
         }catch(err){
             Alert.alert('Something Went Wrong!!!')
+
         }
         
 
@@ -75,17 +64,14 @@ const KycScreen = ({navigation}) => {
 
 
     
-
-   
-    
-    
     const addData=async()=>{
         if(!name || !number || !aadharuri || !Aadhar || !fssiuri || !fssi || !panuri || !panNumber)
         {
             Alert.alert('Invalid','Please Enter all the inputs',[{text:'Okay'}])
         }
         else{
-            await dispatch(addKyc(name,number,aadharuri,Aadhar,fssiuri,fssi,panuri,panNumber))
+            await dispatch(addKyc(name,number,aadharuri.uri,Aadhar,fssiuri.uri,fssi,panuri.uri,panNumber))
+            navigation.navigate('Home')
         }
     }
 
@@ -185,7 +171,7 @@ const KycScreen = ({navigation}) => {
                 <MaterialIcons onPress={()=>setFssiuri(false)} name="cancel" size={24} color="#e4003e" />
                 </View>}
 
-                <Pressable onPress={()=>navigation.navigate('Home')} style={{marginTop:16,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, backgroundColor:'#08818a',alignSelf:'center', marginVertical:10, justifyContent:'center'}}>
+                <Pressable onPress={addData} style={{marginTop:16,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, backgroundColor:'#08818a',alignSelf:'center', marginVertical:10, justifyContent:'center'}}>
                     <Text style={{fontFamily:'book', alignSelf:'center', color:'white'}}>Apply</Text>
                 </Pressable>
 

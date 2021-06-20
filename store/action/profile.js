@@ -78,7 +78,7 @@ export const accountSetup=(cuisine, type, geoAddress, house, landmark, pincode, 
 export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) => {
     return async (getState,dispatch) => {
 
-        const uid = getState.user.userId;
+        const uid = getState().profile.uid;
 
         const adhar = await fetch(adharURI);
         const fssi = await fetch(fssiURI);
@@ -96,7 +96,7 @@ export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) 
         await fssiRef.put(fssiBlob);
         await panRef.put(panBlob);
 
-        const adharUrl = await storage().ref(`${'kyc/'}${uid}${'/'}${'adhar'}`).getDownloadURL();
+        const adharUrl = await storage().ref(`${'kyc/'}${uid}${'/'}${'aadhar'}`).getDownloadURL();
         const fssiUrl = await storage().ref(`${'kyc/'}${uid}${'/'}${'fssi'}`).getDownloadURL();
         const panUrl = await storage().ref(`${'kyc/'}${uid}${'/'}${'pan'}`).getDownloadURL();
 
