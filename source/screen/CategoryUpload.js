@@ -1,4 +1,4 @@
-import React,{useState,useRef} from 'react';
+import React,{useState,useRef,useEffect} from 'react';
 import { View,Text,ScrollView,Pressable, Dimensions,Image, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel'

@@ -129,9 +129,10 @@ export const imageCheck = (id,name,description,imguri,spicy,price,noServe,quanti
             dispatch({type:EDIT_DISH_WITHOUT_IMG,updatedDish:{id,name,description,spicy,price,noServe,quantity,type}})
         }
         else{
+            const ref = storage().ref(`${'dish/'}${id}`);
+            ref.delete()
             const images = await fetch(imguri);
             const blob = await images.blob();
-            const ref = storage().ref(`${'dish/'}${id}`);
             await ref.put(blob);
             const url= await storage().ref(`${'dish/'}${id}`).getDownloadURL();
     

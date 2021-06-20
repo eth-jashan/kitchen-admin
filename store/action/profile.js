@@ -76,9 +76,10 @@ export const accountSetup=(cuisine, type, geoAddress, house, landmark, pincode, 
 }
 
 export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) => {
-    return async (getState,dispatch) => {
+    return async (dispatch,getState) => {
 
-        const uid = getState().profile.uid;
+         const uid = getState().profile.uid
+        console.log(uid)
 
         const adhar = await fetch(adharURI);
         const fssi = await fetch(fssiURI);
@@ -88,43 +89,44 @@ export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) 
         const fssiBlob = await fssi.blob();
         const panBlob = await pan.blob();
 
-        const adharRef = storage().ref(`${'kyc/'}${uid}${'/'}${'adhar'}`);
-        const fssiRef = storage().ref(`${'kyc/'}${uid}${'/'}${'fssi'}`);
-        const panRef = storage().ref(`${'kyc/'}${uid}${'/'}${'pan'}`);
+        const adharRef = storage().ref(`${'kyc/'}${uid}${'/'}${'adhar/'}`);
+        const fssiRef = storage().ref(`${'kyc/'}${uid}${'/'}${'fssi/'}`);
+        const panRef = storage().ref(`${'kyc/'}${uid}${'/'}${'pan/'}`);
+       
         
         await adharRef.put(adharBlob);
         await fssiRef.put(fssiBlob);
         await panRef.put(panBlob);
 
-        const adharUrl = await storage().ref(`${'kyc/'}${uid}${'/'}${'aadhar'}`).getDownloadURL();
-        const fssiUrl = await storage().ref(`${'kyc/'}${uid}${'/'}${'fssi'}`).getDownloadURL();
-        const panUrl = await storage().ref(`${'kyc/'}${uid}${'/'}${'pan'}`).getDownloadURL();
+        const adharUrl = await storage().ref(`${'kyc/'}${uid}${'/'}${'adhar/'}`).getDownloadURL();
+        const fssiUrl = await storage().ref(`${'kyc/'}${uid}${'/'}${'fssi/'}`).getDownloadURL();
+        const panUrl = await storage().ref(`${'kyc/'}${uid}${'/'}${'pan/'}`).getDownloadURL();
+        
 
-        const response  = await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/kyc.json?`,{
+        const response = await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/kyc.json`,{
             method:'POST',
             headers:{'Content-Type':'application\json'},
-            body:JSON.stringfy({
-                name,
-                phone,
-                adharNo,
-                adharURL:adharUrl,
-                fssiNo,
-                fssiURL:fssiUrl,
-                panNo,
-                panURL:panUrl
+            body:JSON.stringify({
+                name:name,
+                phone:phone,
+                adharURI:adharUrl,
+                adharNo:adharNo,
+                fssiURI:fssiUrl,
+                fssiNo:fssiNo,
+                panURI:panUrl,
+                panNo:panNo
             })
         })
-        const resData=await response.json();
-        dispatch({type:ADD_KYC,kycDetailes:{
+        const resData= await response.json();
+        dispatch({type:ADD_KYC,kycDetails:{
             id:resData.name,
-            name,
-            phone,
-            adharNo,
-            adharURL:adharUrl,
-            fssiNo,
-            fssiURL:fssiUrl,
-            panNo,
-            panURL:panUrl
+            phone:phone,
+                adharURI:adharUrl,
+                adharNo:adharNo,
+                fssiURI:fssiUrl,
+                fssiNo:fssiNo,
+                panURI:panUrl,
+                panNo:panNo
         }})
     }
 }

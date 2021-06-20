@@ -97,7 +97,6 @@ export const editCategory=(id,name,description,imguri,lat,long)=>{
             ref.delete()
             const images = await fetch(imguri);
             const blob = await images.blob();
-            const ref = storage().ref(`${'category/'}${id}`);
             await ref.put(blob);
             const url= await storage().ref(`${'category/'}${id}`).getDownloadURL();
             const response2=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/category/${id}.json?`,{
