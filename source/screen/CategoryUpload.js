@@ -4,7 +4,7 @@ import { TextInput } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AddImage from '../component/addImage';
-
+import * as Location from 'expo-location';
 import { Modalize } from 'react-native-modalize';
 import ImageTaker from '../component/ImageTaker';
 import { addcategory } from '../../store/action/category';
@@ -16,9 +16,18 @@ const CategoryUpload = ({navigation}) => {
     const[name,setName]=useState()
     const[description,setDescription]=useState()
     const[img,setImg]=useState()
+    const [location, setLocation] = useState(null);
+    const [latitude,setLatitude] = useState(null);
+    const [longitude,setLongitude] = useState(null);
+    const[foundLocation,setFoundLocation] = useState(false)
     const dispatch=useDispatch()
-    //const SLIDER_WIDTH = Dimensions.get('screen').width;
-    //const ITEM_WIDTH = Math.round(SLIDER_WIDTH * 0.7);
+    const startMap = async() => {
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location.coords);
+        setLatitude(location.coords.latitude);
+        setLongitude(location.coords.longitude) 
+        setFoundLocation(true)
+    }
     const imagetaken=(url)=>{
         setImg(url)
     }
@@ -27,8 +36,22 @@ const CategoryUpload = ({navigation}) => {
     
     };
     const addCategory=async()=>{
-        await dispatch(addcategory(name,description,img))
+        await dispatch(addcategory(name,description,img,latitude,longitude))
     }
+    useEffect(() => {
+        (async () => {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+          }
+    
+    
+        })();
+      }, []);
+    useEffect(()=>{
+        startMap();
+    },[foundLocation])
 
 
     return(
