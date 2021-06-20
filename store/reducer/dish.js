@@ -1,5 +1,5 @@
 import Dish from "../../model/Dish"
-import { ADD_DISH, FETCHDISH } from "../action/dish"
+import { ADD_DISH, DELETE_DISH, EDIT_DISH, EDIT_DISH_WITHOUT_IMG, FETCHDISH } from "../action/dish"
 import { ADD_CUISINE } from "../action/profile"
 
 const initialState = {
@@ -44,6 +44,10 @@ export default (state = initialState, action) => {
                 action.data.quantity,
                 action.data.categoryid,
                 action.data.categoryname,
+                action.data.uid,
+                action.data.lat,
+                action.data.long,
+                action.data.type
 
             )
             return{
@@ -55,6 +59,75 @@ export default (state = initialState, action) => {
                 ...state,
                 dish:action.data
             }
+        case EDIT_DISH_WITHOUT_IMG:{
+            const dishIndex = state.dish.findIndex(
+                dish => dish.id === action.updatedDish.id
+            );
+            const updatedDish = new Dish(
+                state.dish[dishIndex].id,
+                action.updatedDish.name,
+                action.updatedDish.description,
+                state.dish[dishIndex].imguri,
+                action.updatedDish.spicy,
+                state.dish[dishIndex].cuisine,
+                action.updatedDish.price,
+                action.updatedDish.noServe,
+                action.updatedDish.quantity,
+                state.dish[dishIndex].categoryid,
+                state.dish[dishIndex].categoryname,
+                state.dish[dishIndex].uid,
+                state.dish[dishIndex].lat,
+                state.dish[dishIndex].long,
+                action.updatedDish.type
+
+            );
+            const updatedUserDish = [...state.dish];
+            updatedUserDish[dishIndex] = updatedDish
+
+            return{
+                ...state,
+                dish:updatedUserDish
+            }
+
+        }
+        case EDIT_DISH:{
+            const dishIndex = state.dish.findIndex(
+                dish => dish.id === action.updatedDish.id
+            );
+            const updatedDish = new Dish(
+                state.dish[dishIndex].id,
+                action.updatedDish.name,
+                action.updatedDish.description,
+                action.updatedDish.imguri,
+                action.updatedDish.spicy,
+                state.dish[dishIndex].cuisine,
+                action.updatedDish.price,
+                action.updatedDish.noServe,
+                action.updatedDish.quantity,
+                state.dish[dishIndex].categoryid,
+                state.dish[dishIndex].categoryname,
+                state.dish[dishIndex].uid,
+                state.dish[dishIndex].lat,
+                state.dish[dishIndex].long,
+                action.updatedDish.type
+
+            );
+            const updatedUserDish = [...state.dish];
+            updatedUserDish[dishIndex] = updatedDish
+
+            return{
+                ...state,
+                dish:updatedUserDish
+            }
+        }
+        case DELETE_DISH:{
+            return{
+                ...state,
+                dish: state.dish.filter(
+                    d => d.id !== action.dishId
+                )
+            }
+        }
         default:
                 return state 
     }

@@ -8,6 +8,10 @@ import ImageTaker from '../component/ImageTaker';
 import {useDispatch, useSelector} from 'react-redux'
 import * as dishAction from '../../store/action/dish'
 import TimeOrder from '../component/TimingOrder';
+import { set } from 'react-native-reanimated';
+import * as Location from 'expo-location';
+
+
 
 const {width, height} = Dimensions.get('window')
 
@@ -21,11 +25,39 @@ const DishUploadScreen = (props) => {
     const[serve,setServe]=useState()
     const [spicy, setSpicy] = useState(0)
     const [type, setType] = useState(0)
+    const [location, setLocation] = useState(null);
+    const [latitude,setLatitude] = useState(null);
+    const [longitude,setLongitude] = useState(null);
+    const[foundLocation,setFoundLocation] = useState(false);
 
     const modalizeRef = useRef(null);
     const modalizeRef2 = useRef(null);
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        (async () => {
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+          }
     
+    
+        })();
+      }, []);
+    
+
+    useEffect(()=>{
+        startMap();
+    },[foundLocation])
+
+    const startMap = async() => {
+        let location = await Location.getCurrentPositionAsync({});
+        setLocation(location.coords);
+        setLatitude(location.coords.latitude);
+        setLongitude(location.coords.longitude) 
+        setFoundLocation(true)
+    }
 
     const onOpen = async() => {
         modalizeRef.current?.open();
@@ -40,7 +72,7 @@ const DishUploadScreen = (props) => {
     const uploadDish=async()=>{
         if(name && description && price && spicy && serve && quantity && cuisine.length!=0)
         {
-            await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity))
+            await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,latitude,longitude,type))
         }
         else{
             Alert.alert('Error','Please Add all the details',[{text:'Okay'}])
