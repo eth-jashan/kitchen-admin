@@ -7,8 +7,6 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 const ListScreen=(props)=>{
     const dish=useSelector(x=>x.dish.dish)
-    console.log(dish);
-    const dish = ['1', '2', '3']
     const[search,setSearch]=useState()
 
     const dispatch=useDispatch()
@@ -41,14 +39,15 @@ const ListScreen=(props)=>{
                     
                     <ScrollView horizontal style={{flexDirection:'row'}}>
                     <TouchableOpacity style={{backgroundColor:'#ec0c41',  padding:8, borderRadius:8, margin:6, }}>
-                    <Text style={{fontFamily:'book', fontSize:18, color:'white', alignSelf:'center',}}>{itemData.item.spicy}</Text>
+                    <Text style={{fontFamily:'book', fontSize:18, color:'white', alignSelf:'center',}}>{itemData.item.spicy.title}</Text>
                     </TouchableOpacity>
                     <FlatList
+                    horizontal={true}
                         data={itemData.item.cuisine}
                         renderItem={itemdata=>{
                             return(
-                                <TouchableOpacity style={{backgroundColor:'#ec0c41',  padding:8, borderRadius:8, marginVertical:6, }}>
-                                    <Text style={{fontFamily:'book', fontSize:18, color:'white', alignSelf:'center',}}>{itemdata.item} 🍱</Text>
+                                <TouchableOpacity style={{backgroundColor:'#ec0c41',padding:8, borderRadius:8, marginVertical:6,marginHorizontal:2 }}>
+                                    <Text style={{fontFamily:'book', fontSize:18, color:'white', alignSelf:'center'}}>{itemdata.item} 🍱</Text>
                                 </TouchableOpacity>
                             )
                         }}

@@ -99,7 +99,7 @@ export const fetchDish=()=>{
                 resData[key].type))
         }
         //console.log(resData);
-        dispatch({type:FETCHDISH,data:list.filter(dish => dish.uid === uid)})
+        dispatch({type:FETCHDISH,data:list.filter(dish => dish.uid === '9C2WqGOrbBf6sep55mXEpN4LiNn1')})
     }
 }
 

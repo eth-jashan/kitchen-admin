@@ -64,7 +64,7 @@ export const fetchCategory=()=>{
                 resData[key].long))
         }
         //console.log(resData);
-        dispatch({type:FETCH_CATEGORY,data:list,userid:uid})
+        dispatch({type:FETCH_CATEGORY,data:list,userid:'9C2WqGOrbBf6sep55mXEpN4LiNn1'})
     }
 }
 
