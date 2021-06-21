@@ -82,8 +82,7 @@ const DishUploadScreen = (props) => {
     }
 
     const uploadDish=async()=>{
-        if(name && description && price && spicy && serve && quantity && cuisine.length!=0)
-        {
+
             if(types === 'Edit'){
                 await dispatch(dishAction.imageCheck(data.id,name,description,img,spicyList[spicy],price,serve,quantity,type,latitude,longitude))
             }
@@ -91,10 +90,6 @@ const DishUploadScreen = (props) => {
                 await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,latitude,longitude,type))
             }
             
-        }
-        else{
-            Alert.alert('Error','Please Add all the details',[{text:'Okay'}])
-        }
     }
 
     const cuisineHandler = (name) => {

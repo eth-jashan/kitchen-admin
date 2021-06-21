@@ -14,17 +14,14 @@ const CategoryListScreen=props=>{
     const dispatch=useDispatch();
     
     const cat = useSelector(state=>state.catergory.category)
-    console.log('array',cat)
+    // console.log('array',cat)
 
     useEffect(()=>{
-        loadCat();
-    },[dispatch])
-    
-    const loadCat = async() => {
-        await dispatch(categoryActions.fetchCategory())
-    }
-
-    
+        const fetch=async()=>{
+            await dispatch(categoryActions.fetchCategory())
+        }
+        fetch()
+    })
     
     
     // const renderCategory=itemData=>{

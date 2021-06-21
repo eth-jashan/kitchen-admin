@@ -73,14 +73,14 @@ const ListScreen=(props)=>{
                     <Text style={{fontFamily:'bold', fontSize:18}}>₹ {itemData.item.price}</Text>
                     </View>
                 }}
-                keyExtractor={(x,i)=>i.toString()}
+                keyExtractor={itemData =>itemData.id}
             />
         </View>
         <FAB title='Add Dish'
             placement='right'
             color='#08818a'
             size='small'
-            onPress={()=>{props.navigation.navigate('DishUpload')}}
+            onPress={()=>{props.navigation.navigate('DishUpload',{types:'Create'})}}
         />
         </SafeAreaView>
     )
