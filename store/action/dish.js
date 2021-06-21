@@ -158,6 +158,8 @@ export const imageCheck = (id,name,description,imguri,spicy,price,noServe,quanti
 
 export const deleteDish = (id) => {
     return async(dispatch,getState) => {
+        const ref = storage().ref(`${'dish/'}${id}`);
+            ref.delete()
         await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/Dish/${id}.json`,{
             method:'DELETE'
         });

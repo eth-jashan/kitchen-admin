@@ -58,7 +58,7 @@ const DishUploadScreen = (props) => {
             setQuantity(data.quantity)
             setPrice(data.price)
             setServe(data.noServe)
-            setSpicy(spicyList.indexOf(data.spicy))
+            setSpicy(spicyList.indexOf(data.spicy.title))
             setType(data.type)
         }
     },[foundLocation])
