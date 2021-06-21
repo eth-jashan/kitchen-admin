@@ -12,7 +12,7 @@ const OtpScreen = ({navigation, route}) => {
     const {confirmation} = route.params
     const [code, setCode] = useState()
 
-    const createAccount = async(code) => {
+    const createAccount = async() => {
         console.log('Start')
         auth().onAuthStateChanged( async(user) => {
             if (user) {

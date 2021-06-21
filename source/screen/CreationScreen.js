@@ -33,7 +33,7 @@ const CreationScreen = ({navigation}) => {
         // navigation.navigate('Main')
     }   
 
-    const createAccount = async(code) => {
+    const createAccount = async() => {
         console.log('Start')
         auth().onAuthStateChanged( async(user) => {
             if (user) {
