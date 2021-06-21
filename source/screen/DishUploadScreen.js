@@ -34,7 +34,7 @@ const DishUploadScreen = (props) => {
     const modalizeRef2 = useRef(null);
     const {data,types}=props.route.params
     const dispatch = useDispatch()
-    
+    const spicyList = [{title:'no spicy 😚'},{title:'less spicy😌'}, {title:'medium spicy😓'}, {title:'high spicy🤐'}] 
 
     useEffect(() => {
         (async () => {
@@ -58,7 +58,7 @@ const DishUploadScreen = (props) => {
             setQuantity(data.quantity)
             setPrice(data.price)
             setServe(data.noServe)
-            setSpicy(data.spicy)
+            setSpicy(spicyList.indexOf(data.spicy))
             setType(data.type)
         }
     },[foundLocation])
@@ -110,7 +110,6 @@ const DishUploadScreen = (props) => {
     }
 
     
-    const spicyList = [{title:'no spicy 😚'},{title:'less spicy😌'}, {title:'medium spicy😓'}, {title:'high spicy🤐'}] 
     const cuisineList= [
 
         {title:'Breakfast 🍳'},{title:"Appetizer 🍤"}, {title:"Maincourse 🍲"}, {title:'Thali/Meal 🍱'},{title:'Desert 🍨'}]
