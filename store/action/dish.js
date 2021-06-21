@@ -108,11 +108,11 @@ export const imageCheck = (id,name,description,imguri,spicy,price,noServe,quanti
     return async(dispatch,getState) => {
         const response = await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/Dish/${id}.json`)
         const resData=await response.json()
-        if(resData[0].imguri === imguri){
+        if(resData.imguri === imguri){
             const token = getState().profile.token
             const uid=getState().profile.uid
     
-            const response = await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/Dish/${id}.json`,{
+            await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/Dish/${id}.json`,{
                 method:'PATCH',
                 headers:{'Content-Type':'application/json'},
                 body:JSON.stringify({

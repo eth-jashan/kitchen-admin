@@ -32,7 +32,9 @@ const DishUploadScreen = (props) => {
 
     const modalizeRef = useRef(null);
     const modalizeRef2 = useRef(null);
+    const {data,types}=props.route.params
     const dispatch = useDispatch()
+    
 
     useEffect(() => {
         (async () => {
@@ -49,6 +51,18 @@ const DishUploadScreen = (props) => {
 
     useEffect(()=>{
         startMap();
+        if(types=='Edit'){
+            setName(data.name)
+            setDescription(data.description)
+            setImg(data.imguri)
+            setQuantity(data.quantity)
+            setPrice(data.price)
+            setServe(data.noServe)
+            setSpicy(data.spicy)
+            setType(data.type)
+            setLatitude(data.lat)
+            setLongitude(data.long) 
+        }
     },[foundLocation])
 
     const startMap = async() => {
@@ -198,7 +212,7 @@ const DishUploadScreen = (props) => {
 
             <View style={{width:'100%', marginVertical:16}}>
                 <Pressable onPress={uploadDish} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
-                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Dish</Text>
+                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>{types=='Edit'?'Edit Dish':'Add Dish'}</Text>
                 </Pressable>
             </View>
 
