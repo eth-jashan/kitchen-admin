@@ -8,6 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 const CategoryListScreen=props=>{
     // const cat=useSelector(x=>x.catergory.category)
     //console.log(dish);
+    
     const cat = ['1', '2', '3']
     const[search,setSearch]=useState()
     const dispatch=useDispatch();

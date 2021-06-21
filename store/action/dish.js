@@ -34,7 +34,6 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity,lat,long
                 quantity,
                 categoryid:false,
                 categoryname:false,
-                imguri:'',
                 uid,
                 lat,
                 long,
@@ -47,7 +46,7 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity,lat,long
         const ref = storage().ref(`${'dish/'}${resData.name}`);
         await ref.put(blob);
         const url= await storage().ref(`${'dish/'}${resData.name}`).getDownloadURL();
-        await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/Dish/${resData.name}.json?`,{
+        await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/Dish/${resData.name}.json?`,{
             method:'PATCH',
             headers:{'Content-Type':'application\json'},
             body:JSON.stringify({

@@ -17,7 +17,6 @@ export const addcategory=(name,description,imguri,lat,long)=>{
                 name,
                 uid,
                 description,
-                imguri:'',
                 lat,
                 long
             })
@@ -28,7 +27,7 @@ export const addcategory=(name,description,imguri,lat,long)=>{
         const ref = storage().ref(`${'category/'}${resData.name}`);
         await ref.put(blob);
         const url= await storage().ref(`${'category/'}${resData.name}`).getDownloadURL();
-        await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/${uid}/category/${resData.name}.json`,{
+        await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/category/${resData.name}.json`,{
             method:'PATCH',
             headers:{'Content-Type':'application\json'},
             body:JSON.stringify({
