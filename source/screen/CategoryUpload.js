@@ -7,11 +7,15 @@ import AddImage from '../component/addImage';
 import * as Location from 'expo-location';
 import { Modalize } from 'react-native-modalize';
 import ImageTaker from '../component/ImageTaker';
-import { addcategory } from '../../store/action/category';
+import { addcategory, editCategory } from '../../store/action/category';
 import { useDispatch } from 'react-redux';
+import { imageCheck } from '../../store/action/dish';
 
-const CategoryUpload = ({navigation}) => {
+const CategoryUpload = (props) => {
     const modalizeRef = useRef(null);
+
+    const{type,catImguri,catName,catDescription,catId} =  props.route.params;
+    // console.log(imguri,catName,catDescription);
 
     const[name,setName]=useState()
     const[description,setDescription]=useState()
@@ -36,7 +40,13 @@ const CategoryUpload = ({navigation}) => {
     
     };
     const addCategory=async()=>{
-        await dispatch(addcategory(name,description,img,latitude,longitude))
+        if(type === 'Edit'){
+            await dispatch(editCategory(catId,name,description,img,latitude,longitude))
+        }
+        else{
+            await dispatch(addcategory(name,description,img,latitude,longitude))
+        }
+        
     }
     useEffect(() => {
         (async () => {
@@ -51,6 +61,12 @@ const CategoryUpload = ({navigation}) => {
       }, []);
     useEffect(()=>{
         startMap();
+        if(type === 'Edit'){
+            setName(catName);
+            setDescription(catDescription);
+            setImg(catImguri);
+        }
+    
     },[foundLocation])
 
 
@@ -87,7 +103,9 @@ const CategoryUpload = ({navigation}) => {
                 </View>
             <View style={{width:'100%'}} >
                 <TouchableOpacity onPress={addCategory}  style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
-                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Category</Text>
+                    {type==='Create'?<Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Category</Text>
+                    :
+                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Edit Category</Text>}
                 </TouchableOpacity>
                 </View>
                 </View>

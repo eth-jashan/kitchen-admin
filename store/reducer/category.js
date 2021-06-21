@@ -54,7 +54,7 @@ export default (state=initialState,action)=>{
                 state.category[index].uid,
                 action.data.name,
                 action.data.description,
-                actio.data.imguri,
+                action.data.imguri,
                 action.data.lat,
                 action.data.long
             )

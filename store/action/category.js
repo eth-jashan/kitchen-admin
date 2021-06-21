@@ -64,7 +64,7 @@ export const fetchCategory=()=>{
                 resData[key].long))
         }
         //console.log(resData);
-        dispatch({type:FETCH_CATEGORY,data:list,userid:'9C2WqGOrbBf6sep55mXEpN4LiNn1'})
+        dispatch({type:FETCH_CATEGORY,data:list,userid:uid})
     }
 }
 
@@ -72,7 +72,8 @@ export const editCategory=(id,name,description,imguri,lat,long)=>{
     return async (dispatch,getState)=>{
         const response=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/category/${id}.json?`)
         const resData=await response.json()
-        if(resData[0].imguri==imguri){
+       // console.log(resData)
+        if(resData.imguri==imguri){
             const response1=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/category/${id}.json?`,{
                 method:"PATCH",
                 headers:{'Content-Type':'application\json'},
@@ -124,6 +125,8 @@ export const editCategory=(id,name,description,imguri,lat,long)=>{
 
 export const deleteCategory=(id)=>{
     return async dispatch=>{
+        const ref = storage().ref(`${'category/'}${id}`);
+        ref.delete()
         const response =await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/category/${id}.json?`,{
             method:"DELETE"
         })
