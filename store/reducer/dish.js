@@ -76,8 +76,8 @@ export default (state = initialState, action) => {
                 state.dish[dishIndex].categoryid,
                 state.dish[dishIndex].categoryname,
                 state.dish[dishIndex].uid,
-                state.dish[dishIndex].lat,
-                state.dish[dishIndex].long,
+                state.updatedDish.lat,
+                state.updatedDish.long,
                 action.updatedDish.type
 
             );

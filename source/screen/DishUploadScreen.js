@@ -51,7 +51,7 @@ const DishUploadScreen = (props) => {
 
     useEffect(()=>{
         startMap();
-        if(types=='Edit'){
+        if(types === 'Edit'){
             setName(data.name)
             setDescription(data.description)
             setImg(data.imguri)
@@ -60,8 +60,6 @@ const DishUploadScreen = (props) => {
             setServe(data.noServe)
             setSpicy(data.spicy)
             setType(data.type)
-            setLatitude(data.lat)
-            setLongitude(data.long) 
         }
     },[foundLocation])
 
@@ -86,7 +84,13 @@ const DishUploadScreen = (props) => {
     const uploadDish=async()=>{
         if(name && description && price && spicy && serve && quantity && cuisine.length!=0)
         {
-            await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,latitude,longitude,type))
+            if(types === 'Edit'){
+                await dispatch(dishAction.imageCheck(data.id,name,description,img,spicyList[spicy],price,serve,quantity,type,latitude,longitude))
+            }
+            else{
+                await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,latitude,longitude,type))
+            }
+            
         }
         else{
             Alert.alert('Error','Please Add all the details',[{text:'Okay'}])

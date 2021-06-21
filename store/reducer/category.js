@@ -43,7 +43,7 @@ export default (state=initialState,action)=>{
             Category1[catIndex]=updatedcat
             return{
                 ...state,
-                category:Category
+                category:Category1
             }
         case EDIT_URL:
             const index = state.category.findIndex(

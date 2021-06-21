@@ -65,6 +65,7 @@ const CategoryUpload = (props) => {
             setName(catName);
             setDescription(catDescription);
             setImg(catImguri);
+            console.log(img);
         }
     
     },[foundLocation])

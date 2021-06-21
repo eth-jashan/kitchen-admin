@@ -104,7 +104,7 @@ export const fetchDish=()=>{
 }
 
 
-export const imageCheck = (id,name,description,imguri,spicy,price,noServe,quantity,type) => {
+export const imageCheck = (id,name,description,imguri,spicy,price,noServe,quantity,type,lat,long) => {
     return async(dispatch,getState) => {
         const response = await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/Dish/${id}.json`)
         const resData=await response.json()
@@ -122,10 +122,12 @@ export const imageCheck = (id,name,description,imguri,spicy,price,noServe,quanti
                     price:price,
                     noServe:noServe,
                     quantity:quantity,
-                    type:type
+                    type:type,
+                    lat:lat,
+                    long:long
                 })
             })
-            dispatch({type:EDIT_DISH_WITHOUT_IMG,updatedDish:{id,name,description,spicy,price,noServe,quantity,type}})
+            dispatch({type:EDIT_DISH_WITHOUT_IMG,updatedDish:{id,name,description,spicy,price,noServe,quantity,type,lat,long}})
         }
         else{
             const ref = storage().ref(`${'dish/'}${id}`);

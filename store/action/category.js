@@ -72,8 +72,8 @@ export const editCategory=(id,name,description,imguri,lat,long)=>{
     return async (dispatch,getState)=>{
         const response=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/category/${id}.json?`)
         const resData=await response.json()
-       // console.log(resData)
-        if(resData.imguri==imguri){
+        console.log('resssssssss',resData)
+        if(resData.imguri===imguri){
             const response1=await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/category/${id}.json?`,{
                 method:"PATCH",
                 headers:{'Content-Type':'application\json'},

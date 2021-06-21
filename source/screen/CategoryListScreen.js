@@ -14,7 +14,7 @@ const CategoryListScreen=props=>{
     const dispatch=useDispatch();
     
     const cat = useSelector(state=>state.catergory.category)
-   // console.log(cat[0].id)
+    console.log('array',cat)
 
     useEffect(()=>{
         loadCat();
@@ -72,7 +72,7 @@ const CategoryListScreen=props=>{
                     </View>
                     </TouchableOpacity>)
                 }}
-                keyExtractor={x=>x.toString()}
+                keyExtractor={(x,i)=>i.toString()}
             />
         </View>
         <FAB title='Add Category'
