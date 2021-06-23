@@ -68,6 +68,7 @@ const DishUploadScreen = (props) => {
         setLocation(location.coords);
         setLatitude(location.coords.latitude);
         setLongitude(location.coords.longitude) 
+        console.log(longitude,latitude)
         setFoundLocation(true)
     }
 

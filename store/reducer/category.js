@@ -15,7 +15,8 @@ export default (state=initialState,action)=>{
                 action.data.description,
                 action.data.imguri,
                 action.data.lat,
-                action.data.long
+                action.data.long,
+                action.data.chefId
             )
             return{
                 ...state,
@@ -37,7 +38,8 @@ export default (state=initialState,action)=>{
                 action.data.description,
                 state.category[catIndex].imguri,
                 action.data.lat,
-                action.data.long
+                action.data.long,
+                state.category[catIndex].chefId
             )
             const Category1=[...state.category]
             Category1[catIndex]=updatedcat
@@ -56,7 +58,8 @@ export default (state=initialState,action)=>{
                 action.data.description,
                 action.data.imguri,
                 action.data.lat,
-                action.data.long
+                action.data.long,
+                state.category[index].chefId
             )
             const Category2=[...state.category]
             Category2[index]=updatedcategory

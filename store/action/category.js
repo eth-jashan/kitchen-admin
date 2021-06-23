@@ -10,6 +10,7 @@ export const DELETE_CAT='DELETE_CAT'
 export const addcategory=(name,description,imguri,lat,long)=>{
     return async(dispatch,getState)=>{
         const uid=getState().profile.uid;
+        const chefId = getState().profile.profileId
         const response=await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/category.json',{
             method:'POST',
             headers:{'Content-Type':'application\json'},
@@ -18,7 +19,8 @@ export const addcategory=(name,description,imguri,lat,long)=>{
                 uid,
                 description,
                 lat,
-                long
+                long,
+                chefId
             })
         })
         const resData=await response.json()
@@ -41,7 +43,8 @@ export const addcategory=(name,description,imguri,lat,long)=>{
             description,
             imguri:url,
             lat,
-            long
+            long,
+            chefId
         }})
     }
 }
@@ -61,7 +64,8 @@ export const fetchCategory=()=>{
                 resData[key].description,
                 resData[key].imguri,
                 resData[key].lat,
-                resData[key].long))
+                resData[key].long,
+                resData[key].chefId))
         }
         //console.log(resData);
         dispatch({type:FETCH_CATEGORY,data:list,userid:uid})
