@@ -2,7 +2,7 @@ import React, {useState, useRef, useEffect} from 'react'
 import {View, Text, Image, StyleSheet, Dimensions, ScrollView, Pressable, Button} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons ,AntDesign} from '@expo/vector-icons';
-import { TextInput } from 'react-native-paper';
+import { ActivityIndicator, TextInput } from 'react-native-paper';
 import * as profileAction from '../../store/action/profile'
 import { useDispatch } from 'react-redux';
 import auth from '@react-native-firebase/auth';
@@ -15,15 +15,18 @@ const CreationScreen = ({navigation}) => {
     const [phone, setPhone] = useState('')
     const [name, setName] = useState('')
     const [mail, setMail] = useState('')
+    const[loading,setloading]=useState(false)
     const [confirm, setConfirm] = useState(false)
     const [code, setCode] = useState()
     const dispatch = useDispatch()
     
     const onSubmit = async() => {
         try {
+            setloading(true)
             let number  = "+91"+ phone.toString() 
             const confirmation = await auth().signInWithPhoneNumber(number);
             setConfirm(confirmation)
+            setloading(false)
             // navigation.navigate('Otp',{confirmation:confirmation, name:name, mail:mail, number:number})
     
           } catch (error) {
@@ -37,10 +40,12 @@ const CreationScreen = ({navigation}) => {
         console.log('Start')
         auth().onAuthStateChanged( async(user) => {
             if (user) {
+                setloading(true)
                 console.log("uid", )
                 const uid = auth().currentUser.uid                
                 const token = await auth().currentUser.getIdToken(true)
                 await dispatch(profileAction.createAccount(name, mail, phone, uid, token ))
+                setloading(false)
                 navigation.navigate('CuinsineSetting')
             } 
             else 
@@ -60,10 +65,10 @@ const CreationScreen = ({navigation}) => {
     if(confirm){
 
         return(
-            <SafeAreaView style={{flex:1}}>
+            <SafeAreaView style={{flex:1, backgroundColor:'#ffde17',justifyContent:'center',alignItems:'center'}}>
             <View style={{alignSelf:'center', marginTop:22}}>
                 <Text style={{fontFamily:'book', color:'black', fontSize:20}}>Hello <Text style={{fontFamily:'book', color:'#08818a'}}>{`${name}`}</Text></Text>
-                <Text style={{fontFamily:'medium', color:'black', fontSize:22}}>Otp sent to <Text style={{fontFamily:'book', color:'#ffde17',fontSize:22}}>{phone}</Text></Text>
+                <Text style={{fontFamily:'medium', color:'black', fontSize:22}}>Otp sent to <Text style={{fontFamily:'book', color:'#08818a',fontSize:22}}>{phone}</Text></Text>
             </View>
             <View style={{marginVertical:12, alignSelf:'center'}}>
             <TextInput
@@ -71,13 +76,14 @@ const CreationScreen = ({navigation}) => {
                 onChangeText={setCode}
                 type="flat"
                 label = 'Enter Code'
+                keyboardType='number-pad'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
             />
-            </View>
-            <Pressable onPress={createAccount} style={{marginVertical:100, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
-            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Join as chef</Text>
+            <Pressable onPress={createAccount} style={{margin:10,backgroundColor:'#08818a', padding:8, borderRadius:8, width:Dimensions.get('screen').width*0.90, alignSelf:'center', justifyContent:'center'}}>
+            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Proceed</Text>
             </Pressable>
+            </View>
             </SafeAreaView>
         )
 
@@ -120,6 +126,7 @@ const CreationScreen = ({navigation}) => {
                 value={phone}
                 onChangeText={setPhone}
                 type="flat"
+                keyboardType='number-pad'
                 label = 'Enter Mobile'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
@@ -129,7 +136,8 @@ const CreationScreen = ({navigation}) => {
                 value={mail}
                 onChangeText={setMail}
                 type="flat"
-                label = 'Enter Email'
+                keyboardType='email-address'
+                label = 'Enter Email (Optional)'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
             />
@@ -138,7 +146,8 @@ const CreationScreen = ({navigation}) => {
             <View style={{width:'100%', flexDirection:'row', justifyContent:'space-between'}}>
             <View/>
                 <Pressable onPress={onSubmit} style={{backgroundColor:'#08818a', padding:8, borderRadius:8, width:60, alignSelf:'center', justifyContent:'center', height:60}}>
-                <AntDesign  name="arrowright" size={30} color="white" style={{alignSelf:'center', justifyContent:'center'}}/>
+                {loading?<ActivityIndicator size='small' color='#ffffff' />:<AntDesign  name="arrowright" size={30} color="white" style={{alignSelf:'center', justifyContent:'center'}}/>
+}
                 </Pressable>
             </View>
             

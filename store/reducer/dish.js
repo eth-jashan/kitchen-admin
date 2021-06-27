@@ -47,8 +47,7 @@ export default (state = initialState, action) => {
                 action.data.uid,
                 action.data.lat,
                 action.data.long,
-                action.data.type,
-                action.data.chefId
+                action.data.type
 
             )
             return{
@@ -79,8 +78,7 @@ export default (state = initialState, action) => {
                 state.dish[dishIndex].uid,
                 action.updatedDish.lat,
                 action.updatedDish.long,
-                action.updatedDish.type,
-                state.dish[dishIndex].chefId
+                action.updatedDish.type
 
             );
             const updatedUserDish = [...state.dish];
@@ -111,8 +109,7 @@ export default (state = initialState, action) => {
                 state.dish[dishIndex].uid,
                 state.dish[dishIndex].lat,
                 state.dish[dishIndex].long,
-                action.updatedDish.type,
-                state.dish[dishIndex].chefId
+                action.updatedDish.type
 
             );
             const updatedUserDish = [...state.dish];

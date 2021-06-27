@@ -2,7 +2,7 @@ import React,{useRef, useState, useEffect} from 'react'
 import { Image, ScrollView, StyleSheet, View, Text, Dimensions, Pressable, FlatList, TouchableOpacity } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons ,AntDesign} from '@expo/vector-icons';
-import { TextInput } from 'react-native-paper';
+import { ActivityIndicator, TextInput } from 'react-native-paper';
 import { useDispatch, useSelector } from 'react-redux';
 const{width, height} = Dimensions.get('window')
 import * as profileAction from '../../store/action/profile'
@@ -27,6 +27,7 @@ const cuisine = useSelector(x=>x.profile.cuisine)
 const dispatch = useDispatch()
 const [location, setLocation] = useState(null);
 const[city,setCity] = useState(null);
+const[loading,setloading]=useState(false)
 const[postal,setPostal] = useState(null);
 const[landmark,setLandMark] = useState(null);
 const[address,setAddress] = useState();
@@ -94,12 +95,16 @@ const onOpen = async() => {
     setLocation(location.coords);
     await revereGeoCodeResponse(location.coords.latitude, location.coords.longitude)   
 };
+const onClose = () => {
+    modalizeRef.current?.close();
+  };
 
 const [typeIndex, setTypeIndex] = useState(0)
 
 const setupAccount = async() => {
-
+    setloading(true)
     await dispatch(profileAction.accountSetup(cuisine,type[typeIndex],address, house, landmark, postal, city ))
+    setloading(false)
     navigation.navigate('Main')
 }
 
@@ -133,8 +138,8 @@ const cuisineList= [
                 <Text style={{fontFamily:'black', color:'white', fontSize:24, marginVertical:8}}>Cuisine Details</Text>
                 <View style={{borderWidth:2, borderColor:'white', borderRadius:20, width:'30%', backgroundColor:'white'}}/>
             </View>
-            {!location?null:<Pressable onPress={setupAccount}  style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
-            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Create Profile</Text>
+            {!location?null:<Pressable onPress={setupAccount}  style={{ backgroundColor:'#08818a', padding:8, borderRadius:10, width:'88%', alignSelf:'center', justifyContent:'center'}}>
+            {loading?<ActivityIndicator size='small' color='#ffffff' />:<Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Create Profile</Text>}
             </Pressable>}
             <ScrollView style={{backgroundColor:'white', top:20, borderTopLeftRadius:20, borderTopRightRadius:20, paddingHorizontal:10,flex:1}}>
             
@@ -151,7 +156,7 @@ const cuisineList= [
                 data={cuisine}
                 keyExtractor={(_,i) => i.toString()}
                 renderItem={({item})=>{
-                    return<Pressable style={{padding:8, borderRadius:4, backgroundColor:'#08818a', width:120, marginHorizontal:8, height:30}}>
+                    return<Pressable style={{padding:8, borderRadius:4, backgroundColor:'#08818a', width:120, marginHorizontal:8, height:40}}>
                         <Text style={{fontFamily:'book', color:'white',alignSelf:'center'}}>{item}</Text>
                     </Pressable>
                 }}
@@ -188,7 +193,7 @@ const cuisineList= [
                 data={type}
                 keyExtractor={x=>x}
                 renderItem={({item, index}) =>{
-                    return<Pressable onPress={()=>setTypeIndex(index)} style={{ backgroundColor:typeIndex===index?'#08818a':'white', padding:1, borderRadius:4, width:100, alignSelf:'center', justifyContent:'center', borderColor:typeIndex === index?null:'#08818a', height:50, }}>
+                    return<Pressable onPress={()=>setTypeIndex(index)} style={{ backgroundColor:typeIndex===index?'#08818a':'white',margin:4, padding:1, borderRadius:10, width:150, alignSelf:'center', justifyContent:'center', borderColor:typeIndex === index?null:'#08818a', height:50, }}>
                         <Text style={{fontFamily:'light', fontSize:18, alignSelf:'center', color:typeIndex===index?'white':'#08818a'}}>{item}</Text>
                     </Pressable>
                 }}
@@ -198,10 +203,11 @@ const cuisineList= [
             
             <Text style={{fontFamily:'medium', fontSize:18, marginTop:14, color:'black'}}>Store/Kitchen Location</Text>
             
-            {!location?<Pressable onPress={onOpen} style={{marginVertical:12, backgroundColor:'white', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', borderWidth:0.75, borderColor:'#08818a'}}>
+            {!location?<Pressable onPress={onOpen} style={{marginTop:20,marginBottom:50,backgroundColor:'white', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center', borderWidth:0.75, borderColor:'#08818a'}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'#08818a'}}>Auto Location Fill📍</Text>
             </Pressable>://
-            <TouchableOpacity onPress={onOpen} style={{width:width*0.8, height:height/3, alignSelf:'center',marginVertical:12,}}>
+            <TouchableOpacity onPress={onOpen} >
+                <View style={{width:width*0.8, height:height/3,borderRadius:20,overflow:'hidden', alignSelf:'center',marginTop:20,marginBottom:50,}} >
                 <MapView
                     provider={PROVIDER_GOOGLE} // remove if not using Google Maps
                     style={{width:'100%', height:'100%'}}
@@ -216,6 +222,7 @@ const cuisineList= [
           coordinate={{latitude: location.latitude, longitude: location.longitude}}
         />        
         </MapView>
+                </View>
         </TouchableOpacity>
             }
             
@@ -243,7 +250,9 @@ const cuisineList= [
           coordinate={{latitude: location.latitude, longitude: location.longitude}}
         />        
         </MapView>
-        </View>:null
+        </View>:<View style={{justifyContent:'center',alignItems:'center',margin:10}} >
+        <ActivityIndicator size='large' color='#08818a' />
+        </View>
         }
         <View style={{padding:8}}>
         <Text style={{fontFamily:'book', fontSize:18}}>{address}</Text>
@@ -294,7 +303,7 @@ const cuisineList= [
             </View>
             </View>
 
-            <Pressable style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
+            <Pressable onPress={onClose} style={{marginVertical:12, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Address</Text>
             </Pressable>
             

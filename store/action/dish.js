@@ -21,7 +21,6 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity,lat,long
     return async (dispatch,getState)=>{
         const cuisine=getState().dish.cuisine
         const uid=getState().profile.uid
-        const chefId = getState().profile.profileId
         const response= await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/Dish.json?`,{
             method:'POST',
             headers:{'Content-Type':'application\json'},
@@ -36,10 +35,9 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity,lat,long
                 categoryid:false,
                 categoryname:false,
                 uid,
-                lat:lat,
-                long:long,
-                type,
-                chefId
+                lat,
+                long,
+                type
             })
         })
         const resData=await response.json()
@@ -70,8 +68,7 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity,lat,long
             uid,
             lat,
             long,
-            type,
-            chefId
+            type
         }})
     }
 }
@@ -99,8 +96,7 @@ export const fetchDish=()=>{
                 resData[key].uid,
                 resData[key].lat,
                 resData[key].long,
-                resData[key].type,
-                resData[key].chefId))
+                resData[key].type))
         }
         //console.log(resData);
         dispatch({type:FETCHDISH,data:list.filter(dish => dish.uid === uid)})

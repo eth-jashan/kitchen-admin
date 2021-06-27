@@ -9,11 +9,13 @@ import ReduxThunk from 'redux-thunk'
 import ProfileReducer from './store/reducer/profile'
 import CategoryReducer from './store/reducer/category'
 import DishReducer from './store/reducer/dish'
+import OrderHandler from './store/reducer/orders';
 //-----initialising reducer---//
 const rootReducer = combineReducers({
   profile:ProfileReducer,
   catergory:CategoryReducer,
-  dish:DishReducer
+  dish:DishReducer,
+  orders:OrderHandler
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
@@ -25,6 +27,7 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
 import * as Font from 'expo-font'
 import AppLoading from "expo-app-loading"
 import AppNav from './navigator/AppNav';
+
 
 const fontLoading = () =>{ 
   return Font.loadAsync({

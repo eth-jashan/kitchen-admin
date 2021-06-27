@@ -48,7 +48,7 @@ const OtpScreen = ({navigation, route}) => {
            />
             </View>
             <Pressable onPress={createAccount} style={{marginVertical:100, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
-            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Join as chef</Text>
+            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Proceed</Text>
             </Pressable>
         </SafeAreaView>
     )

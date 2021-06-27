@@ -1,6 +1,6 @@
 import React,{useState,useRef,useEffect} from 'react';
-import { View,Text,ScrollView,Pressable, Dimensions,Image, TouchableOpacity } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { View,Text,ScrollView,Pressable, Dimensions,Image, TouchableOpacity,ToastAndroid,Platform,AlertIOS } from 'react-native';
+import { ActivityIndicator, TextInput } from 'react-native-paper';
 import Carousel from 'react-native-snap-carousel'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AddImage from '../component/addImage';
@@ -23,6 +23,7 @@ const CategoryUpload = (props) => {
     const [location, setLocation] = useState(null);
     const [latitude,setLatitude] = useState(null);
     const [longitude,setLongitude] = useState(null);
+    const[loading,setloading]=useState(false)
     const[foundLocation,setFoundLocation] = useState(false)
     const dispatch=useDispatch()
     const startMap = async() => {
@@ -34,6 +35,7 @@ const CategoryUpload = (props) => {
     }
     const imagetaken=(url)=>{
         setImg(url)
+        modalizeRef.current?.close()
     }
     const onOpen = async() => {
         modalizeRef.current?.open();
@@ -41,10 +43,14 @@ const CategoryUpload = (props) => {
     };
     const addCategory=async()=>{
         if(type === 'Edit'){
+            setloading(true)
             await dispatch(editCategory(catId,name,description,img,latitude,longitude))
+            setloading(false)
         }
         else{
+            setloading(true)
             await dispatch(addcategory(name,description,img,latitude,longitude))
+            setloading(false)
         }
         
     }
@@ -104,9 +110,7 @@ const CategoryUpload = (props) => {
                 </View>
             <View style={{width:'100%'}} >
                 <TouchableOpacity onPress={addCategory}  style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
-                    {type==='Create'?<Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Add Category</Text>
-                    :
-                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Edit Category</Text>}
+                   {loading?<ActivityIndicator size='large' color='white' />: <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>{type=='Create'?'Add Category':'Edit Category'}</Text>}
                 </TouchableOpacity>
                 </View>
                 </View>

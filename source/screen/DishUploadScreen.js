@@ -1,5 +1,5 @@
 import React,{useState,useRef,useEffect} from 'react';
-import { View,Text,ScrollView,Pressable, Dimensions,Image, FlatList ,TouchableOpacity, Alert} from 'react-native';
+import { View,Text,ScrollView,Pressable, Dimensions,Image, FlatList ,TouchableOpacity, Alert,ToastAndroid,Platform,AlertIOS} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AddImage from '../component/addImage';
@@ -29,12 +29,13 @@ const DishUploadScreen = (props) => {
     const [latitude,setLatitude] = useState(null);
     const [longitude,setLongitude] = useState(null);
     const[foundLocation,setFoundLocation] = useState(false);
+    const[loading,setloading]=useState(false)
 
     const modalizeRef = useRef(null);
     const modalizeRef2 = useRef(null);
     const {data,types}=props.route.params
     const dispatch = useDispatch()
-    const spicyList = [{title:'no spicy 😚'},{title:'less spicy😌'}, {title:'medium spicy😓'}, {title:'high spicy🤐'}] 
+    const spicyList = [{title:'Spicy🥵'},{title:'Sweet🍬'}, {title:'Bitter😓'}, {title:'Sour😖'}, {title:'Salty🧂'}] 
 
     useEffect(() => {
         (async () => {
@@ -58,17 +59,15 @@ const DishUploadScreen = (props) => {
             setQuantity(data.quantity)
             setPrice(data.price)
             setServe(data.noServe)
-            setSpicy(spicyList.indexOf(data.spicy.title))
+            setSpicy(spicyList.findIndex(x=>x.title==data.spicy.title))
             setType(data.type)
         }
     },[foundLocation])
-
     const startMap = async() => {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location.coords);
         setLatitude(location.coords.latitude);
         setLongitude(location.coords.longitude) 
-        console.log(longitude,latitude)
         setFoundLocation(true)
     }
 
@@ -80,15 +79,22 @@ const DishUploadScreen = (props) => {
     };
     const imagetaken=(url)=>{
         setImg(url)
+        modalizeRef.current?.close();
     }
 
     const uploadDish=async()=>{
 
             if(types === 'Edit'){
+                setloading(true)
                 await dispatch(dishAction.imageCheck(data.id,name,description,img,spicyList[spicy],price,serve,quantity,type,latitude,longitude))
+                setloading(false)
+                
             }
             else{
+                setloading(true)
                 await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,latitude,longitude,type))
+                setloading(false)
+                
             }
             
     }
@@ -119,7 +125,7 @@ const DishUploadScreen = (props) => {
 
             <View style={{marginTop:10, backgroundColor:'white',}} >
                 <Pressable onPress={onOpen2} style={{alignSelf:'center', width: Dimensions.get('screen').width*0.95, borderWidth:1, borderColor:'#08818a', padding:8, borderRadius:8}}>
-                    <Text style={{fontFamily:'medium', alignSelf:'center', fontSize:18}}>Delivery Preference</Text>
+                    <Text style={{fontFamily:'medium', alignSelf:'center',color:'#08818a', fontSize:18}}>Delivery Preference</Text>
                 </Pressable>   
 
                 <View style={{marginVertical:5, alignSelf:'center'}}>
@@ -203,7 +209,7 @@ const DishUploadScreen = (props) => {
                     value={quantity}
                     onChangeText={setQuantity}
                     mode='flat'
-                    label="Total number of quantity tobe served (for eg. 10,50,etc.)"
+                    label="Total number of quantity tobe available today"
                     theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                     style={{ fontFamily: 'medium', fontColor: '#08818a', width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                 />
