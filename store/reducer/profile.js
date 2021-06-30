@@ -66,7 +66,8 @@ export default (state = initialState, action) => {
                     action.kycDetails.fssiNo,
                     action.kycDetails.fssiUrl,
                     action.kycDetails.panNo,
-                    action.kycDetails.panUrl
+                    action.kycDetails.panUrl,
+                    action.kycDetails.status
                 )
                 return{
                     ...state,

@@ -70,7 +70,7 @@ const KycScreen = ({navigation}) => {
             Alert.alert('Invalid','Please Enter all the inputs',[{text:'Okay'}])
         }
         else{
-            await dispatch(addKyc(name,number,aadharuri.uri,Aadhar,fssiuri.uri,fssi,panuri.uri,panNumber))
+            await dispatch(addKyc(name,number,aadharuri,Aadhar,fssiuri,fssi,panuri,panNumber))
             navigation.navigate('Home')
         }
     }

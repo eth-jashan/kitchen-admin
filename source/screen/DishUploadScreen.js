@@ -25,6 +25,7 @@ const DishUploadScreen = (props) => {
     const[serve,setServe]=useState()
     const [spicy, setSpicy] = useState(0)
     const [type, setType] = useState(0)
+    const[food,setFood]=useState(0)
     const [location, setLocation] = useState(null);
     const [latitude,setLatitude] = useState(null);
     const [longitude,setLongitude] = useState(null);
@@ -61,6 +62,7 @@ const DishUploadScreen = (props) => {
             setServe(data.noServe)
             setSpicy(spicyList.findIndex(x=>x.title==data.spicy.title))
             setType(data.type)
+            
         }
     },[foundLocation])
     const startMap = async() => {
@@ -86,13 +88,13 @@ const DishUploadScreen = (props) => {
 
             if(types === 'Edit'){
                 setloading(true)
-                await dispatch(dishAction.imageCheck(data.id,name,description,img,spicyList[spicy],price,serve,quantity,type,latitude,longitude))
+                await dispatch(dishAction.imageCheck(data.id,name,description,img,spicyList[spicy],price,serve,quantity,type,latitude,longitude,food))
                 setloading(false)
                 
             }
             else{
                 setloading(true)
-                await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,latitude,longitude,type))
+                await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,type,latitude,longitude,food))
                 setloading(false)
                 
             }
@@ -110,12 +112,15 @@ const DishUploadScreen = (props) => {
     const spicyHandler = (index) => {
         setSpicy(index)
     }
+    const foodHandler=(index)=>{
+        setFood(index)
+    }
 
     
     const cuisineList= [
 
         {title:'Breakfast 🍳'},{title:"Appetizer 🍤"}, {title:"Maincourse 🍲"}, {title:'Thali/Meal 🍱'},{title:'Desert 🍨'}]
-    
+    const foodType=[{title:'🥗 Veg'},{title:'🍗 Non-Veg'}]
     return(
         <SafeAreaView style={{flex:1,backgroundColor:'#ffffff'}} >
             <ScrollView>
@@ -176,6 +181,19 @@ const DishUploadScreen = (props) => {
                     return<TouchableOpacity onPress={()=>spicyHandler(index)} style={{backgroundColor:index===spicy?'#ec0c41':null, width:160, padding:6, borderRadius:8, margin:6, }}>
                     <Text style={{fontFamily:'book', fontSize:18, color:index===spicy?'white':"black", alignSelf:'center',}}>{item.title}</Text>
                     </TouchableOpacity>
+                }}
+            />
+
+            <FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={foodType}
+                keyExtractor={(_,i)=>i.toString()}
+                renderItem={({item, index}) => {
+                    return<TouchableOpacity onPress={()=>foodHandler(index)} style={{backgroundColor:index===food?'#ec0c41':null, width:160, padding:6, borderRadius:8, margin:6, }}>
+                        <Text style={{ fontFamily:'medium', fontSize:18, color:index === food?"white":'black', alignSelf:'center'}}>{item.title}</Text>
+                    </TouchableOpacity>
+
                 }}
             />
 

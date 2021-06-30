@@ -81,9 +81,9 @@ export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) 
          const uid = getState().profile.uid
         console.log(uid)
 
-        const adhar = await fetch(adharURI);
-        const fssi = await fetch(fssiURI);
-        const pan = await fetch(panURI);
+        const adhar = await fetch(adharURI.uri);
+        const fssi = await fetch(fssiURI.uri);
+        const pan = await fetch(panURI.uri);
 
         const adharBlob = await adhar.blob();
         const fssiBlob = await fssi.blob();
@@ -109,12 +109,13 @@ export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) 
             body:JSON.stringify({
                 name:name,
                 phone:phone,
-                adharURI:adharUrl,
+                adharURI:[{link:adharUrl,filename:adharURI.name}],
                 adharNo:adharNo,
-                fssiURI:fssiUrl,
+                fssiURI:[{link:fssiUrl,filename:fssiURI.name}],
                 fssiNo:fssiNo,
-                panURI:panUrl,
-                panNo:panNo
+                panURI:[{link:panUrl,filename:panURI.name}],
+                panNo:panNo,
+                status:false
             })
         })
         const resData= await response.json();
@@ -126,7 +127,8 @@ export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) 
                 fssiURI:fssiUrl,
                 fssiNo:fssiNo,
                 panURI:panUrl,
-                panNo:panNo
+                panNo:panNo,
+                status:false
         }})
     }
 }
