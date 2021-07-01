@@ -7,7 +7,7 @@ import SettingCuisine from '../source/screen/SettingCuisine';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import HomeScreen from '../source/screen/HomeScreen';
 import ProfileScreen from '../source/screen/ProfileScreen';
-import { Entypo, Feather  } from '@expo/vector-icons';
+import { Entypo, Feather,MaterialIcons  } from '@expo/vector-icons';
 import {View} from 'react-native'
 import OtpScreen from '../source/screen/OtpScreen';
 import KycScreen from '../source/screen/kycScreen';
@@ -16,7 +16,7 @@ import BannerUploadScreen from '../source/screen/BannerUploadScreen';
 import CategoryUpload from '../source/screen/CategoryUpload';
 import DishListScreen from '../source/screen/DishListScreen';
 import CategoryListScreen from '../source/screen/CategoryListScreen';
-
+import OrderScreen from '../source/screen/OrderScreen';
 
 const AuthStack = createStackNavigator();
 
@@ -67,6 +67,18 @@ const BottomStack = () => {
               tabBarIcon: ({ color }) => (
               <View>                
                 <Feather  name="list" size={24} color={color}/>
+              </View>
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Order"
+            component={OrderScreen}
+            options={{
+              tabBarLabel: 'Orders',
+              tabBarIcon: ({ color }) => (
+              <View>                
+                <MaterialIcons style={{position:'absolute'}} name="delivery-dining" size={24} color={color}/>
               </View>
               ),
             }}
