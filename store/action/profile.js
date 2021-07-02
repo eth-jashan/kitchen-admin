@@ -2,8 +2,36 @@ export const SIGNUP_ACCOUNT = 'SIGNUP_ACCOUNT'
 export const ADD_CUISINE = 'ADD_CUISINE'
 export const ACCOUNT_SETUP = 'ACCOUNT_SETUP'
 export const ADD_KYC = 'ADD_KYC'
+export const CREATE='CREATE'
+export const CHECK_USER='CHECK_USER'
 
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import storage from '@react-native-firebase/storage';
+
+export const createaccount=(uid,token)=>{
+    return async (dispatch)=>{
+        dispatch({type:CREATE,userid:uid,tokenid:token})        
+    }
+}
+
+
+export const checkuser = (uid) => {
+
+    return async (dispatch, getState)=>{
+
+        const response = await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/check.json')
+        const resData = await response.json()
+        const uidList = []
+
+        for(const key in resData){ 
+            uidList.push(resData[key].uid)
+        }
+        console.log('Checkkkk-------', uidList.includes(uid.toString()))
+        dispatch({type:CHECK_USER, status:uidList.includes(uid.toString())})
+        
+    }
+
+}
 
 export const addCuisine = (name) => {
 
@@ -31,7 +59,13 @@ export const createAccount=(name,email,phone, uid, token)=>{
             })
         })
         const resData=await response.json()
-
+        const response2=await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/check.json?',{
+            method:'POST',
+            headers:{'Content-Type':'application\json'},
+            body:JSON.stringify({
+                uid:uid
+            })
+        })
         dispatch({type:SIGNUP_ACCOUNT,data:{
             id:resData.name,
             name,
@@ -42,6 +76,7 @@ export const createAccount=(name,email,phone, uid, token)=>{
             uid:uid,
             token:token
         }})
+        saveDataToStorage(uid,token)
     }
 }
 
@@ -115,7 +150,8 @@ export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) 
                 fssiNo:fssiNo,
                 panURI:[{link:panUrl,filename:panURI.name}],
                 panNo:panNo,
-                status:false
+                chefId:uid,
+                status:"Under Verification"
             })
         })
         const resData= await response.json();
@@ -128,7 +164,15 @@ export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) 
                 fssiNo:fssiNo,
                 panURI:panUrl,
                 panNo:panNo,
-                status:false
+                chefId:uid,
+                status:"Under Verification"
         }})
     }
+}
+
+const saveDataToStorage = (token,userId) => {
+    AsyncStorage.setItem('userData', JSON.stringify({
+        token:token,
+        userId:userId,
+    }));
 }

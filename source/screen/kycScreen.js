@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import {View, StyleSheet,ScrollView, Text, Pressable, Dimensions, Alert} from 'react-native'
-import {TextInput} from 'react-native-paper'
+import {View, StyleSheet,ScrollView,Image, Text, Pressable, Dimensions, Alert} from 'react-native'
+import {ActivityIndicator, TextInput} from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { MaterialCommunityIcons,FontAwesome,MaterialIcons } from '@expo/vector-icons';
 import DocumentPicker from 'react-native-document-picker'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addKyc } from '../../store/action/profile';
 
 
 const KycScreen = ({navigation}) => {
+    const status=useSelector(x=>x.profile.kycStatus)
     const[name,setName]=useState()
     const[number,setNumber]=useState()
     const [Aadhar, setAadhar] = useState('')
@@ -17,6 +18,7 @@ const KycScreen = ({navigation}) => {
     const[aadharuri,setAadharuri]=useState()
     const[panuri,setPanuri]=useState()
     const[fssiuri,setFssiuri]=useState()
+    const[loading,setLoading]=useState(false)
     const dispatch=useDispatch()
 
     const adhaarFrontUpload = async() => {
@@ -70,13 +72,33 @@ const KycScreen = ({navigation}) => {
             Alert.alert('Invalid','Please Enter all the inputs',[{text:'Okay'}])
         }
         else{
+            setLoading(true)
             await dispatch(addKyc(name,number,aadharuri,Aadhar,fssiuri,fssi,panuri,panNumber))
-            navigation.navigate('Home')
+            setLoading(false)
+            
         }
     }
 
-    return(
+       if(status=='Under Verification'){
+            return(
+                <View style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'#ffffff'}} >
+                    <View style={{margin:10,borderRadius:20,borderWidth:2,width:Dimensions.get('screen').width*0.95,borderColor:'#ffde17'}} >
+                    <View style={{alignSelf:'center',margin:10,width:120,height:120,borderRadius:50}} >
+                        <Image source={{uri:'https://i.pinimg.com/originals/c4/cb/9a/c4cb9abc7c69713e7e816e6a624ce7f8.gif'}} style={{width:'100%',height:'100%'}} />
+                    </View>
+                    <View style={{width:Dimensions.get('screen').width*0.95,margin:10,padding:10}} >
+                        <Text style={{fontFamily:'book',fontSize:15,color:'black'}} >Hey Chef! Your Submitted Documents are under Verification. We will notify you once it get Verified or some changes are required.</Text>
+                        <Text style={{fontFamily:'bold',margin:5,fontSize:18,color:'#08818a',textAlign:'center'}} >Happy Cooking!!!</Text>
+                    </View>
+                    </View>
+                </View>
+            )
+        }
+    
+
+   return(
         <SafeAreaView style={{flex:1}}>
+        <Text style={{textAlign:'center',margin:10,fontSize:20,color:'black',fontFamily:'bold'}} >Add Kyc Details</Text>
         <ScrollView style={{padding:5}} >
         <View style={{width:'100%', padding:8}} >
         <TextInput
@@ -172,7 +194,8 @@ const KycScreen = ({navigation}) => {
                 </View>}
 
                 <Pressable onPress={addData} style={{marginTop:16,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, backgroundColor:'#08818a',alignSelf:'center', marginVertical:10, justifyContent:'center'}}>
-                    <Text style={{fontFamily:'book', alignSelf:'center', color:'white'}}>Apply</Text>
+                {loading?<View><ActivityIndicator size='small' color='#ffffff' /></View>:<Text style={{fontFamily:'book', alignSelf:'center', color:'white'}}>Apply</Text>
+}
                 </Pressable>
 
             </View>

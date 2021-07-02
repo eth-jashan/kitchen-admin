@@ -13,10 +13,13 @@ const ActiveCard = ({item,type,statusChange}) => {
 
     const statusColor = () => {
 
-        if(item.status === 'Not Accepted'){
-            return '#ec0c41'
+        if(item.status === 'Pending'){
+            return '#f7cb73'
         }else if (item.status === 'Accepted'){
             return '#218721'
+        }
+        else if(item.status ==='Delivered'){
+            return '#357ABD'
         }
 
     }
@@ -77,12 +80,12 @@ const ActiveCard = ({item,type,statusChange}) => {
                 <Text style={{fontFamily:'book', fontSize:18}}>₹ {item.orderWorth}</Text>
             </View>
             {/*  */}
-            {type === 'all'?<View style={{flexDirection:'row',justifyContent:'space-between'}}>
+            {type === 'all' && item.status!='Accepted' &&  item.status!="Delivered"   ?<View style={{flexDirection:'row',justifyContent:'space-between'}}>
             <TouchableOpacity onPress= {() => {statusChange(item.id,'Accepted')}} 
                 style={{width:'30%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:4, backgroundColor:'#1fa803',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
             <Text style={{fontSize:16, color:'white', alignSelf:'center'}}>Accept</Text>
             </TouchableOpacity>
-            <TouchableOpacity  onPress= {() => {statusChange(item.id,'Rejected')}} 
+            <TouchableOpacity  onPress= {() => {statusChange(item.id,'Not Accepted')}} 
                 style={{width:'30%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:4, backgroundColor:'#ff6161', marginTop:15,marginHorizontal:15, marginBottom:16}}>
             <Text style={{fontSize:16, color:'white', alignSelf:'center'}}>Decline</Text>
             </TouchableOpacity>

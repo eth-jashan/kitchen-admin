@@ -17,16 +17,20 @@ import CategoryUpload from '../source/screen/CategoryUpload';
 import DishListScreen from '../source/screen/DishListScreen';
 import CategoryListScreen from '../source/screen/CategoryListScreen';
 import OrderScreen from '../source/screen/OrderScreen';
+import CheckScreen from '../source/screen/CheckScreen';
+import StartupScreen from '../source/screen/StartupScreen';
 
 const AuthStack = createStackNavigator();
 
 const MyAuth =()=> {
   return (
     <AuthStack.Navigator initialRouteName={"Welcome"} screenOptions={{headerShown:false}}>
+    
     <AuthStack.Screen name="Welcome" component={WelcomeScreen} />
     <AuthStack.Screen name="Creation" component={CreationScreen} />
     <AuthStack.Screen name="CuinsineSetting" component={SettingCuisine} />
     <AuthStack.Screen name="Otp" component={OtpScreen} />
+    <AuthStack.Screen name='Check' component={CheckScreen} />
     </AuthStack.Navigator>
   );
 }

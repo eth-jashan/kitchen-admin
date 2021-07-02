@@ -1,5 +1,5 @@
 class Kyc{
-    constructor(id,name,phone,adharNo,adharURL,fssiNo,fssiUrl,panNo,panUrl,status)
+    constructor(id,name,phone,adharNo,adharURL,fssiNo,fssiUrl,panNo,panUrl,chefId,status)
     {
         this.id=id
         this.name=name
@@ -10,6 +10,7 @@ class Kyc{
         this.fssiUrl=fssiUrl
         this.panNo=panNo
         this.panUrl=panUrl
+        this.chefId=chefId
         this.status=status
     }
 }

@@ -17,7 +17,7 @@ export const fetchOrders=(result)=>{
             list.push(new Orders(key,resData[key].name,resData[key].uid,resData[key].chefId,resData[key].cartItems,resData[key].orderTotal,resData[key].address,resData[key].status,resData[key].date))
         }
         if(result === 'all'){
-            dispatch({type:FETCH_ORDERS,data:list.filter(x=>x.chefId === '7fn826hjo3h29bW6a0QGASqw4Yl1')})
+            dispatch({type:FETCH_ORDERS,data:list.filter(x=>x.chefId === '7fn826hjo3h29bW6a0QGASqw4Yl1' && x.status!="Not Accepted" )})
         }
         else if(result === 'active'){
             dispatch({type:FETCH_ACTIVE_ORDERS,data:list.filter(x=>(x.chefId === '7fn826hjo3h29bW6a0QGASqw4Yl1')&&(x.status === 'Accepted'))})  
