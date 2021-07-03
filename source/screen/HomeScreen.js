@@ -26,7 +26,7 @@ const HomeScreen = ({navigation}) => {
                     index={1}
                     stext={'Upload the only the dishes without the menu structure'}
                     text={'Dish Uploads'}
-                    OnPress = {()=>{navigation.navigate('DishListScreen')}}
+                    OnPress = {()=>{navigation.navigate('DishListScreen',{catId:null})}}
                 />
                 <HomeTab
                     index={2}

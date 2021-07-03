@@ -9,13 +9,13 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const ListScreen=(props)=>{
     const dish=useSelector(x=>x.dish.dish)
-    const catId = useSelector(x=>x.catergory.catId)
+    const {catId} =  props.route.params
     const[search,setSearch]=useState()
     const[done,setDone] = useState(false);
     const[myDish,setMyDish] = useState([]);
 
 
-    //console.log(dish);
+    console.log(catId);
 
     const dispatch=useDispatch()
 
@@ -39,6 +39,8 @@ const ListScreen=(props)=>{
         fetch()
         filterList()
     },[dispatch])
+
+    
     return(
         <SafeAreaView style={{flex:1}} >
             <SearchBar

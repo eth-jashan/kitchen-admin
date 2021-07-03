@@ -1,5 +1,5 @@
 import React,{useState,useRef,useEffect} from 'react';
-import { View,Text,ScrollView,Pressable, Dimensions,Image, FlatList ,TouchableOpacity, Alert,ToastAndroid,Platform,AlertIOS} from 'react-native';
+import { View,Text,ScrollView,Pressable, Dimensions,Image, FlatList ,TouchableOpacity, Alert,ActivityIndicator} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import AddImage from '../component/addImage';
@@ -10,6 +10,7 @@ import * as dishAction from '../../store/action/dish'
 import TimeOrder from '../component/TimingOrder';
 import { set } from 'react-native-reanimated';
 import * as Location from 'expo-location';
+import { fetchCategory } from '../../store/action/category';
 
 
 
@@ -17,6 +18,7 @@ const {width, height} = Dimensions.get('window')
 
 const DishUploadScreen = (props) => {
     const cuisine = useSelector(x => x.dish.cuisine)
+    const categoryList=useSelector(x=>x.catergory.category)
     const[name,setName]=useState()
     const[description,setDescription]=useState()
     const[img,setImg]=useState()
@@ -31,6 +33,7 @@ const DishUploadScreen = (props) => {
     const [longitude,setLongitude] = useState(null);
     const[foundLocation,setFoundLocation] = useState(false);
     const[loading,setloading]=useState(false)
+    const[cat,setcat]=useState(0)
 
     const modalizeRef = useRef(null);
     const modalizeRef2 = useRef(null);
@@ -65,6 +68,7 @@ const DishUploadScreen = (props) => {
             
         }
     },[foundLocation])
+    
     const startMap = async() => {
         let location = await Location.getCurrentPositionAsync({});
         setLocation(location.coords);
@@ -94,7 +98,7 @@ const DishUploadScreen = (props) => {
             }
             else{
                 setloading(true)
-                await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,type,latitude,longitude,food))
+                await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,categoryList[cat].id,categoryList[cat].name,type,latitude,longitude,food))
                 setloading(false)
                 
             }
@@ -115,11 +119,18 @@ const DishUploadScreen = (props) => {
     const foodHandler=(index)=>{
         setFood(index)
     }
-
+    const catHandler=(index)=>{
+        setcat(index)
+        
+    }
+    useEffect(()=>{
+        const fetch=async()=>{
+            await dispatch(fetchCategory())
+        }
+        fetch()
+    },[dispatch])
     
-    const cuisineList= [
-
-        {title:'Breakfast 🍳'},{title:"Appetizer 🍤"}, {title:"Maincourse 🍲"}, {title:'Thali/Meal 🍱'},{title:'Desert 🍨'}]
+    const cuisineList= [{title:'Breakfast 🍳'},{title:"Appetizer 🍤"}, {title:"Maincourse 🍲"}, {title:'Thali/Meal 🍱'},{title:'Desert 🍨'}]
     const foodType=[{title:'🥗 Veg'},{title:'🍗 Non-Veg'}]
     return(
         <SafeAreaView style={{flex:1,backgroundColor:'#ffffff'}} >
@@ -197,6 +208,19 @@ const DishUploadScreen = (props) => {
                 }}
             />
 
+            {categoryList.length!=0?<FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={categoryList}
+                keyExtractor={(_,i)=>i.toString()}
+                renderItem={({item,index}) => {
+                    return<TouchableOpacity onPress={()=>{catHandler(index)}} style={{backgroundColor:index===cat?'#ec0c41':null, width:160, padding:6, borderRadius:8, margin:6, }}>
+                        <Text style={{ fontFamily:'medium', fontSize:18, color:index === cat?"white":'black', alignSelf:'center'}}>{item.name}</Text>
+                    </TouchableOpacity>
+
+                }}
+            />:<Text style={{fontFamily:'book',fontSize:16,textAlign:'center',color:'black'}} >No Categories Created Yet</Text>}
+
             <View style={{marginVertical:10, alignSelf:'center'}} >
                 <TextInput
                     multiline
@@ -235,7 +259,8 @@ const DishUploadScreen = (props) => {
 
             <View style={{width:'100%', marginVertical:16}}>
                 <Pressable onPress={uploadDish} style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
-                    <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>{types=='Edit'?'Edit Dish':'Add Dish'}</Text>
+                {loading?<ActivityIndicator color='white' size='small' />:<Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>{types=='Edit'?'Edit Dish':'Add Dish'}</Text>
+}
                 </Pressable>
             </View>
 

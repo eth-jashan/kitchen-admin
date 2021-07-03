@@ -25,7 +25,7 @@ const CategoryListScreen=props=>{
     
     const moveToDishList = async(id) => {
         await dispatch(categoryActions.storeCatId(id))
-        props.navigation.navigate('DishListScreen')
+        props.navigation.navigate('DishListScreen',{catId:id})
         console.log(id);
     }
     

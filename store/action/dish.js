@@ -17,7 +17,7 @@ export const addCuisine = (name) => {
 
 }
 
-export const addDish=(name,description,img,spicy,price,noServe,quantity,lat,long,type)=>{
+export const addDish=(name,description,img,spicy,price,noServe,quantity,catId,catName,lat,long,type)=>{
     return async (dispatch,getState)=>{
         const cuisine=getState().dish.cuisine
         const uid=getState().profile.uid
@@ -32,8 +32,8 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity,lat,long
                 price,
                 noServe,
                 quantity,
-                categoryid:false,
-                categoryname:false,
+                categoryid:catId,
+                categoryname:catName,
                 uid,
                 lat,
                 long,
@@ -63,8 +63,8 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity,lat,long
             price,
             noServe,
             quantity,
-            categoryid:false,
-            categoryname:false, 
+            categoryid:catId,
+            categoryname:catName, 
             uid,
             lat,
             long,
