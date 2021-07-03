@@ -6,6 +6,7 @@ export const FETCH_CATEGORY = 'FETCH_CATEGORY';
 export const EDIT_CATEGORY='EDIT_CATEGORY'
 export const EDIT_URL='EDIT_URL'
 export const DELETE_CAT='DELETE_CAT'
+export const STORE_CAT_ID = 'STORE_CAT_ID'
 
 export const addcategory=(name,description,imguri,lat,long)=>{
     return async(dispatch,getState)=>{
@@ -136,5 +137,11 @@ export const deleteCategory=(id)=>{
         })
         dispatch({type:DELETE_CAT,cid:id})
 
+    }
+}
+
+export const storeCatId = (id) => {
+    return async(dispatch) => {
+        dispatch({type:STORE_CAT_ID,catId:id})
     }
 }

@@ -9,16 +9,37 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const ListScreen=(props)=>{
     const dish=useSelector(x=>x.dish.dish)
+    const catId = useSelector(x=>x.catergory.catId)
     const[search,setSearch]=useState()
+    const[useAnother,setUseAnother] = useState(false);
+    let newDishes;
+
+
+    //console.log(dish);
 
     const dispatch=useDispatch()
+
+    const filterList = () => {
+        if(catId){
+            setUseAnother(true);
+          newDishes = dish.filter(x=>x.categoryId === catId)
+            console.log(newDishes);
+            console.log(useAnother);
+      
+            
+        }
+        else{
+            setUseAnother(false)
+        }
+    }
     
     useEffect(()=>{
         const fetch=async()=>{
             await dispatch(dishActions.fetchDish())
         }
         fetch()
-    })
+        filterList()
+    },[dispatch])
     return(
         <SafeAreaView style={{flex:1}} >
             <SearchBar
@@ -29,7 +50,7 @@ const ListScreen=(props)=>{
         />
         <View style={{flex:1}}>
             <FlatList
-                data={dish}
+                data={useAnother?newDishes:dish}
                 renderItem={(itemData) =>{
                     return<View style={{width:Dimensions.get('window').width*0.94,alignSelf:'center', marginVertical:10}}>
                     <View style={{width:Dimensions.get('window').width*0.94, height:Dimensions.get('window').width*0.94/2, borderRadius:8, marginVertical:8, alignSelf:'center'}}>

@@ -1,8 +1,9 @@
 import Category from '../../model/Category'
-import { ADD_CATEGORY, DELETE_CAT, EDIT_CATEGORY, EDIT_URL, FETCH_CATEGORY } from "../action/category"
+import { ADD_CATEGORY, DELETE_CAT, EDIT_CATEGORY, EDIT_URL, FETCH_CATEGORY, STORE_CAT_ID } from "../action/category"
 
 const initialState={
-    category:[]
+    category:[],
+    catId:null
 }
 
 export default (state=initialState,action)=>{
@@ -72,6 +73,12 @@ export default (state=initialState,action)=>{
                 ...state,
                 category:state.category.filter(x=>x.id!=action.pid)
             }
+        case STORE_CAT_ID:{
+            return{
+                ...state,
+                catId:action.catId
+            }
+        }
         default:return state;
     }
 

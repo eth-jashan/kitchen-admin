@@ -23,6 +23,11 @@ const CategoryListScreen=props=>{
         fetch()
     })
     
+    const moveToDishList = async(id) => {
+        await dispatch(categoryActions.storeCatId(id))
+        props.navigation.navigate('DishListScreen')
+        console.log(id);
+    }
     
     // const renderCategory=itemData=>{
     //     return(
@@ -44,7 +49,7 @@ const CategoryListScreen=props=>{
                 data={cat}
                 renderItem={({item}) =>{
                     return(
-                        <TouchableOpacity >
+                        <TouchableOpacity onPress={()=>{moveToDishList(item.id)}}>
                     <View style={{width:Dimensions.get('window').width*0.94,alignSelf:'center', marginVertical:10}}>
                     <View style={{width:Dimensions.get('window').width*0.94, height:Dimensions.get('window').width*0.94/2, borderRadius:8, marginVertical:8, alignSelf:'center'}}>
                         <Image
