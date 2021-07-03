@@ -11,8 +11,8 @@ const ListScreen=(props)=>{
     const dish=useSelector(x=>x.dish.dish)
     const catId = useSelector(x=>x.catergory.catId)
     const[search,setSearch]=useState()
-    const[useAnother,setUseAnother] = useState(false);
-    let newDishes;
+    const[done,setDone] = useState(false);
+    const[myDish,setMyDish] = useState([]);
 
 
     //console.log(dish);
@@ -21,15 +21,14 @@ const ListScreen=(props)=>{
 
     const filterList = () => {
         if(catId){
-            setUseAnother(true);
-          newDishes = dish.filter(x=>x.categoryId === catId)
-            console.log(newDishes);
-            console.log(useAnother);
-      
+          let newDishes = dish.filter(x=>x.categoryId === catId)
+            setMyDish(newDishes);
+            setDone(true)
             
         }
         else{
-            setUseAnother(false)
+            setMyDish(dish);
+            setDone(false)
         }
     }
     
@@ -50,7 +49,7 @@ const ListScreen=(props)=>{
         />
         <View style={{flex:1}}>
             <FlatList
-                data={useAnother?newDishes:dish}
+                data={myDish}
                 renderItem={(itemData) =>{
                     return<View style={{width:Dimensions.get('window').width*0.94,alignSelf:'center', marginVertical:10}}>
                     <View style={{width:Dimensions.get('window').width*0.94, height:Dimensions.get('window').width*0.94/2, borderRadius:8, marginVertical:8, alignSelf:'center'}}>
