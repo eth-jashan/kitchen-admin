@@ -4,9 +4,11 @@ export const ACCOUNT_SETUP = 'ACCOUNT_SETUP'
 export const ADD_KYC = 'ADD_KYC'
 export const CREATE='CREATE'
 export const CHECK_USER='CHECK_USER'
+export const FETCH_STATUS='FETCH_STATUS'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import storage from '@react-native-firebase/storage';
+import Kyc from '../../model/Kyc'
 
 export const createaccount=(uid,token)=>{
     return async (dispatch)=>{
@@ -167,6 +169,21 @@ export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) 
                 chefId:uid,
                 status:"Under Verification"
         }})
+    }
+}
+
+export const fetchKyc=()=>{
+    return async(dispatch,getState)=>{
+        const userid=getState().profile.uid
+        const response=await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/kyc.json')
+        const resData=await response.json()
+        const list=[]
+        for(const key in resData){
+            list.push(new Kyc(resData[id].id,resData[id].name,resData[id].phone,resData[id].adharNo,resData[id].adharURI,resData[id].fssiNo,resData[id].fssiURI,resData[id].panNo,resData[id].panURI,
+                resData[id].chefId,resData[id].status))
+        }
+        dispatch({type:FETCH_STATUS,data:list,uid:userid})
+
     }
 }
 

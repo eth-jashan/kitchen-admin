@@ -1,6 +1,6 @@
 import Kyc from "../../model/Kyc"
 import Profile from "../../model/Profile"
-import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT, ADD_KYC, CHECK_USER,CREATE } from "../action/profile"
+import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT, ADD_KYC, CHECK_USER,CREATE, FETCH_STATUS } from "../action/profile"
 
 const initialState = {
 
@@ -86,6 +86,12 @@ export default (state = initialState, action) => {
                     ...state,
                     kyc:state.kyc.concat(kyc),
                     kycStatus:action.kycDetails.status
+                }
+            case FETCH_STATUS:
+                const data=action.data.filter(x=>x.chedId==action.uid)
+                return{
+                    ...state,
+                    kycStatus:data[0].status
                 }
         default:
             return state
