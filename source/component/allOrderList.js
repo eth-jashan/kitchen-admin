@@ -10,8 +10,8 @@ import { ActivityIndicator } from 'react-native-paper'
 
 const AllOrderList = (props) => {
     const dispatch = useDispatch()
-    const ChangeStatus = async(id,status) => {
-        await dispatch(changeStatus(id,status))
+    const ChangeStatus = async(id,status,date,len) => {
+        await dispatch(changeStatus(id,status,date,len))
      }
 
     const orderList = useSelector(x=>x.orders.orders)

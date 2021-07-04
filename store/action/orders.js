@@ -26,13 +26,13 @@ export const fetchOrders=(result)=>{
     }
 }
 
-export const changeStatus = (id,status) => {
+export const changeStatus = (id,status,time,len) => {
     return async(dispatch) => {
-        await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/order/${id}.json`,{
+        await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/order/${id}/status/${len}.json`,{
             method:'PATCH',
             headers:{'Content-Type':'application/json'},
             body:JSON.stringify({
-                status:status
+                status,time
             })
         })
         dispatch({type:STATUS_CHANGE,updatedOrder:{status,id}})

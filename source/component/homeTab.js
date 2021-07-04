@@ -8,7 +8,8 @@ const HomeTab = ({text, stext, index, OnPress}) => {
     const filePath = [
         'https://firebasestorage.googleapis.com/v0/b/mineral-concord-314020.appspot.com/o/brooke-lark-HlNcigvUi4Q-unsplash.jpg?alt=media&token=c278eb9e-081e-4193-9dbe-febeb7fb8e68',
         'https://firebasestorage.googleapis.com/v0/b/mineral-concord-314020.appspot.com/o/charles-deluvio-PqsImnjuElM-unsplash.jpg?alt=media&token=65e263cd-4699-48b9-9a1e-1c6bc05e8ca8',
-        'https://firebasestorage.googleapis.com/v0/b/mineral-concord-314020.appspot.com/o/tamanna-rumee-R4viFLEqOWU-unsplash.jpg?alt=media&token=f63a6543-3d48-4996-8a6a-fdea385cbffc']
+        'https://firebasestorage.googleapis.com/v0/b/mineral-concord-314020.appspot.com/o/tamanna-rumee-R4viFLEqOWU-unsplash.jpg?alt=media&token=f63a6543-3d48-4996-8a6a-fdea385cbffc',
+    'https://firebasestorage.googleapis.com/v0/b/mineral-concord-314020.appspot.com/o/daniel-bradley-y_WDEY9e6mA-unsplash.jpg?alt=media&token=8b31c2eb-aeec-4545-bc2e-fb4c7e837e56']
 
     return(<TouchableOpacity onPress={OnPress}>
         <View style={{width:width*0.94, height:height*0.25, alignSelf:'center', borderRadius:8, marginVertical:8}}>

@@ -75,18 +75,6 @@ const BottomStack = () => {
               ),
             }}
           />
-          <Tab.Screen
-            name="Order"
-            component={OrderScreen}
-            options={{
-              tabBarLabel: 'Orders',
-              tabBarIcon: ({ color }) => (
-              <View>                
-                <MaterialIcons style={{position:'absolute'}} name="delivery-dining" size={24} color={color}/>
-              </View>
-              ),
-            }}
-          />
         </Tab.Navigator>)
 
 }
@@ -104,6 +92,7 @@ const MainComp = () => {
       <MainStack.Screen name="DishUpload" component={DishUploadScreen}/>
       <MainStack.Screen name="MenuCreation" component = {CategoryUpload}/>
       <MainStack.Screen name="BannerUpload" component = {BannerUploadScreen}/>
+      <MainStack.Screen name="Orders" component = {OrderScreen}/>
     </MainStack.Navigator>
   )
 

@@ -21,9 +21,9 @@ const OrderScreen = () => {
     const activeOrderList = useSelector(x=>x.orders.activeOrders)
     console.log("orders", orderList)
 
-    const orderFetch = async() => {
+    const orderFetch = async(value) => {
         setLoad(true)
-        await dispatch(fetchOrders(result))
+        await dispatch(fetchOrders(value))
         setLoad(false)
     }
 
@@ -36,11 +36,12 @@ const OrderScreen = () => {
 
     const allOrder = () => {
         setResult('all')
-        orderFetch()
+        orderFetch('all')
     }
 
     const activeOrder = () => {
         setResult('active')
+        orderFetch('active')
         
     }
 
@@ -70,9 +71,9 @@ const OrderScreen = () => {
                     <Text style={{fontFamily:'book', fontSize:18, color:result==='all'?'#08818a':'#bcbcbc',}}>All Orders</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={activeOrder} style={{padding:8, borderColor:result==='active'?'#08818a':'#bcbcbc', borderBottomWidth:result==='active'?2:1}}>
+                {/* <TouchableOpacity onPress={activeOrder} style={{padding:8, borderColor:result==='active'?'#08818a':'#bcbcbc', borderBottomWidth:result==='active'?2:1}}>
                     <Text style={{fontFamily:'book', fontSize:18, color:result==='active'?'#08818a':'#bcbcbc'}}>Accepted Orders</Text>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
 
                 <TouchableOpacity onPress={preOrder} style={{padding:8, borderColor:result==='preorder'?'#08818a':'#bcbcbc', borderBottomWidth:result==='preorder'?2:1}}>
                     <Text style={{fontFamily:'book', fontSize:18, color:result==='preorder'?'#08818a':'#bcbcbc'}}>Pre Orders</Text>

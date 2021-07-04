@@ -34,6 +34,12 @@ const HomeScreen = ({navigation}) => {
                     text={'Banner Upload'}
                     OnPress = {()=>{navigation.navigate('BannerUpload')}}
                 />
+                <HomeTab
+                    index={3}
+                    stext={"Check Your Customer's Orders"}
+                    text={'Orders'}
+                    OnPress = {()=>{navigation.navigate('Orders')}}
+                />
             </ScrollView>
         </SafeAreaView>
     )

@@ -12,11 +12,11 @@ const ActiveOrderList = (props) => {
     const dispatch = useDispatch();
     const[load,setLoad] = useState(false)
    
-    const statusChange = async(id,status) => {
-        await dispatch(changeStatus(id,status))
+    const statusChange = async(id,status,date,len) => {
+        await dispatch(changeStatus(id,status,date,len))
      }
 
-    const activeOrderList = useSelector(x=>x.orders.activeOrders)
+    const activeOrderList = useSelector(x=>x.orders.orders)
 
     return(
         <View style={{flex:1, marginTop:12}}>
