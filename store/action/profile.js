@@ -82,7 +82,7 @@ export const createAccount=(name,email,phone, uid, token)=>{
     }
 }
 
-export const accountSetup=(cuisine, type, geoAddress, house, landmark, pincode, city )=>{
+export const accountSetup=(cuisine, type, geoAddress, house, landmark, pincode, city,lat,long )=>{
     return async(dispatch,getState)=>{
         const id = getState().profile.profileId
         const uid = getState().profile.uid
@@ -97,7 +97,9 @@ export const accountSetup=(cuisine, type, geoAddress, house, landmark, pincode, 
                     house,
                     landmark,
                     pincode,
-                    city
+                    city,
+                    lat:lat,
+                    long:long
                 })
         })
         dispatch({type:ACCOUNT_SETUP,data:{
@@ -107,7 +109,9 @@ export const accountSetup=(cuisine, type, geoAddress, house, landmark, pincode, 
             house,
             landmark,
             pincode,
-            city
+            city,
+            lat,
+            long
         }})
     }
 }

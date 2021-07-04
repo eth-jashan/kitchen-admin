@@ -33,6 +33,9 @@ const[landmark,setLandMark] = useState(null);
 const[address,setAddress] = useState();
 const [house, setHouse] = useState(null);
 
+const[finalLat,setFinalLat] = useState()
+const[finalLong,setFinalLong] = useState()
+
 const readData = async () => {
     try {
       const data = await AsyncStorage.getItem('personalInfo')
@@ -61,10 +64,14 @@ const revereGeoCodeResponse = async(latitude,longitude) =>{
         const length = array.length;
         const city = response.data.results[0].address_components[length-4].long_name
         const postal = response.data.results[0].address_components[length-1].long_name
+        const finalLat = response.data.results[0].geometry.location.lat
+        const finalLong = response.data.results[0].geometry.location.lng
         
         setAddress(address);
         setCity(city);
         setPostal(postal);
+        setFinalLat(finalLat);
+        setFinalLong(finalLong);
         
         console.log('*************************',address);
         console.log('*******city******************',loc);
@@ -103,7 +110,7 @@ const [typeIndex, setTypeIndex] = useState(0)
 
 const setupAccount = async() => {
     setloading(true)
-    await dispatch(profileAction.accountSetup(cuisine,type[typeIndex],address, house, landmark, postal, city ))
+    await dispatch(profileAction.accountSetup(cuisine,type[typeIndex],address, house, landmark, postal, city,finalLat,finalLong ))
     setloading(false)
     navigation.navigate('Main')
 }

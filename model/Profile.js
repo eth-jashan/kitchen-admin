@@ -1,5 +1,5 @@
 class Profile{
-    constructor(id,name,email,phone,cuisine,type,address,useraddress,created,kyc,uid)
+    constructor(id,name,email,phone,cuisine,type,address,useraddress,created,kyc,uid,lat,long)
     {
         this.id=id
         this.name=name
@@ -12,6 +12,8 @@ class Profile{
         this.created=created
         this.kyc=kyc
         this.uid=uid
+        this.lat = lat
+        this.long = long
     }
 }
 
