@@ -17,7 +17,7 @@ export const addCuisine = (name) => {
 
 }
 
-export const addDish=(name,description,img,spicy,price,noServe,quantity,catId,catName,lat,long,type)=>{
+export const addDish=(name,description,img,spicy,price,noServe,quantity,catId,catName,cuisinetype,lat,long,type)=>{
     return async (dispatch,getState)=>{
         const cuisine=getState().dish.cuisine
         const uid=getState().profile.uid
@@ -35,6 +35,7 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity,catId,ca
                 categoryid:catId,
                 categoryname:catName,
                 uid,
+                cuisinetype,
                 lat,
                 long,
                 type
@@ -50,7 +51,8 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity,catId,ca
             method:'PATCH',
             headers:{'Content-Type':'application\json'},
             body:JSON.stringify({
-                imguri:url
+                imguri:url,
+                chefId:resData.name,
             })
         })
         dispatch({type:ADD_DISH,data:{
@@ -66,9 +68,11 @@ export const addDish=(name,description,img,spicy,price,noServe,quantity,catId,ca
             categoryid:catId,
             categoryname:catName, 
             uid,
+            cuisinetype,
             lat,
             long,
-            type
+            type,
+            chefId:resData.name
         }})
     }
 }
@@ -94,9 +98,12 @@ export const fetchDish=()=>{
                 resData[key].categoryid,
                 resData[key].categoryname,
                 resData[key].uid,
+                resData[key].cuisinetype,
                 resData[key].lat,
                 resData[key].long,
-                resData[key].type))
+                resData[key].type,
+                resData[key].chefId
+                ))
         }
         //console.log(resData);
         dispatch({type:FETCHDISH,data:list.filter(dish => dish.uid === uid)})
@@ -104,7 +111,7 @@ export const fetchDish=()=>{
 }
 
 
-export const imageCheck = (id,name,description,imguri,spicy,price,noServe,quantity,type,lat,long) => {
+export const imageCheck = (id,name,description,imguri,spicy,price,noServe,quantity,catId,catName,cuisinetype,type,lat,long) => {
     return async(dispatch,getState) => {
         const response = await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/Dish/${id}.json`)
         const resData=await response.json()
@@ -122,6 +129,9 @@ export const imageCheck = (id,name,description,imguri,spicy,price,noServe,quanti
                     price:price,
                     noServe:noServe,
                     quantity:quantity,
+                    categoryid:catId,
+                    categoryname:catName, 
+                    cuisinetype,
                     type:type,
                     lat:lat,
                     long:long

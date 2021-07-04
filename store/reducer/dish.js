@@ -44,10 +44,12 @@ export default (state = initialState, action) => {
                 action.data.quantity,
                 action.data.categoryid,
                 action.data.categoryname,
+                action.data.cuisinetype,
                 action.data.uid,
                 action.data.lat,
                 action.data.long,
-                action.data.type
+                action.data.type,
+                action.data.chefId
 
             )
             return{
@@ -73,12 +75,14 @@ export default (state = initialState, action) => {
                 action.updatedDish.price,
                 action.updatedDish.noServe,
                 action.updatedDish.quantity,
-                state.dish[dishIndex].categoryid,
-                state.dish[dishIndex].categoryname,
-                state.dish[dishIndex].uid,
+                action.updatedDish.categoryid,
+                action.updatedDish.categoryname,
+                action.updatedDish.uid,
+                action.updatedDish.cuisinetype,
                 action.updatedDish.lat,
                 action.updatedDish.long,
-                action.updatedDish.type
+                action.updatedDish.type,
+                state.dish[dishIndex].chefId
 
             );
             const updatedUserDish = [...state.dish];

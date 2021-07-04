@@ -35,6 +35,10 @@ const KycScreen = ({navigation}) => {
 
     }
 
+    const filepreview=async(uri)=>{
+        await FileViewer.open(uri)
+    }
+
     const panCardUpload = async() => {
         try {
             const res = await DocumentPicker.pick({
@@ -141,13 +145,13 @@ const KycScreen = ({navigation}) => {
                     {!aadharuri?<Pressable onPress={adhaarFrontUpload}  style={{borderColor:'#08818a', padding:10, borderRadius:4, width:'90%', alignSelf:'center',borderWidth:1}}>
                         <Text style={{fontFamily:'medium', fontSize:18, color:'#08818a', alignSelf:'center'}}>Add Aadhaar Card</Text>
                     </Pressable>:
-                    <View style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
+                    <Pressable onPress={filepreview.bind(aadharuri)} style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row'}}>
                     <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
                     <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{aadharuri.name}</Text>
                     </View>
                     <MaterialIcons onPress={()=>setAadharuri(false)} name="cancel" size={24} color="#e4003e" />
-                    </View>}
+                    </Pressable>}
                 </View>
     
                 <View style={{width:'100%', padding:8}}>
@@ -166,13 +170,13 @@ const KycScreen = ({navigation}) => {
                     {!panuri?<Pressable onPress={panCardUpload}  style={{borderColor:'#08818a', padding:10, borderRadius:4, width:'90%', alignSelf:'center',borderWidth:1}}>
                         <Text style={{fontFamily:'medium', fontSize:18, color:'#08818a', alignSelf:'center'}}>Add Pan Card</Text>
                     </Pressable>:
-                    <View style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
+                    <Pressable onPress={filepreview.bind(panuri)} style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row'}}>
                     <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
                     <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{panuri.name}</Text>
                     </View>
                     <MaterialIcons onPress={()=>setPanuri(false)} name="cancel" size={24} color="#e4003e" />
-                    </View>}
+                    </Pressable>}
     
                 </View>
     
@@ -192,13 +196,13 @@ const KycScreen = ({navigation}) => {
                     {!fssiuri?<Pressable onPress={fssaiUpload} style={{borderColor:'#08818a', padding:10, borderRadius:4, width:'90%', alignSelf:'center',borderWidth:1}}>
                         <Text style={{fontFamily:'medium', fontSize:18, color:'#08818a', alignSelf:'center'}}>Add FSSAI Certificate</Text>
                     </Pressable>:
-                    <View style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
+                    <Pressable onPress={filepreview.bind(fssiuri)} style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row'}}>
                     <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
                     <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{fssiuri.name}</Text>
                     </View>
                     <MaterialIcons onPress={()=>setFssiuri(false)} name="cancel" size={24} color="#e4003e" />
-                    </View>}
+                    </Pressable>}
     
                     <Pressable onPress={addData} style={{marginTop:16,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, backgroundColor:'#08818a',alignSelf:'center', marginVertical:10, justifyContent:'center'}}>
                     {loading?<View><ActivityIndicator size='small' color='#ffffff' /></View>:<Text style={{fontFamily:'book', alignSelf:'center', color:'white'}}>Apply</Text>
