@@ -6,8 +6,7 @@ export const STATUS_CHANGE = 'STATUS_CHANGE';
 export const fetchOrders=()=>{
     return async(dispatch,getState)=>{
 
-        //const chefId = getState().profile.uid
-       // console.log(chefId)
+        const chefId = getState().profile.uid
 
         const response=await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/order.json')
         const resData=await response.json()
@@ -15,7 +14,7 @@ export const fetchOrders=()=>{
         for(const key in resData){
             list.push(new Orders(key,resData[key].name,resData[key].uid,resData[key].chefId,resData[key].cartItems,resData[key].orderTotal,resData[key].address,resData[key].status,resData[key].date))
         }
-            dispatch({type:FETCH_ORDERS,data:list.filter(x=>x.chefId === '7fn826hjo3h29bW6a0QGASqw4Yl1')})
+            dispatch({type:FETCH_ORDERS,data:list.filter(x=>x.chefId === chefId)})
      
         
     }
