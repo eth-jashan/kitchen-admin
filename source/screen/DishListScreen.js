@@ -13,6 +13,7 @@ const ListScreen=(props)=>{
     const[search,setSearch]=useState()
     const[done,setDone] = useState(false);
     const[myDish,setMyDish] = useState([]);
+    const[load,setLoad] = useState(true);
 
 
     console.log(catId);
@@ -34,11 +35,27 @@ const ListScreen=(props)=>{
     
     useEffect(()=>{
         const fetch=async()=>{
+            setLoad(true);
             await dispatch(dishActions.fetchDish())
+            setLoad(false);
         }
         fetch()
         filterList()
     },[dispatch])
+
+
+    if(!load &&myDish){
+        return(
+            <View style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'white'}} >
+            <View>
+                <Image style={{width:100,height:100,alignSelf:'center'}} source={{uri:'https://cdn.dribbble.com/users/189859/screenshots/3639645/abc.gif' }} />
+                <Text style={{alignSelf:'center',fontFamily:'bold',fontSize:20,color:'#08818a'}} >No Dishes Found</Text>
+            </View>
+            <Text style={{fontFamily:'book',fontSize:15,color:'black'}} >Chef Has Not Uploaded Any Dishes Yet</Text>
+            </View>
+        )
+
+    }
 
     
     return(
