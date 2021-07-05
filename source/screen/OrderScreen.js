@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity,Image, Dimensions } from 'react-native'
 import {View, Text} from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { ActivityIndicator } from 'react-native-paper'
@@ -31,6 +31,12 @@ const OrderScreen = () => {
     orderFetch()
 },[dispatch])
 
+    const onLoad = () => {
+        setLoad(true)
+    }
+    const onEndLoad = () => {
+        setLoad(false);
+    }
 
     const [result, setResult] = useState('active')
 
@@ -81,8 +87,17 @@ const OrderScreen = () => {
             </ScrollView>
             </View>
 
-            {result==='all'?<AllOrderList type={result}/>:null}
-            {result === 'active'?<ActiveOrderList type={result}/>:null}
+            {load?   <View>
+                <View style={{alignSelf:'center',margin:Dimensions.get('window').height*0.3,width:120,height:120,borderRadius:50,justifyContent:'center'}} >
+                        <Image source={{uri:'https://i.pinimg.com/originals/c4/cb/9a/c4cb9abc7c69713e7e816e6a624ce7f8.gif'}} style={{width:'100%',height:'100%'}} />
+                    </View>
+            </View>                
+            :
+            result === 'all'?<AllOrderList onLoad = {onLoad} onEndLoad = {onEndLoad} type={result}/>:
+            null}
+
+            {load?null
+            :result === 'active'?<ActiveOrderList type={result}/>:null}
 
         </SafeAreaView>
     )
