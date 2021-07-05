@@ -16,7 +16,7 @@ const ActiveOrderList = (props) => {
         await dispatch(changeStatus(id,status,date,len))
      }
 
-    const activeOrderList = useSelector(x=>x.orders.orders)
+    const activeOrderList = useSelector(x=>x.orders.activeOrders)
 
     return(
         <View style={{flex:1, marginTop:12}}>

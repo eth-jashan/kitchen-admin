@@ -1,23 +1,21 @@
 import Orders from "../../model/Orders"
-import { ADD_ORDERS, FETCH_ACTIVE_ORDERS, FETCH_ORDERS, STATUS_CHANGE } from "../action/orders"
+import { ADD_ORDERS, FETCH_ORDERS, STATUS_CHANGE } from "../action/orders"
 
 const initialState={
     orders:[],
-    activeOrders:[],
-    rejectedOrders:[]
+    activeOrders:[]
 }
 
 export default OrderHandler=(state=initialState,action)=>{
     switch(action.type){
         case FETCH_ORDERS:
+
+        const orderList = action.data
+
             return{
                 ...state,
-                orders:action.data
-            }
-        case FETCH_ACTIVE_ORDERS:
-            return{
-                ...state,
-                activeOrders:action.data
+                orders:orderList,
+                activeOrders:orderList.filter(x=>x.status[x.status.length -1].status === ('Accepted'))
             }
         case STATUS_CHANGE:{
             const orderIndex = state.orders.findIndex(order => order.id === action.updatedOrder.id);
@@ -37,19 +35,13 @@ export default OrderHandler=(state=initialState,action)=>{
             const updatedNewOrder = [...state.orders];
             updatedNewOrder[orderIndex] = UpdatedOrders
 
-            if(action.updatedOrder.status === 'Accept'){
                 return{
                     ...state,
                     orders:updatedNewOrder,
-                    activeOrders:updatedNewOrder
+                    activeOrders:updatedNewOrder.filter(x=>(x.status === ('Pending')|| x.status === ('Accepted') || x.status === ('Not Accepted')))
                 }
             
-            }else{
-                return{
-                    ...state,
-                    rejectedOrders:updatedNewOrder
-                }
-            }
+            
             
         }
         default:return state;
