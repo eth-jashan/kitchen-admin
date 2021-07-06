@@ -91,7 +91,8 @@ export default (state = initialState, action) => {
                 const data=action.data.filter(x=>x.chedId==action.uid)
                 return{
                     ...state,
-                    kycStatus:data[0].status
+                    kycStatus:data[0].status,
+                    kyc:data
                 }
         default:
             return state
