@@ -17,6 +17,13 @@ const HomeScreen = ({navigation}) => {
                 </Pressable>
 
                 <HomeTab
+                    index={3}
+                    stext={"Check Your Customer's Orders"}
+                    text={'Orders'}
+                    OnPress = {()=>{navigation.navigate('Orders')}}
+                />
+
+                <HomeTab
                     index={0}
                     stext={'Create, Manage and Edit large categories with food'}
                     text={'Menu Creation'}
@@ -34,12 +41,7 @@ const HomeScreen = ({navigation}) => {
                     text={'Banner Upload'}
                     OnPress = {()=>{navigation.navigate('BannerScreen')}}
                 />
-                <HomeTab
-                    index={3}
-                    stext={"Check Your Customer's Orders"}
-                    text={'Orders'}
-                    OnPress = {()=>{navigation.navigate('Orders')}}
-                />
+
             </ScrollView>
         </SafeAreaView>
     )
