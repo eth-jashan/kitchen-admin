@@ -39,7 +39,7 @@ const DishUploadScreen = (props) => {
     const modalizeRef2 = useRef(null);
     const {data,types}=props.route.params
     const dispatch = useDispatch()
-    const spicyList = [{title:'Spicy🥵'},{title:'Sweet🍬'}, {title:'Bitter😓'}, {title:'Sour😖'}, {title:'Salty🧂'}] 
+    const spicyList = [{title:'light'},{title:'🌶️'}, {title:'🌶️🌶️'}, {title:'🌶️🌶️🌶️'}] 
 
     useEffect(() => {
         (async () => {
@@ -131,7 +131,7 @@ const DishUploadScreen = (props) => {
     },[dispatch])
     
     const cuisineList= [{title:'Breakfast 🍳'},{title:"Appetizer 🍤"}, {title:"Maincourse 🍲"}, {title:'Thali/Meal 🍱'},{title:'Desert 🍨'}]
-    const foodType=[{title:'🥗 Veg'},{title:'🍗 Non-Veg'}]
+    const foodType=[{title:'Pure Veg'},{title:'Non-Veg'},{title:'Vegan'}]
     return(
         <SafeAreaView style={{flex:1,backgroundColor:'#ffffff'}} >
             <ScrollView>
