@@ -108,7 +108,7 @@ const KycScreen = ({navigation}) => {
         if(kyc.length!=0){
             addata()
         }
-    },[dispatch,kyc,addata])
+    },[dispatch])
 
     if(load){
         return(<View style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'white'}} >
