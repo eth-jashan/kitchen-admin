@@ -88,11 +88,16 @@ export default (state = initialState, action) => {
                     kycStatus:action.kycDetails.status
                 }
             case FETCH_STATUS:
-                const data=action.data.filter(x=>x.chedId==action.uid)
-                return{
-                    ...state,
-                    kycStatus:data[0].status,
-                    kyc:data
+                const data=action.data.filter(x=>x.chefId==action.uid)
+                if(data.length!=0){
+                    return{
+                        ...state,
+                        kycStatus:data[0].status,
+                        kyc:data
+                    }
+                }
+                else{
+                    return state
                 }
         default:
             return state

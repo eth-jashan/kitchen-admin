@@ -10,12 +10,14 @@ import ProfileReducer from './store/reducer/profile'
 import CategoryReducer from './store/reducer/category'
 import DishReducer from './store/reducer/dish'
 import OrderHandler from './store/reducer/orders';
+import BannerHandler from './store/reducer/banner';
 //-----initialising reducer---//
 const rootReducer = combineReducers({
   profile:ProfileReducer,
   catergory:CategoryReducer,
   dish:DishReducer,
-  orders:OrderHandler
+  orders:OrderHandler,
+  banner:BannerHandler
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))

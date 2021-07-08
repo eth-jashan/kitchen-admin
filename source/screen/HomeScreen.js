@@ -32,7 +32,7 @@ const HomeScreen = ({navigation}) => {
                     index={2}
                     stext={'Create Customisable offer banner to make your store attractive'}
                     text={'Banner Upload'}
-                    OnPress = {()=>{navigation.navigate('BannerUpload')}}
+                    OnPress = {()=>{navigation.navigate('BannerScreen')}}
                 />
                 <HomeTab
                     index={3}

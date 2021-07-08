@@ -182,9 +182,10 @@ export const fetchKyc=()=>{
         const response=await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/kyc.json')
         const resData=await response.json()
         const list=[]
+        console.log(resData)
         for(const key in resData){
-            list.push(new Kyc(resData[id].id,resData[id].name,resData[id].phone,resData[id].adharNo,resData[id].adharURI,resData[id].fssiNo,resData[id].fssiURI,resData[id].panNo,resData[id].panURI,
-                resData[id].chefId,resData[id].status))
+            list.push(new Kyc(key,resData[key].name,resData[key].phone,resData[key].adharNo,resData[key].adharURI,resData[key].fssiNo,resData[key].fssiURI,resData[key].panNo,resData[key].panURI,
+                resData[key].chefId,resData[key].status,resData[key].reason))
         }
         dispatch({type:FETCH_STATUS,data:list,uid:userid})
 

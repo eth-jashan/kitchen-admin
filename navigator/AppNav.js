@@ -12,13 +12,14 @@ import {View} from 'react-native'
 import OtpScreen from '../source/screen/OtpScreen';
 import KycScreen from '../source/screen/kycScreen';
 import DishUploadScreen from '../source/screen/DishUploadScreen';
-import BannerUploadScreen from '../source/screen/BannerUploadScreen';
 import CategoryUpload from '../source/screen/CategoryUpload';
 import DishListScreen from '../source/screen/DishListScreen';
 import CategoryListScreen from '../source/screen/CategoryListScreen';
 import OrderScreen from '../source/screen/OrderScreen';
 import CheckScreen from '../source/screen/CheckScreen';
 import StartupScreen from '../source/screen/StartupScreen';
+import BannerUploading from '../source/screen/BannerUploading';
+import BannerScreen from '../source/screen/BannerScreen';
 
 const AuthStack = createStackNavigator();
 
@@ -91,7 +92,8 @@ const MainComp = () => {
       <MainStack.Screen name='CategoryListScreen' component={CategoryListScreen}/>
       <MainStack.Screen name="DishUpload" component={DishUploadScreen}/>
       <MainStack.Screen name="MenuCreation" component = {CategoryUpload}/>
-      <MainStack.Screen name="BannerUpload" component = {BannerUploadScreen}/>
+      <MainStack.Screen name='BannerScreen' component={BannerScreen} />
+      <MainStack.Screen name="BannerUpload" component = {BannerUploading}/>
       <MainStack.Screen name="Orders" component = {OrderScreen}/>
     </MainStack.Navigator>
   )

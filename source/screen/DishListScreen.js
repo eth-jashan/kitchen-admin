@@ -43,8 +43,15 @@ const ListScreen=(props)=>{
         filterList()
     },[dispatch])
 
+    if(load){
+        return(<View style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'white'}} >
+        <View style={{width:150,height:120}} >
+            <Image source={{uri:'https://i.pinimg.com/originals/c4/cb/9a/c4cb9abc7c69713e7e816e6a624ce7f8.gif'}} style={{width:'100%',height:'100%'}} />
+        </View>
+    </View>)
+    }
 
-    if(!load &&myDish){
+    if(myDish.length==0){
         return(
             <View style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'white'}} >
             <View>
@@ -52,6 +59,12 @@ const ListScreen=(props)=>{
                 <Text style={{alignSelf:'center',fontFamily:'bold',fontSize:20,color:'#08818a'}} >No Dishes Found</Text>
             </View>
             <Text style={{fontFamily:'book',fontSize:15,color:'black'}} >Chef Has Not Uploaded Any Dishes Yet</Text>
+            <FAB title='Add Dish'
+            placement='right'
+            color='#08818a'
+            size='small'
+            onPress={()=>{props.navigation.navigate('DishUpload',{types:'Create'})}}
+            />
             </View>
         )
 

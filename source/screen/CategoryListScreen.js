@@ -10,7 +10,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const CategoryListScreen=props=>{
     const[search,setSearch]=useState()
-
+    const[load,setLoad]=useState(false)
     const dispatch=useDispatch();
     
     const cat = useSelector(state=>state.catergory.category)
@@ -18,7 +18,9 @@ const CategoryListScreen=props=>{
 
     useEffect(()=>{
         const fetch=async()=>{
+            setLoad(true)
             await dispatch(categoryActions.fetchCategory())
+            setLoad(false)
         }
         fetch()
     })
@@ -36,6 +38,8 @@ const CategoryListScreen=props=>{
     //         </View>
     //     )
     // }
+
+    
     return(
         <SafeAreaView style={{flex:1}} >
         <SearchBar
