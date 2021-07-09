@@ -11,6 +11,7 @@ import TimeOrder from '../component/TimingOrder';
 import { set } from 'react-native-reanimated';
 import * as Location from 'expo-location';
 import { fetchCategory } from '../../store/action/category';
+import ModalPopup from '../component/ModalPopup';
 
 
 
@@ -34,7 +35,7 @@ const DishUploadScreen = (props) => {
     const[foundLocation,setFoundLocation] = useState(false);
     const[loading,setloading]=useState(false)
     const[cat,setcat]=useState(0)
-
+    const[visible,setVisible]=useState(false)
     const modalizeRef = useRef(null);
     const modalizeRef2 = useRef(null);
     const {data,types}=props.route.params
@@ -94,12 +95,21 @@ const DishUploadScreen = (props) => {
                 setloading(true)
                 await dispatch(dishAction.imageCheck(data.id,name,description,img,spicyList[spicy],price,serve,quantity,type,latitude,longitude,food))
                 setloading(false)
-                
+                setVisible(true)
             }
             else{
-                setloading(true)
-                await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,categoryList[cat].id,categoryList[cat].name,type,latitude,longitude,food))
-                setloading(false)
+                if(cat==null || cat==undefined){
+                    setloading(true)
+                    await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,null,null,type,latitude,longitude,food))
+                    setloading(false)
+                    setVisible(true)
+                }
+                else{
+                    setloading(true)
+                    await dispatch(dishAction.addDish(name,description,img,spicyList[spicy],price,serve,quantity,categoryList[cat].id,categoryList[cat].name,type,latitude,longitude,food))
+                    setloading(false)
+                    setVisible(true)
+                }
                 
             }
             
@@ -277,6 +287,7 @@ const DishUploadScreen = (props) => {
                     <TimeOrder/>
                 </View>
             </Modalize>
+            <ModalPopup type='Dish' navigation={props.navigation} visible={visible}  />
         </SafeAreaView>
     )
 };

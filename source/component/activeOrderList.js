@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Dimensions, View} from 'react-native'
+import {Dimensions, View,Image,Text} from 'react-native'
 import {FlatList} from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import ActiveCard from './activeCard'
@@ -17,7 +17,15 @@ const ActiveOrderList = (props) => {
      }
 
     const activeOrderList = useSelector(x=>x.orders.activeOrders)
-
+    if(activeOrderList.length==0){
+        return(
+            <View style={{flex:1,justifyContent:'center',alignItems:'center'}} >
+                <Image source={require('../../assets/noorders.png')} style={{width:300,height:210}} />
+                <Text style={{fontFamily:'bold',fontSize:20,color:'#08818a',margin:5}} >No Orders Yet</Text>
+                <Text style={{fontFamily:'book',fontSize:15,color:'black',margin:5}} >Looks like you have not added their dishes yet</Text>
+        </View>
+        )
+    }
     return(
         <View style={{flex:1, marginTop:12}}>
             {!load?<FlatList

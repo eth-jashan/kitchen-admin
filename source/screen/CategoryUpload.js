@@ -10,6 +10,7 @@ import ImageTaker from '../component/ImageTaker';
 import { addcategory, editCategory } from '../../store/action/category';
 import { useDispatch } from 'react-redux';
 import { imageCheck } from '../../store/action/dish';
+import ModalPopup from '../component/ModalPopup';
 
 const CategoryUpload = (props) => {
     const modalizeRef = useRef(null);
@@ -24,6 +25,7 @@ const CategoryUpload = (props) => {
     const [latitude,setLatitude] = useState(null);
     const [longitude,setLongitude] = useState(null);
     const[loading,setloading]=useState(false)
+    const[visible,setVisible]=useState(false)
     const[foundLocation,setFoundLocation] = useState(false)
     const dispatch=useDispatch()
     const startMap = async() => {
@@ -46,11 +48,13 @@ const CategoryUpload = (props) => {
             setloading(true)
             await dispatch(editCategory(catId,name,description,img,latitude,longitude))
             setloading(false)
+            setVisible(true)
         }
         else{
             setloading(true)
             await dispatch(addcategory(name,description,img,latitude,longitude))
             setloading(false)
+            setVisible(true)
         }
         
     }
@@ -122,7 +126,7 @@ const CategoryUpload = (props) => {
                     <ImageTaker onImageTaken={imagetaken} />
                 </View>
             </Modalize>
- 
+            <ModalPopup type='Cat' navigation={props.navigation} visible={visible} />
 
         </SafeAreaView>
         
