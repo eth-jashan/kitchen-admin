@@ -1,5 +1,5 @@
 import React, {useState, useRef, useEffect} from 'react'
-import {View, Text, Image, StyleSheet, Dimensions, ScrollView, Pressable, Button} from 'react-native'
+import {View, Text, Image, StyleSheet, Dimensions, ScrollView, Pressable, Alert,Button} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Ionicons ,AntDesign} from '@expo/vector-icons';
 import { ActivityIndicator, TextInput } from 'react-native-paper';
@@ -21,27 +21,32 @@ const CreationScreen = ({navigation}) => {
     const dispatch = useDispatch()
     
     const onSubmit = async() => {
-        try {
-            setloading(true)
-            let number  = "+91"+ phone.toString() 
-            const confirmation = await auth().signInWithPhoneNumber(number);
-            setConfirm(confirmation)
-            setloading(false)
-            // navigation.navigate('Otp',{confirmation:confirmation, name:name, mail:mail, number:number})
-    
-          } catch (error) {
-            alert(error);
-            console.log(error)
+        if(!name || !mail || !phone){
+            Alert.alert('Input Error','Please Enter all Required Inputs',[{text:'Okay'}])
         }
+        else{
+            try {
+                setloading(true)
+                let number  = "+91"+ phone.toString() 
+                const confirmation = await auth().signInWithPhoneNumber(number);
+                setConfirm(confirmation)
+                setloading(false)
+                // navigation.navigate('Otp',{confirmation:confirmation, name:name, mail:mail, number:number})
+        
+              } catch (error) {
+                alert(error);
+                console.log(error)
+            }
+        }
+    
         // navigation.navigate('Main')
     }   
 
     const createAccount = async() => {
         console.log('Start')
-        auth().onAuthStateChanged( async(user) => {
+            auth().onAuthStateChanged( async(user) => {
             if (user) {
                 setloading(true)
-                console.log("uid", )
                 const uid = auth().currentUser.uid                
                 const token = await auth().currentUser.getIdToken(true)
                 await dispatch(profileAction.createAccount(name, mail, phone, uid, token ))
@@ -57,7 +62,8 @@ const CreationScreen = ({navigation}) => {
                     throw(error)
                 }
             }})
-    
+        
+       
         console.log('Done')
         
     }
@@ -137,7 +143,7 @@ const CreationScreen = ({navigation}) => {
                 onChangeText={setMail}
                 type="flat"
                 keyboardType='email-address'
-                label = 'Enter Email (Optional)'
+                label = 'Enter Email'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
             />

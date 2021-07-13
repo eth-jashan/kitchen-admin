@@ -262,7 +262,8 @@ const cuisineList= [
         </View>
         }
         <View style={{padding:8}}>
-        <Text style={{fontFamily:'book', fontSize:18}}>{address}</Text>
+        {!address?<Image width={{width:100,right:100}} source={{uri:'https://uploads.toptal.io/blog/image/122384/toptal-blog-image-1489082600190-18810897d0cb0ab42b276537a18dafdf.gif'}} />
+        :<Text style={{fontFamily:'book', fontSize:18}}>{address}</Text>}
         </View>
             <View style={{marginVertical:8}}>
             <TextInput

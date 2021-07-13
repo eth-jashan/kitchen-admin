@@ -79,6 +79,11 @@ export default (state = initialState, action) => {
                     action.kycDetails.fssiUrl,
                     action.kycDetails.panNo,
                     action.kycDetails.panUrl,
+                    action.kycDetails.Bank,
+                    action.kycDetails.Branch,
+                    action.kycDetails.AccName,
+                    action.kycDetails.Accno,
+                    action.kycDetails.IFSC,
                     action.kycDetails.chefId,
                     action.kycDetails.status
                 )

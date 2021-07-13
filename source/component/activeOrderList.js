@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {Dimensions, View,Image,Text} from 'react-native'
+import {Dimensions, View,Image,Text,Alert} from 'react-native'
 import {FlatList} from 'react-native-gesture-handler'
 import { useDispatch, useSelector } from 'react-redux'
 import ActiveCard from './activeCard'
@@ -13,7 +13,12 @@ const ActiveOrderList = (props) => {
     const[load,setLoad] = useState(false)
    
     const statusChange = async(id,status,date,len) => {
-        await dispatch(changeStatus(id,status,date,len))
+        if(status=='Cancelled'){
+            Alert.alert('Cancel Orders?','Are you Sure you want to Cancel the order',[{text:'Yes',onPress:async()=>await dispatch(changeStatus(id,status,date,len))},{text:'No'}])
+        }
+        else{
+            await dispatch(changeStatus(id,status,date,len))
+        }
      }
 
     const activeOrderList = useSelector(x=>x.orders.activeOrders)

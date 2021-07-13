@@ -11,9 +11,15 @@ import { ActivityIndicator } from 'react-native-paper'
 const AllOrderList = (props) => {
     const dispatch = useDispatch()
     const ChangeStatus = async(id,status,date,len) => {
-        props.onLoad()
-        await dispatch(changeStatus(id,status,date,len))
-        props.onEndLoad()
+        if(status=='Cancelled'){
+            Alert.alert('Cancel Orders?','Are you Sure you want to Cancel the order',[{text:'Yes',onPress:async()=>await dispatch(changeStatus(id,status,date,len))},{text:'No'}])
+        }
+        else{
+            props.onLoad()
+            await dispatch(changeStatus(id,status,date,len))
+            props.onEndLoad()
+        }
+        
      }
 
     const orderList = useSelector(x=>x.orders.orders)
@@ -22,7 +28,7 @@ const AllOrderList = (props) => {
             <View style={{flex:1,justifyContent:'center',alignItems:'center'}} >
                 <Image source={require('../../assets/noorders.png')} style={{width:300,height:210}} />
                 <Text style={{fontFamily:'bold',fontSize:20,color:'#08818a',margin:5}} >No Orders Yet</Text>
-                <Text style={{fontFamily:'book',fontSize:15,color:'black',margin:5}} >Looks like chef have not added their dishes yet</Text>
+                <Text style={{fontFamily:'book',fontSize:15,color:'black',margin:5}} >Looks like you have not added their dishes yet</Text>
         </View>
         )
     }

@@ -19,6 +19,11 @@ const KycScreen = ({navigation}) => {
     const[aadharuri,setAadharuri]=useState()
     const[panuri,setPanuri]=useState()
     const[fssiuri,setFssiuri]=useState()
+    const[bankname,setBankname]=useState()
+    const[branch,setBranch]=useState()
+    const[accName,setAccname]=useState()
+    const[accno,setAccno]=useState()
+    const[ifsc,setIfsc]=useState()
     const[loading,setLoading]=useState(false)
     const[reason,setReason]=useState()
     const[load,setLoad]=useState(false)
@@ -74,7 +79,7 @@ const KycScreen = ({navigation}) => {
 
     const addata=()=>{
         setName(kyc[0].name)
-        setNumber(kyc[0].number)
+        setNumber(kyc[0].phone)
         setAadhar(kyc[0].adharNo)
         setpanNumber(kyc[0].panNo)
         setFssi(kyc[0].fssiNo)
@@ -82,21 +87,26 @@ const KycScreen = ({navigation}) => {
         setPanuri(kyc[0].panUrl)
         setFssiuri(kyc[0].fssiUrl)
         setReason(kyc[0].reason)
+        setBankname(kyc[0].Bname)
+        setBranch(kyc[0].Bbranch)
+        setAccname(kyc[0].BAccname)
+        setAccno(kyc[0].Accno)
+        setIfsc(kyc[0].Ifscno)
     }
     
     const addData=async()=>{
-        if(!name || !number || !aadharuri || !Aadhar || !fssiuri || !fssi || !panuri || !panNumber)
+        if(!name || !number || !aadharuri || !Aadhar || !fssiuri || !fssi || !panuri || !panNumber || !bankname || !branch || !accName || !accno || !ifsc )
         {
             Alert.alert('Invalid','Please Enter all the inputs',[{text:'Okay'}])
         }
         else{
             setLoading(true)
-            await dispatch(addKyc(name,number,aadharuri,Aadhar,fssiuri,fssi,panuri,panNumber))
+            await dispatch(addKyc(name,number,aadharuri,Aadhar,fssiuri,fssi,panuri,panNumber,bankname,branch,accName,accno,ifsc))
             setLoading(false)
             
         }
     }
-
+    console.log(reason)
     useEffect(()=>{
        
         const fetch=async()=>{
@@ -152,9 +162,9 @@ const KycScreen = ({navigation}) => {
 
         if(status=='Rejected'){
             return(
-                <SafeAreaView>
-                    <View style={{width:'90%',marginTop:10, padding:12, borderWidth:0.75, borderColor:'red', borderRadius:8, alignSelf:'center'}} >
-                <Text style={{color:'red',fontFamily:'book',fontSize:12}} >Hey Chef! Your Kyc documents has been rejected.The Reason for the Rejection is : {reason}</Text>
+                <SafeAreaView style={{flex:1}} >
+                    <View style={{width:'90%',marginBottom:1,marginTop:10, padding:12, borderWidth:0.75, borderColor:'red', borderRadius:8, alignSelf:'center'}} >
+                <Text style={{color:'red',fontFamily:'book',fontSize:12}} >Hey Chef! Your Kyc documents has been rejected.The Reason for the Rejection is : <Text style={{color:'red',fontFamily:'medium',fontSize:16}} >{reason}</Text> </Text>
             </View>
             <ScrollView style={{padding:5}} >
             <View style={{width:'100%', padding:8}} >
@@ -194,7 +204,7 @@ const KycScreen = ({navigation}) => {
                     <Pressable onPress={filepreview.bind(aadharuri)} style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row'}}>
                     <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
-                    <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{aadharuri.name}</Text>
+                    <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>Aadhar Card Document</Text>
                     </View>
                     <MaterialIcons onPress={()=>setAadharuri(false)} name="cancel" size={24} color="#e4003e" />
                     </Pressable>}
@@ -219,7 +229,7 @@ const KycScreen = ({navigation}) => {
                     <Pressable onPress={filepreview.bind(panuri)} style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row'}}>
                     <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
-                    <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{panuri.name}</Text>
+                    <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>Pan Card Document</Text>
                     </View>
                     <MaterialIcons onPress={()=>setPanuri(false)} name="cancel" size={24} color="#e4003e" />
                     </Pressable>}
@@ -245,17 +255,72 @@ const KycScreen = ({navigation}) => {
                     <Pressable onPress={filepreview.bind(fssiuri)} style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row'}}>
                     <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
-                    <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{fssiuri.name}</Text>
+                    <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>FSSAI Documents</Text>
                     </View>
                     <MaterialIcons onPress={()=>setFssiuri(false)} name="cancel" size={24} color="#e4003e" />
                     </Pressable>}
     
-                    <Pressable onPress={addData} style={{marginTop:16,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, backgroundColor:'#08818a',alignSelf:'center', marginVertical:10, justifyContent:'center'}}>
-                    {loading?<View><ActivityIndicator size='small' color='#ffffff' /></View>:<Text style={{fontFamily:'book', alignSelf:'center', color:'white'}}>Apply</Text>
-    }
-                    </Pressable>
+                    
     
                 </View>
+                <View style={{padding:8,width:'100%'}} >
+                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:22}}>Bank Details</Text>
+                    
+                    <View style={{marginVertical:12, alignSelf:'center'}}>
+                    <TextInput
+                        value={bankname}
+                        onChangeText={setBankname}
+                        type="flat"
+                        label = 'Bank Name'
+                        theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                    />
+                    <View style={{marginVertical:12, alignSelf:'center'}}>
+                    <TextInput
+                        value={branch}
+                        onChangeText={setBranch}
+                        type="flat"
+                        label = 'Bank Branch'
+                        theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                    />
+                    </View>
+                    <View style={{marginVertical:12, alignSelf:'center'}}>
+                    <TextInput
+                        value={accName}
+                        onChangeText={setAccname}
+                        type="flat"
+                        label = 'Account Holder Name'
+                        theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                    />
+                    </View>
+                    <View style={{marginVertical:12, alignSelf:'center'}}>
+                    <TextInput
+                        value={accno}
+                        onChangeText={setAccno}
+                        type="flat"
+                        label = 'Account Number'
+                        theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                    />
+                    </View>
+                    <View style={{marginVertical:12, alignSelf:'center'}}>
+                    <TextInput
+                        value={ifsc}
+                        onChangeText={setIfsc}
+                        type="flat"
+                        label = 'IFSC Code'
+                        theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                    />
+                    </View>
+                    </View>
+                    
+                </View>
+                <Pressable style={{marginTop:16,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, backgroundColor:'#08818a',alignSelf:'center', marginVertical:10, justifyContent:'center'}}>
+                    {loading?<View><ActivityIndicator size='small' color='#ffffff' /></View>:<Text style={{fontFamily:'book', alignSelf:'center', color:'white'}}>Apply</Text>}
+                </Pressable>
             </ScrollView>
                 </SafeAreaView>
             )
@@ -273,7 +338,7 @@ const KycScreen = ({navigation}) => {
                 type='outline'
                 label = 'Name'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
-                style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
             />
             <TextInput
                 value={number}
@@ -281,7 +346,7 @@ const KycScreen = ({navigation}) => {
                 type='flat'
                 label = 'Mobile Number'
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
-                style={{ fontFamily: 'medium',marginTop:10, fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)',marginTop:10, fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
             />
             </View>
                 <View style={{width:'100%', padding:8}}>
@@ -294,7 +359,7 @@ const KycScreen = ({navigation}) => {
                         type='flat'
                         label = 'Adhaar Number'
                         theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
-                        style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                     />
                     </View>
                     {!aadharuri?<Pressable onPress={adhaarFrontUpload}  style={{borderColor:'#08818a', padding:10, borderRadius:4, width:'90%', alignSelf:'center',borderWidth:1}}>
@@ -303,7 +368,7 @@ const KycScreen = ({navigation}) => {
                     <Pressable onPress={filepreview.bind(aadharuri)} style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row'}}>
                     <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
-                    <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{aadharuri.name}</Text>
+                    <Text style={{fontFamily:'book',maxWidth:200, color:'#08818a',alignSelf:'center', marginLeft:8}}>{aadharuri.name}</Text>
                     </View>
                     <MaterialIcons onPress={()=>setAadharuri(false)} name="cancel" size={24} color="#e4003e" />
                     </Pressable>}
@@ -319,7 +384,7 @@ const KycScreen = ({navigation}) => {
                         type="flat"
                         label = 'Pan Number'
                         theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
-                        style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                     />
                     </View>
                     {!panuri?<Pressable onPress={panCardUpload}  style={{borderColor:'#08818a', padding:10, borderRadius:4, width:'90%', alignSelf:'center',borderWidth:1}}>
@@ -328,7 +393,7 @@ const KycScreen = ({navigation}) => {
                     <Pressable onPress={filepreview.bind(panuri)} style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row'}}>
                     <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
-                    <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{panuri.name}</Text>
+                    <Text style={{fontFamily:'book',maxWidth:200, color:'#08818a',alignSelf:'center', marginLeft:8}}>{panuri.name}</Text>
                     </View>
                     <MaterialIcons onPress={()=>setPanuri(false)} name="cancel" size={24} color="#e4003e" />
                     </Pressable>}
@@ -345,7 +410,7 @@ const KycScreen = ({navigation}) => {
                         type="flat"
                         label = 'Fssi Number'
                         theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
-                        style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
                     />
                     </View>
                     {!fssiuri?<Pressable onPress={fssaiUpload} style={{borderColor:'#08818a', padding:10, borderRadius:4, width:'90%', alignSelf:'center',borderWidth:1}}>
@@ -354,17 +419,72 @@ const KycScreen = ({navigation}) => {
                     <Pressable onPress={filepreview.bind(fssiuri)} style={{width:'90%', padding:12, borderWidth:0.75, borderColor:'#08818a', borderRadius:8, flexDirection:'row', alignSelf:'center', justifyContent:'space-between'}}>
                     <View style={{flexDirection:'row'}}>
                     <FontAwesome style={{alignSelf:'center'}} name="file-pdf-o" size={24} color={"#08818a"} />
-                    <Text style={{fontFamily:'book', color:'#08818a',alignSelf:'center', marginLeft:8}}>{fssiuri.name}</Text>
+                    <Text style={{fontFamily:'book',maxWidth:200, color:'#08818a',alignSelf:'center', marginLeft:8}}>{fssiuri.name}</Text>
                     </View>
                     <MaterialIcons onPress={()=>setFssiuri(false)} name="cancel" size={24} color="#e4003e" />
                     </Pressable>}
     
-                    <Pressable onPress={addData} style={{marginTop:16,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, backgroundColor:'#08818a',alignSelf:'center', marginVertical:10, justifyContent:'center'}}>
-                    {loading?<View><ActivityIndicator size='small' color='#ffffff' /></View>:<Text style={{fontFamily:'book', alignSelf:'center', color:'white'}}>Apply</Text>
-    }
-                    </Pressable>
+                    
     
                 </View>
+                <View style={{padding:8,width:'100%'}} >
+                <Text style={{fontFamily:'book',color:'black', alignSelf:'center', fontSize:22}}>Bank Details</Text>
+                    
+                    <View style={{marginVertical:12, alignSelf:'center'}}>
+                    <TextInput
+                        value={bankname}
+                        onChangeText={setBankname}
+                        type="flat"
+                        label = 'Bank Name'
+                        theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                    />
+                    <View style={{marginVertical:12, alignSelf:'center'}}>
+                    <TextInput
+                        value={branch}
+                        onChangeText={setBranch}
+                        type="flat"
+                        label = 'Bank Branch'
+                        theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                    />
+                    </View>
+                    <View style={{marginVertical:12, alignSelf:'center'}}>
+                    <TextInput
+                        value={accName}
+                        onChangeText={setAccname}
+                        type="flat"
+                        label = 'Account Holder Name'
+                        theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                    />
+                    </View>
+                    <View style={{marginVertical:12, alignSelf:'center'}}>
+                    <TextInput
+                        value={accno}
+                        onChangeText={setAccno}
+                        type="flat"
+                        label = 'Account Number'
+                        theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                    />
+                    </View>
+                    <View style={{marginVertical:12, alignSelf:'center'}}>
+                    <TextInput
+                        value={ifsc}
+                        onChangeText={setIfsc}
+                        type="flat"
+                        label = 'IFSC Code'
+                        theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+                        style={{ fontFamily: 'medium',backgroundColor:'rgba(8,129,138,0.12)', fontColor: '#08818a', height: 70, width:Dimensions.get('screen').width*0.95, alignSelf:'center' }}
+                    />
+                    </View>
+                    </View>
+                    
+                </View>
+                <Pressable onPress={addData} style={{marginTop:16,width:Dimensions.get('screen').width*0.95,height:50, borderRadius:5, borderWidth:0.5, backgroundColor:'#08818a',alignSelf:'center', marginVertical:10, justifyContent:'center'}}>
+                    {loading?<View><ActivityIndicator size='small' color='#ffffff' /></View>:<Text style={{fontFamily:'book', alignSelf:'center', color:'white'}}>Apply</Text>}
+                    </Pressable>
             </ScrollView>
             </SafeAreaView>
         )

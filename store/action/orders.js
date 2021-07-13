@@ -14,7 +14,7 @@ export const fetchOrders=()=>{
         for(const key in resData){
             list.push(new Orders(key,resData[key].name,resData[key].uid,resData[key].chefId,resData[key].cartItems,resData[key].orderTotal,resData[key].address,resData[key].status,resData[key].date))
         }
-            dispatch({type:FETCH_ORDERS,data:list.filter(x=>x.chefId === chefId)})
+            dispatch({type:FETCH_ORDERS,data:list/*.filter(x=>x.chefId === chefId)*/})
      
         
     }

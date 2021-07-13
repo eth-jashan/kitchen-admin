@@ -68,10 +68,10 @@ const BottomStack = () => {
             name="Profile"
             component={ProfileScreen}
             options={{
-              tabBarLabel: 'Profile',
+              tabBarLabel: 'Stats',
               tabBarIcon: ({ color }) => (
               <View>                
-                <Feather  name="list" size={24} color={color}/>
+                <Entypo name="area-graph" size={24} color={color} />
               </View>
               ),
             }}

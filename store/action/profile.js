@@ -98,6 +98,7 @@ export const accountSetup=(cuisine, type, geoAddress, house, landmark, pincode, 
                     landmark,
                     pincode,
                     city,
+                    created:true,
                     lat:lat,
                     long:long
                 })
@@ -116,7 +117,7 @@ export const accountSetup=(cuisine, type, geoAddress, house, landmark, pincode, 
     }
 }
 
-export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) => {
+export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo,bankname,branch,accName,accno,ifsc) => {
     return async (dispatch,getState) => {
 
          const uid = getState().profile.uid
@@ -156,6 +157,11 @@ export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) 
                 fssiNo:fssiNo,
                 panURI:[{link:panUrl,filename:panURI.name}],
                 panNo:panNo,
+                Bank:bankname,
+                Branch:branch,
+                AccName:accName,
+                AccNo:accno,
+                IFSC:ifsc,
                 chefId:uid,
                 status:"Under Verification"
             })
@@ -170,6 +176,11 @@ export const addKyc = (name,phone,adharURI,adharNo,fssiURI,fssiNo,panURI,panNo) 
                 fssiNo:fssiNo,
                 panURI:panUrl,
                 panNo:panNo,
+                Bank:bankname,
+                Branch:branch,
+                AccName:accName,
+                AccNo:accno,
+                IFSC:ifsc,
                 chefId:uid,
                 status:"Under Verification"
         }})
@@ -185,7 +196,7 @@ export const fetchKyc=()=>{
         console.log(resData)
         for(const key in resData){
             list.push(new Kyc(key,resData[key].name,resData[key].phone,resData[key].adharNo,resData[key].adharURI,resData[key].fssiNo,resData[key].fssiURI,resData[key].panNo,resData[key].panURI,
-                resData[key].chefId,resData[key].status,resData[key].reason))
+                resData[key].Bank,resData[key].Branch,resData[key].AccName,resData[key].Accno,resData[key].IFSC,resData[key].chefId,resData[key].status,resData[key].reason))
         }
         dispatch({type:FETCH_STATUS,data:list,uid:userid})
 

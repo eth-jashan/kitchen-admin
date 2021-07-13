@@ -23,6 +23,9 @@ const ActiveCard = ({item,type,statusChange}) => {
         }else if(item.status[item.status.length - 1].status ==='Not Accepted'){
             return 'red'
         }
+        else if(item.status[item.status.length - 1].status ==='Cancelled'){
+            return 'red';
+        }
 
     }
 
@@ -92,7 +95,14 @@ const ActiveCard = ({item,type,statusChange}) => {
                 style={{width:'30%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:4, backgroundColor:'#ff6161', marginTop:15,marginHorizontal:15, marginBottom:16}}>
             <Text style={{fontSize:16, color:'white', alignSelf:'center'}}>Decline</Text>
             </TouchableOpacity>
-            </View>:null}
+            </View>:type === 'all' && item.status[item.status.length - 1].status === 'Accepted' ?
+            <View style={{justifyContent:'center',alignItems:'center'}} >
+            <TouchableOpacity onPress= {() => {statusChange(item.id,'Cancelled',new Date().toLocaleTimeString(),item.status.length)}} 
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'#1fa803',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
+            <Text style={{fontSize:16, color:'white', alignSelf:'center'}}>Cancel</Text>
+            </TouchableOpacity>
+            </View>
+            :null}
 
             {/* <View style={{marginTop:6, marginBottom:12, width:'100%', borderStyle:"dotted", borderColor:'black', borderWidth:0.75}} /> */}
         </View>
