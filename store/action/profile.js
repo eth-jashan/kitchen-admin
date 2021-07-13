@@ -78,7 +78,7 @@ export const createAccount=(name,email,phone, uid, token)=>{
             uid:uid,
             token:token
         }})
-        saveDataToStorage(uid,token)
+        saveDataToStorage(uid,token,id,false)
     }
 }
 
@@ -203,9 +203,11 @@ export const fetchKyc=()=>{
     }
 }
 
-const saveDataToStorage = (token,userId) => {
+const saveDataToStorage = (token,userId,id,created) => {
     AsyncStorage.setItem('userData', JSON.stringify({
         token:token,
         userId:userId,
+        id:id,
+        created:created
     }));
 }

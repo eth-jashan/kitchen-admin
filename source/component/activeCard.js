@@ -47,8 +47,7 @@ const ActiveCard = ({item,type,statusChange}) => {
     for(const key in cartObject){
         cartArray.push(new CartModel(key, cartObject[key].name, cartObject[key].price, cartObject[key].category,cartObject[key].catid, cartObject[key].image, cartObject[key].quantity, cartObject[key].mrp))
     }
-
-
+    console.log(item.status[item.status.length - 1].status)
     return(
         <View style={{width:Dimensions.get('window').width, padding:8,marginTop:10}}>
             {/* <Text style={{fontFamily:'light'}}>{item.id}</Text> */}
@@ -98,11 +97,18 @@ const ActiveCard = ({item,type,statusChange}) => {
             </View>:type === 'all' && item.status[item.status.length - 1].status === 'Accepted' ?
             <View style={{justifyContent:'center',alignItems:'center'}} >
             <TouchableOpacity onPress= {() => {statusChange(item.id,'Cancelled',new Date().toLocaleTimeString(),item.status.length)}} 
-                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'#1fa803',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
-            <Text style={{fontSize:16, color:'white', alignSelf:'center'}}>Cancel</Text>
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'red',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
+            <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Cancel Order</Text>
             </TouchableOpacity>
             </View>
-            :null}
+            :type === 'active' && item.status[item.status.length - 1].status === 'Accepted' ?
+            <View style={{justifyContent:'center',alignItems:'center'}} >
+            <TouchableOpacity onPress= {() => {statusChange(item.id,'Cancelled',new Date().toLocaleTimeString(),item.status.length)}} 
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'red',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
+            <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Cancel Order</Text>
+            </TouchableOpacity>
+            </View>:null}
+
 
             {/* <View style={{marginTop:6, marginBottom:12, width:'100%', borderStyle:"dotted", borderColor:'black', borderWidth:0.75}} /> */}
         </View>

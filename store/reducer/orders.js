@@ -3,7 +3,8 @@ import { ADD_ORDERS, FETCH_ORDERS, STATUS_CHANGE } from "../action/orders"
 
 const initialState={
     orders:[],
-    activeOrders:[]
+    activeOrders:[],
+    completedOrders:[]
 }
 
 export default OrderHandler=(state=initialState,action)=>{
@@ -15,7 +16,8 @@ export default OrderHandler=(state=initialState,action)=>{
             return{
                 ...state,
                 orders:orderList,
-                activeOrders:orderList.filter(x=>x.status[x.status.length -1].status === ('Accepted'))
+                activeOrders:orderList.filter(x=>x.status[x.status.length -1].status === ('Accepted')),
+                completedOrders:orderList.filter(x=>x.status[x.status.length -1].status === ('Delivered'))
             }
         case STATUS_CHANGE:{
             const orderIndex = state.orders.findIndex(order => order.id === action.updatedOrder.id);

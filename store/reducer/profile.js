@@ -26,7 +26,8 @@ export default (state = initialState, action) => {
             return{
                 ...state,
                 uid:action.userid,
-                token:action.tokenid
+                token:action.tokenid,
+                profileId:action.id
             }
         case CHECK_USER:
             return{

@@ -26,7 +26,7 @@ const AuthStack = createStackNavigator();
 const MyAuth =()=> {
   return (
     <AuthStack.Navigator initialRouteName={"Welcome"} screenOptions={{headerShown:false}}>
-    
+    <AuthStack.Screen name="StartupScreen" component={StartupScreen} />
     <AuthStack.Screen name="Welcome" component={WelcomeScreen} />
     <AuthStack.Screen name="Creation" component={CreationScreen} />
     <AuthStack.Screen name="CuinsineSetting" component={SettingCuisine} />

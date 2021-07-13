@@ -42,7 +42,7 @@ const ListScreen=(props)=>{
         fetch()
         filterList()
     },[dispatch])
-
+    const foodType=[{title:'Pure Veg'},{title:'Non-Veg'},{title:'Vegan'}]
     if(load){
         return(<View style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'white'}} >
         <View style={{width:150,height:120}} >
@@ -103,6 +103,9 @@ const ListScreen=(props)=>{
                     <ScrollView horizontal style={{flexDirection:'row'}}>
                     <TouchableOpacity style={{backgroundColor:'#ec0c41',  padding:8, borderRadius:8, margin:6, }}>
                     <Text style={{fontFamily:'book', fontSize:18, color:'white', alignSelf:'center',}}>{itemData.item.spicy.title}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{backgroundColor:'#ec0c41',  padding:8, borderRadius:8, margin:6, }}>
+                    <Text style={{fontFamily:'book', fontSize:18, color:'white', alignSelf:'center',}}>{foodType[itemData.item.type].title}</Text>
                     </TouchableOpacity>
                     <FlatList
                     horizontal={true}
