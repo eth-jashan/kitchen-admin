@@ -1,12 +1,24 @@
 import { LinearGradient } from 'expo-linear-gradient'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {View, Text, Image, Pressable, ScrollView, Dimensions} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { useDispatch } from 'react-redux'
 import HomeTab from '../component/homeTab'
+import { createToken } from '../../store/action/dunzo_delivery'
 
 const {width, height} = Dimensions.get('window')
 
 const HomeScreen = ({navigation}) => {
+
+    const dispatch = useDispatch();
+
+    useEffect(()=>{
+        const startupCalls = async() => {
+            await dispatch(createToken());
+
+    }
+        startupCalls()
+    },[dispatch])
 
     return(
         <SafeAreaView style={{flex:1}}>

@@ -16,7 +16,7 @@ export default OrderHandler=(state=initialState,action)=>{
             return{
                 ...state,
                 orders:orderList,
-                activeOrders:orderList.filter(x=>x.status[x.status.length -1].status === ('Accepted')),
+                activeOrders:orderList.filter(x=>x.status[x.status.length -1].status === ('created')),
                 completedOrders:orderList.filter(x=>x.status[x.status.length -1].status === ('Delivered'))
             }
         case STATUS_CHANGE:{
@@ -31,7 +31,9 @@ export default OrderHandler=(state=initialState,action)=>{
                 state.orders[orderIndex].orderWorth,
                 state.orders[orderIndex].location,
                 action.updatedOrder.status, 
-                state.orders[orderIndex].date 
+                state.orders[orderIndex].date,
+                state.orders[orderIndex].address,
+                state.orders[orderIndex].phoneNumber
 
             ) 
             const updatedNewOrder = [...state.orders];

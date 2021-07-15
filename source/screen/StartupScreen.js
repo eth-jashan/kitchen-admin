@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { createaccount } from '../../store/action/profile';
 
 
+
 const StartupScreen=props=>{
     const dispatch = useDispatch();
 
@@ -25,9 +26,11 @@ const StartupScreen=props=>{
         const {token,userId,id,created} = transformedData;
         console.log(token,userId,created)
         if(!created){
+            
             props.navigation.navigate("CuinsineSetting")
         }
         else{
+          
             Authenticate(userId,token)
         }
         }

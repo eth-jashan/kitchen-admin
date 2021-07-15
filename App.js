@@ -11,13 +11,15 @@ import CategoryReducer from './store/reducer/category'
 import DishReducer from './store/reducer/dish'
 import OrderHandler from './store/reducer/orders';
 import BannerHandler from './store/reducer/banner';
+import dunzo_delivery from './store/reducer/dunzo_delivery';
 //-----initialising reducer---//
 const rootReducer = combineReducers({
   profile:ProfileReducer,
   catergory:CategoryReducer,
   dish:DishReducer,
   orders:OrderHandler,
-  banner:BannerHandler
+  banner:BannerHandler,
+  dunzo:dunzo_delivery
 })
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
@@ -29,6 +31,7 @@ const store = createStore(rootReducer, applyMiddleware(ReduxThunk))
 import * as Font from 'expo-font'
 import AppLoading from "expo-app-loading"
 import AppNav from './navigator/AppNav';
+
 
 
 const fontLoading = () =>{ 

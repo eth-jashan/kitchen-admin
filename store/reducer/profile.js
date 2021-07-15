@@ -1,6 +1,6 @@
 import Kyc from "../../model/Kyc"
 import Profile from "../../model/Profile"
-import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT, ADD_KYC, CHECK_USER,CREATE, FETCH_STATUS } from "../action/profile"
+import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT, ADD_KYC, CHECK_USER,CREATE, FETCH_STATUS, FETCH_CHEF } from "../action/profile"
 
 const initialState = {
 
@@ -15,7 +15,7 @@ const initialState = {
     created:false,
     profileId:null,
     uid:null,
-    token:null
+    token:null,
 
 }
 
@@ -105,6 +105,12 @@ export default (state = initialState, action) => {
                 else{
                     return state
                 }
+            case FETCH_CHEF:
+                return{
+                    ...state,
+                    chef:action.pData
+                }
+
         default:
             return state
     }

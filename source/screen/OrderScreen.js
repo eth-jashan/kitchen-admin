@@ -12,20 +12,27 @@ import ActiveOrderList from '../component/activeOrderList';
 
 //actions
 import { fetchOrders } from '../../store/action/orders';
+import { fetchSpecificChef } from '../../store/action/profile'
+import { Modal } from 'react-native'
 
 const OrderScreen = () => {
+  //  const [modalVisible, setModalVisible] = useState(false);
 
     const dispatch = useDispatch()
     const [load, setLoad] = useState(false)
     const orderList = useSelector(x=>x.orders.orders)
     const activeOrderList = useSelector(x=>x.orders.activeOrders)
-    console.log("orders", activeOrderList)
+    const chef = useSelector(x=>x.profile.chef)
+  //  console.log('myChef',chef)
+  //  console.log("orders", orderList)
 
     const orderFetch = async() => {
         setLoad(true)
         await dispatch(fetchOrders())
+        await dispatch(fetchSpecificChef())
         setLoad(false)
     }
+    
 
   useEffect(()=>{
     orderFetch()
@@ -93,7 +100,7 @@ const OrderScreen = () => {
                     </View>
             </View>                
             :
-            result === 'all'?<AllOrderList onLoad = {onLoad} onEndLoad = {onEndLoad} type={result}/>:
+            result === 'all'?<AllOrderList onLoad = {onLoad} onEndLoad = {onEndLoad} type={result} myChef = {chef}/>:
             null}
 
             {load?null

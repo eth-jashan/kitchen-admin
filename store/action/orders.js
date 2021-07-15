@@ -10,9 +10,10 @@ export const fetchOrders=()=>{
 
         const response=await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/order.json')
         const resData=await response.json()
+       
         const list=[]
         for(const key in resData){
-            list.push(new Orders(key,resData[key].name,resData[key].uid,resData[key].chefId,resData[key].cartItems,resData[key].orderTotal,resData[key].address,resData[key].status,resData[key].date))
+            list.push(new Orders(key,resData[key].name,resData[key].uid,resData[key].chefId,resData[key].cartItems,resData[key].orderTotal,resData[key].address,resData[key].status,resData[key].date,resData[key].address,resData[key].phoneNumber))
         }
             dispatch({type:FETCH_ORDERS,data:list/*.filter(x=>x.chefId === chefId)*/})
      

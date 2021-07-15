@@ -26,6 +26,9 @@ const ActiveCard = ({item,type,statusChange}) => {
         else if(item.status[item.status.length - 1].status ==='Cancelled'){
             return 'red';
         }
+        else if (item.status[item.status.length - 1].status=== 'created'){
+            return '#218721'
+        }
 
     }
 
@@ -47,14 +50,14 @@ const ActiveCard = ({item,type,statusChange}) => {
     for(const key in cartObject){
         cartArray.push(new CartModel(key, cartObject[key].name, cartObject[key].price, cartObject[key].category,cartObject[key].catid, cartObject[key].image, cartObject[key].quantity, cartObject[key].mrp))
     }
-    console.log(item.status[item.status.length - 1].status)
+   // console.log(item.status[item.status.length - 1].status)
     return(
         <View style={{width:Dimensions.get('window').width, padding:8,marginTop:10}}>
             {/* <Text style={{fontFamily:'light'}}>{item.id}</Text> */}
             <View  style={{width:'100%', flexDirection:'row', justifyContent:'space-between'}}>
                 <View>
                     <Text style={{fontSize:18, fontFamily:'medium'}}>{item.customerName}</Text>
-                    <Text style={{fontFamily:'light', fontSize:14}}>{item.location[0].SA.houseAddress}</Text>
+                    <Text style={{fontFamily:'light', fontSize:14,width:Dimensions.get('window').width*0.6}}>{item.location[0].SA.houseAddress}</Text>
                 </View>
                 <View style={{padding:6, justifyContent:'center',backgroundColor:statusColor(), alignSelf:'center', borderRadius:8}}>
                 <Text style={{color:'white', fontSize:14, alignSelf:'center', fontFamily:'book'}}>{item.status[item.status.length - 1].status}</Text>
@@ -85,23 +88,25 @@ const ActiveCard = ({item,type,statusChange}) => {
                 <Text style={{fontFamily:'book', fontSize:18}}>₹ {item.orderWorth}</Text>
             </View>
             {/*  */}
-            {type === 'all' && item.status[item.status.length - 1].status === 'Pending' ?<View style={{flexDirection:'row',justifyContent:'space-between'}}>
-            <TouchableOpacity onPress= {() => {statusChange(item.id,'Accepted',new Date().toLocaleTimeString(),item.status.length)}} 
-                style={{width:'30%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:4, backgroundColor:'#1fa803',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
-            <Text style={{fontSize:16, color:'white', alignSelf:'center'}}>Accept</Text>
-            </TouchableOpacity>
-            <TouchableOpacity  onPress= {() => {statusChange(item.id,'Not Accepted',new Date().toLocaleTimeString(),item.status.length)}} 
-                style={{width:'30%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:4, backgroundColor:'#ff6161', marginTop:15,marginHorizontal:15, marginBottom:16}}>
-            <Text style={{fontSize:16, color:'white', alignSelf:'center'}}>Decline</Text>
-            </TouchableOpacity>
-            </View>:type === 'all' && item.status[item.status.length - 1].status === 'Accepted' ?
+            {type === 'all' && item.status[item.status.length - 1].status === 'Pending' ?
             <View style={{justifyContent:'center',alignItems:'center'}} >
-            <TouchableOpacity onPress= {() => {statusChange(item.id,'Cancelled',new Date().toLocaleTimeString(),item.status.length)}} 
+            <TouchableOpacity onPress= {() => {statusChange(item.id,'Not Accepted',new Date().toLocaleTimeString(),item.status.length,item)}}
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'red',marginTop:15,marginHorizontal:15 ,marginBottom:3}}>
+            <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Decline</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress= {() => {statusChange(item.id,'Accepted',new Date().toLocaleTimeString(),item.status.length,item)}} 
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'#218721',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
+            <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Accept</Text>
+            </TouchableOpacity>
+            </View>
+            :type === 'all' && item.status[item.status.length - 1].status === 'created' ?
+            <View style={{justifyContent:'center',alignItems:'center'}} >
+            <TouchableOpacity onPress= {() => {statusChange(item.id,'Cancelled',new Date().toLocaleTimeString(),item.status.length,item)}} 
                 style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'red',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
             <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Cancel Order</Text>
             </TouchableOpacity>
             </View>
-            :type === 'active' && item.status[item.status.length - 1].status === 'Accepted' ?
+            :type === 'active' && item.status[item.status.length - 1].status === 'created' ?
             <View style={{justifyContent:'center',alignItems:'center'}} >
             <TouchableOpacity onPress= {() => {statusChange(item.id,'Cancelled',new Date().toLocaleTimeString(),item.status.length)}} 
                 style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'red',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>

@@ -5,9 +5,11 @@ export const ADD_KYC = 'ADD_KYC'
 export const CREATE='CREATE'
 export const CHECK_USER='CHECK_USER'
 export const FETCH_STATUS='FETCH_STATUS'
+export const FETCH_CHEF = 'FETCH_CHEF';
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import storage from '@react-native-firebase/storage';
+import Chef from '../../model/Chef'
 import Kyc from '../../model/Kyc'
 
 export const createaccount=(uid,token)=>{
@@ -210,4 +212,32 @@ const saveDataToStorage = (token,userId,id,created) => {
         id:id,
         created:created
     }));
+}
+
+
+export const fetchSpecificChef = () => {
+    return async(dispatch,getState) => {
+        const chefUid = getState().profile.uid
+        const response = await fetch('https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/profile.json?')
+        const resData=await response.json()
+        const profiles = []
+        for(const key in resData){
+            profiles.push(new Chef(key,
+                resData[key].name,
+                resData[key].email,
+                resData[key].phone,
+                resData[key].cuisine,
+                resData[key].landmark,
+                resData[key].geoAddress,
+                resData[key].house,
+                resData[key].created,
+                resData[key].kyc,
+                resData[key].uid,
+                resData[key].city,
+                resData[key].lat,
+                resData[key].long,
+                resData[key].pincode))
+        }
+        dispatch({type:FETCH_CHEF,pData:profiles.filter(x=>x.uid === chefUid)})
+    }
 }

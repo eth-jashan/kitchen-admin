@@ -12,7 +12,7 @@ const ActiveOrderList = (props) => {
     const dispatch = useDispatch();
     const[load,setLoad] = useState(false)
    
-    const statusChange = async(id,status,date,len) => {
+    const statusChange = async(id,status,date,len,myOrder) => {
         if(status=='Cancelled'){
             Alert.alert('Cancel Orders?','Are you Sure you want to Cancel the order',[{text:'Yes',onPress:async()=>await dispatch(changeStatus(id,status,date,len))},{text:'No'}])
         }
