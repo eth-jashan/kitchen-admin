@@ -5,6 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchOrders } from '../../store/action/orders'
 import {BarChart, LineChart} from "react-native-chart-kit";
+import CalendarStrip from 'react-native-calendar-strip';
 
 const ProfileScreen = ({navigation}) => {
     const orders=useSelector(x=>x.orders.activeOrders)
@@ -13,13 +14,11 @@ const ProfileScreen = ({navigation}) => {
     const Months=["January","February","March","April","May","June","July","August","September","October","November","December"];
     const filteredOrders=orders.filter(x=>(new Date(x.date).getMonth()+1)==12?0==new Date().getMonth():(new Date(x.date).getMonth()+1)==new Date().getMonth() && new Date(x.date).getFullYear()==(new Date(x.date).getMonth()!=11? new Date().getFullYear():new Date().getFullYear-1) )
     const dates=[]
-    const labeldate=[]
     const rate=[]
     const count=[]
     for(const key in filteredOrders){
         dates.push(filteredOrders[key].date)
-        labeldate.push(new Date(filteredOrders[key].date).getDay() + '/' +(new Date(filteredOrders[key].date).getMonth()+1) + '/' +new Date(filteredOrders[key].date).getFullYear() )
-    }
+        }
     for(const id in dates){
         if(filteredOrders.some(x=>x.date==dates[id])){
             const newarr=filteredOrders.filter(x=>x.date==dates[id])
@@ -31,14 +30,11 @@ const ProfileScreen = ({navigation}) => {
             count.push(newarr.length)
         }
     }
-    console.log(new Date().getFullYear-1)
     const chartConfig = {
+        
         backgroundGradientFrom: "#ffffff",
         backgroundGradientTo: "#ffffff",
         color: (opacity = 1) => `rgba(8, 129, 138, ${opacity})`,
-        strokeWidth: 2, // optional, default 3
-        barPercentage: 0.5,
-        useShadowColorFromDataset: false // optional
       };
       const screenWidth = Dimensions.get("window").width;
     useEffect(()=>{
@@ -50,74 +46,86 @@ const ProfileScreen = ({navigation}) => {
     const index=new Date().getMonth()
     return(
         <SafeAreaView style={{flex:1,backgroundColor:'#ffffff'}} >
-        <ScrollView>
-        <Text style={{textAlign:'center',color:'black',fontSize:18,fontFamily:'medium',marginTop:20}} >Last Month POS Status</Text>
-        <Text style={{textAlign:'center',color:'black',color:'#08818a',fontSize:16,margin:10,fontFamily:'book'}} >Month:{Months[index-1==-1?11:index-1]} {index-1==-1?new Date().getFullYear()-1:new Date().getFullYear()}</Text>
-        <View style={{width:"90%", alignSelf:'center'}}>
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{alignSelf:'center'}}>
-                
-                <TouchableOpacity onPress={()=>setResult('orders')} style={{padding:8,  borderColor:result==='orders'?'#08818a':'#bcbcbc',   borderBottomWidth:result==='all'?2:1}}>
-                    <Text style={{fontFamily:'book', fontSize:18, color:result==='orders'?'#08818a':'#bcbcbc',}}>Orders Stats</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity onPress={()=>setResult('rate')} style={{padding:8, borderColor:result==='rate'?'#08818a':'#bcbcbc', borderBottomWidth:result==='active'?2:1}}>
-                    <Text style={{fontFamily:'book', fontSize:18, color:result==='rate'?'#08818a':'#bcbcbc'}}>Income stats</Text>
-                </TouchableOpacity>
-            </ScrollView>
-            </View>
-        <View style={{marginTop:20}} >
-           {result=='orders'? <LineChart
+        <LineChart
             data={{
-      labels: ["12-06-21", "15-06-21", "17-06-21", "21-06-21", "25-06-21", "30-06-21"],
       datasets: [
         {
           data: [
             Math.random() * 10,
             Math.random() * 10,
             Math.random() * 10,
-            Math.random() * 100,
             Math.random() * 10,
-            Math.random() * 10
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
+            Math.random() * 10,
           ]
         }
       ]
     }}
-            width={screenWidth}
-             height={Dimensions.get('screen').height*0.6}
-              verticalLabelRotation={30}
-              chartConfig={chartConfig}
-              bezier
-              
-              fromZero={true}
-            />:
-            <BarChart
-                data={{
-            labels: labeldate,
-            datasets: [
-            {
-             data:rate
-            }
-            ]
-           }}
-                width={screenWidth}
-                height={Dimensions.get('screen').height*0.6}
-                chartConfig={chartConfig}
-                verticalLabelRotation={30}
-                yAxisLabel='₹'
-                fromZero={true}
-            />}
-        </View>
-        <View style={{flexDirection:'row',padding:20,justifyContent:'space-between'}} >
+        style={{
+            flex:1,
+            justifyContent:'flex-end',
+            paddingRight:5
+        }}
+        width={screenWidth}
+        height={Dimensions.get('screen').height*0.5}
+        verticalLabelRotation={30}
+        chartConfig={chartConfig}
+        withVerticalLabels={false}
+        withHorizontalLabels={false}
+        withVerticalLabels={false}
+        withInnerLines={false}
+        bezier
+        />
+        <View style={{position:'absolute',width:screenWidth}} >
+        <CalendarStrip
+          calendarAnimation={{ type: 'sequence', duration: 30 }}
+          daySelectionAnimation={{
+            type: 'border',
+            duration: 200,
+            borderWidth: 1,
+            borderHighlightColor: 'white',
+          }}
+          selectedDate={new Date()}
+          style={{ height: 100, paddingTop: 20, paddingBottom: 10 }}
+          calendarHeaderStyle={{ color: '#08818a' }}
+          calendarColor={'transparent'}
+          dateNumberStyle={{ color: '#08818a' }}
+          dateNameStyle={{ color: '#08818a' }}
+          highlightDateNumberStyle={{ color: '#ffde17' }}
+          highlightDateNameStyle={{ color: '#ffde17' }}
+          disabledDateNameStyle={{ color: '#08818a' }}
+          disabledDateNumberStyle={{ color: '#08818a' }}
+          iconContainer={{ flex: 0.1 }}
+        />
+        <View style={{flexDirection:'row',justifyContent:'space-around',marginTop:30}} >
             <View>
-            <Text style={{textAlign:'center',color:'black',fontSize:18,fontFamily:'book'}} >Total Orders</Text>
-            <Text style={{textAlign:'center',color:'#08818a',fontSize:18,fontFamily:'medium'}} >{count.length}</Text>
+            <Text style={{textAlign:'center',color:'#08818a',fontFamily:'medium',fontSize:18}} >Orders</Text>
+            <Text style={{textAlign:'center',color:'#08818a',fontFamily:'medium',fontSize:16}} >10</Text>
             </View>
-            <View >
-            <Text style={{textAlign:'center',color:'black',fontSize:18,fontFamily:'book'}} >Total Amount</Text>
-            <Text style={{textAlign:'center',color:'#08818a',fontSize:18,fontFamily:'medium'}} >₹{rate.reduce((a, b) => a + b, 0)}</Text>
+            <View>
+                <Text style={{textAlign:'center',color:'#08818a',fontFamily:'medium',fontSize:18}} >Amount</Text>
+                <Text style={{textAlign:'center',color:'#08818a',fontFamily:'medium',fontSize:16}} >₹1200</Text>
             </View>
         </View>
-        </ScrollView>
+        </View>
         </SafeAreaView>
     )
 

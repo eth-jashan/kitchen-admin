@@ -78,7 +78,7 @@ export const createAccount=(name,email,phone, uid, token)=>{
             uid:uid,
             token:token
         }})
-        saveDataToStorage(uid,token,id,false)
+        saveDataToStorage(uid,token,resData.name,false)
     }
 }
 
