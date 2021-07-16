@@ -42,30 +42,31 @@ const AllOrderList = (props) => {
                      "Accept-Language": 'en_US'
                  },
                  body:JSON.stringify({
-                    "request_id":"b115d54b-c044-4387-a629-4df0a3c0a725",
-    "pickup_details":{"lat":19.0584181,"lng":72.8774521,
-                        "address":{"apartment_address":"200 Block 4","street_address_1":"Suncity Apartments","street_address_2":"Andheri",
-                            "landmark":"Airport",
-                            "city":"Mumbai",
-                            "state":"Maharashtra",
-                            "pincode":"400072",
-                            "country":"India"
-                        }
-                    },
-    "drop_details"  :{"lat":19.1334,"lng":72.9133,
-                        "address":{"apartment_address":"204 Block 4",
-                                "street_address_1":"IIT, Bombay",
-                                "street_address _2":"Powai",
-                                "landmark":"Powait Lake",
-                                "city":"Mumbai",
-                                "state":"Maharashtra",
-                                "pincode":"400076",
-                                "country":"India"
-                        }
-                    },
-    "sender_details":{"name":"Puneet","phone_number":"9999999999"},
-    "receiver_details":{"name":"Vijendra","phone_number":"9999999998"},
-    "package_content":["Documents | Books"] 
+                    
+                    "request_id":myOrder.id,
+                    "pickup_details":{"lat":myChef.lat,"lng":myChef.long,
+                                        "address":{"apartment_address":myChef.useraddress,"street_address_1":myChef.address,"street_address_2":myChef.landMark,
+                                            "landmark":myChef.landMark,
+                                            "city":myChef.city,
+                                            "state":"Maharashtra",
+                                            "pincode":myChef.pincode,
+                                            "country":"India"
+                                        }
+                                    },
+                    "drop_details"  :{"lat":Address.lat,"lng":Address.long,
+                                        "address":{"apartment_address":Address.houseAddress,
+                                                "street_address_1":Address.generatedAddress,
+                                                "street_address _2":Address.direction,
+                                                "landmark":Address.landmark,
+                                                "city":Address.city,
+                                                "state":"Maharashtra",
+                                                "pincode":Address.postal,
+                                                "country":"India"
+                                        }
+                                    },
+                    "sender_details":{"name":myChef.name,"phone_number":myChef.phone},
+                    "receiver_details":{"name":myOrder.customerName,"phone_number":myOrder.phoneNumber},
+                    "package_content":["Food | Flowers"] 
              })
              })
              const resData = await response.json();
