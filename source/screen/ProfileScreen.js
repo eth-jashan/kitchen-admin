@@ -12,25 +12,43 @@ import { FlatList } from 'react-native-gesture-handler'
 const ProfileScreen = ({navigation}) => {
     const orders=useSelector(x=>x.orders.activeOrders)
     const dispatch=useDispatch()
-    const [sdate,setSdate]=useState()
-    const[index,setIndex]=useState(0)
+    const [sdate,setSdate]=useState(orders.filter(x=>new Date(x.date).getDate()==new Date().getDate()))
+    const[loading,setloading]=useState(false)
+    const[index,setIndex]=useState(new Date().getMonth())
     const Months=[{id:0,title:"January"},{id:1,title:"February"},{id:2,title:"March"},{id:3,title:"April"},{id:4,title:"May"},{id:5,title:"June"},{id:6,title:"July"},{id:7,title:"August"},{id:8,title:"September"},{id:9,title:"October"},{id:10,title:"November"},{id:11,title:"December"}];
-    const filteredOrders=orders.filter(x=>(new Date(x.date).getMonth()+1)==12?0==index:(new Date(x.date).getMonth()+1)==index && new Date(x.date).getFullYear()==(new Date(x.date).getMonth()!=11? new Date().getFullYear():new Date().getFullYear-1) )
-    const dates=[]
+    const filteredOrders=orders.filter(x=>(new Date(x.date).getMonth())==index)
+    var startdate=year+"-"+mth+"-"+1
+    var lastdate=year+"-"+mth+"-"+31
     const rate=[]
     const count=[]
-    for(const key in filteredOrders){
-        dates.push(filteredOrders[key].date)
+    var getDaysArray =(start, end)=> {
+        for(var arr=[],dt=new Date(start); dt<=end; dt.setDate(dt.getDate()+1)){
+            arr.push(new Date(dt));
         }
-    for(const id in dates){
-        if(filteredOrders.some(x=>x.date==dates[id])){
-            const newarr=filteredOrders.filter(x=>x.date==dates[id])
+        return arr;
+    };
+    const convert=(txt)=>{
+        var date=new Date(txt)
+        var dt=date.getDate() + "/" + (date.getMonth()+1) + "/" + date.getFullYear()
+        return dt
+    }
+    var daylist = getDaysArray(startdate,lastdate);
+
+      daylist.map((v)=>v.toISOString().slice(0,10)).join("")
+      console.log(new Date(startdate),new Date(lastdate))
+    for(const id in daylist){
+        
+        if(filteredOrders.some(x=>convert(x.date)==convert(daylist[id]))){
+            const newarr=filteredOrders.filter(x=>convert(x.date)==convert(daylist[id]))
             var amount=0;
             for(const k in newarr){
                 amount+=parseInt(newarr[k].orderWorth)
             }
             rate.push(amount)
             count.push(newarr.length)
+        }
+        else{
+            count.push(0)
         }
     }
     const sum=(data)=>{
@@ -47,19 +65,34 @@ const ProfileScreen = ({navigation}) => {
         backgroundGradientTo: "#ffffff",
         color: (opacity = 1) => `rgba(8, 129, 138, ${opacity})`,
       };
+      const year=new Date().getFullYear()
+      var mth=index<10?'0'+index:index
       const screenWidth = Dimensions.get("window").width;
+      
+      //console.log(count)
     useEffect(()=>{
         const fetch=async()=>{
-
+            setloading(true)
             await dispatch(fetchOrders())
+            setloading(false)
         }
         fetch()
     },[dispatch])
-    
+    if(loading){
+        return(<View style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'white'}} >
+        <View style={{width:150,height:120}} >
+            <Image source={{uri:'https://i.pinimg.com/originals/c4/cb/9a/c4cb9abc7c69713e7e816e6a624ce7f8.gif'}} style={{width:'100%',height:'100%'}} />
+        </View>
+    </View>)
+    }
     return(
         <SafeAreaView style={{flex:1,backgroundColor:'#ffffff'}} >
         {count.length==0?<View style={{flex:1,justifyContent:'flex-end',alignSelf:'center'}} >
-            <Text>No Orders</Text>
+        <Text style={{textAlign:'center',fontSize:16,fontFamily:'medium',color:'black'}} >No Orders</Text>
+        <View style={{width:Dimensions.get('screen').width*0.8,height:Dimensions.get('screen').height*0.3}} >
+        <Image source={require('../../assets/noorders.png')} style={{width:'100%',height:'100%'}} />
+        </View>
+            
         </View>:<LineChart
         withDots
           onDataPointClick={({value, getColor}) =>
@@ -73,27 +106,16 @@ const ProfileScreen = ({navigation}) => {
                   }
                 }
             data={{
-               labels:dates,
+               labels:daylist,
       datasets: [
         {
-          data:[
-              
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-            Math.random()*10,
-          ]
+          data:count
+        },
+        {
+            data:[0]
+        },
+        {
+            data:[10]
         }
       ]
     }}
@@ -111,6 +133,7 @@ const ProfileScreen = ({navigation}) => {
         withVerticalLabels={false}
         withInnerLines={false}
         bezier
+        fromZero={true}
         />}
         <View style={{position:'absolute',width:screenWidth}} >
         <CalendarStrip
@@ -154,6 +177,7 @@ const ProfileScreen = ({navigation}) => {
         style={{margin:5}}
         horizontal
             data={Months}
+            initialScrollIndex={new Date().getMonth()}
             renderItem={({item})=>{
                 return(
                     <TouchableOpacity onPress={()=>setIndex(item.id)} style={{backgroundColor:item.id==index?'#08818a':'white',borderRadius:5}} > 
@@ -161,6 +185,7 @@ const ProfileScreen = ({navigation}) => {
                     </TouchableOpacity>
                 )
             }}
+            
         />
         </View>
         </SafeAreaView>
