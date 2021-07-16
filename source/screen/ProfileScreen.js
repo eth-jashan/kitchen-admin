@@ -6,13 +6,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchOrders } from '../../store/action/orders'
 import {BarChart, LineChart} from "react-native-chart-kit";
 import CalendarStrip from 'react-native-calendar-strip';
+import { ActivityIndicator } from 'react-native'
+import { FlatList } from 'react-native-gesture-handler'
 
 const ProfileScreen = ({navigation}) => {
     const orders=useSelector(x=>x.orders.activeOrders)
     const dispatch=useDispatch()
-    const [result,setResult]=useState('orders')
-    const Months=["January","February","March","April","May","June","July","August","September","October","November","December"];
-    const filteredOrders=orders.filter(x=>(new Date(x.date).getMonth()+1)==12?0==new Date().getMonth():(new Date(x.date).getMonth()+1)==new Date().getMonth() && new Date(x.date).getFullYear()==(new Date(x.date).getMonth()!=11? new Date().getFullYear():new Date().getFullYear-1) )
+    const [sdate,setSdate]=useState()
+    const[index,setIndex]=useState(0)
+    const Months=[{id:0,title:"January"},{id:1,title:"February"},{id:2,title:"March"},{id:3,title:"April"},{id:4,title:"May"},{id:5,title:"June"},{id:6,title:"July"},{id:7,title:"August"},{id:8,title:"September"},{id:9,title:"October"},{id:10,title:"November"},{id:11,title:"December"}];
+    const filteredOrders=orders.filter(x=>(new Date(x.date).getMonth()+1)==12?0==index:(new Date(x.date).getMonth()+1)==index && new Date(x.date).getFullYear()==(new Date(x.date).getMonth()!=11? new Date().getFullYear():new Date().getFullYear-1) )
     const dates=[]
     const rate=[]
     const count=[]
@@ -30,6 +33,14 @@ const ProfileScreen = ({navigation}) => {
             count.push(newarr.length)
         }
     }
+    const sum=(data)=>{
+        var amt=0
+        for(const k in data){
+            amt+=parseInt(data[k].orderWorth)
+        }
+        return amt
+    }
+
     const chartConfig = {
         
         backgroundGradientFrom: "#ffffff",
@@ -39,42 +50,49 @@ const ProfileScreen = ({navigation}) => {
       const screenWidth = Dimensions.get("window").width;
     useEffect(()=>{
         const fetch=async()=>{
+
             await dispatch(fetchOrders())
         }
         fetch()
     },[dispatch])
-    const index=new Date().getMonth()
+    
     return(
         <SafeAreaView style={{flex:1,backgroundColor:'#ffffff'}} >
-        <LineChart
+        {count.length==0?<View style={{flex:1,justifyContent:'flex-end',alignSelf:'center'}} >
+            <Text>No Orders</Text>
+        </View>:<LineChart
+        withDots
+          onDataPointClick={({value, getColor}) =>
+                  {
+                      console.log(value)
+                      return(
+                          <View style={{width:100,height:100,color:'#e5e5e5'}} >
+                              <Text>{value}</Text>
+                          </View>
+                      )
+                  }
+                }
             data={{
+               // labels:dates,
       datasets: [
         {
-          data: [
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
-            Math.random() * 10,
+          data:[
+              
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
+            Math.random()*10,
           ]
         }
       ]
@@ -85,7 +103,7 @@ const ProfileScreen = ({navigation}) => {
             paddingRight:5
         }}
         width={screenWidth}
-        height={Dimensions.get('screen').height*0.5}
+        height={Dimensions.get('screen').height*0.4}
         verticalLabelRotation={30}
         chartConfig={chartConfig}
         withVerticalLabels={false}
@@ -93,7 +111,7 @@ const ProfileScreen = ({navigation}) => {
         withVerticalLabels={false}
         withInnerLines={false}
         bezier
-        />
+        />}
         <View style={{position:'absolute',width:screenWidth}} >
         <CalendarStrip
           calendarAnimation={{ type: 'sequence', duration: 30 }}
@@ -102,6 +120,10 @@ const ProfileScreen = ({navigation}) => {
             duration: 200,
             borderWidth: 1,
             borderHighlightColor: 'white',
+          }}
+          onDateSelected={(date)=>{
+              setSdate(orders.filter(x=>new Date(x.date).getDate()==new Date(date).getDate()))
+              console.log(sdate)
           }}
           selectedDate={new Date()}
           style={{ height: 100, paddingTop: 20, paddingBottom: 10 }}
@@ -115,33 +137,34 @@ const ProfileScreen = ({navigation}) => {
           disabledDateNumberStyle={{ color: '#08818a' }}
           iconContainer={{ flex: 0.1 }}
         />
-        <View style={{flexDirection:'row',justifyContent:'space-around',marginTop:30}} >
-            <View>
-            <Text style={{textAlign:'center',color:'#08818a',fontFamily:'medium',fontSize:18}} >Orders</Text>
-            <Text style={{textAlign:'center',color:'#08818a',fontFamily:'medium',fontSize:16}} >10</Text>
+        
+        <View style={{flexDirection:'row',justifyContent:'space-around',marginTop:10}} >
+            <View style={{width:100,height:100,backgroundColor:'#08818a',justifyContent:'center',borderRadius:20}} >
+            <Text style={{textAlign:'center',color:'#ffffff',fontFamily:'medium',fontSize:18}} >Orders</Text>
+            <Text style={{textAlign:'center',color:'#ffffff',fontFamily:'medium',fontSize:16}} >{sdate==(undefined || null)?'0':sdate.length}</Text>
             </View>
-            <View>
-                <Text style={{textAlign:'center',color:'#08818a',fontFamily:'medium',fontSize:18}} >Amount</Text>
-                <Text style={{textAlign:'center',color:'#08818a',fontFamily:'medium',fontSize:16}} >₹1200</Text>
+            <View style={{width:100,height:100,backgroundColor:'#08818a',justifyContent:'center',borderRadius:20}} >
+                <Text style={{textAlign:'center',color:'#ffffff',fontFamily:'medium',fontSize:18}} >Income</Text>
+                <Text style={{textAlign:'center',color:'#ffffff',fontFamily:'medium',fontSize:16}} >₹{sdate==(undefined || null)?'0':sum(sdate)}</Text>
             </View>
         </View>
+        <Text style={{textAlign:'center',color:'black',margin:10,fontFamily:'medium',fontSize:15}} >Monthly POS Graph</Text>
+        <Text style={{margin:5,color:'black',fontFamily:'medium',fontSize:16}} >Select Month</Text>
+        <FlatList
+        style={{margin:5}}
+        horizontal
+            data={Months}
+            renderItem={({item})=>{
+                return(
+                    <TouchableOpacity onPress={()=>setIndex(item.id)} style={{backgroundColor:item.id==index?'#08818a':'white',borderRadius:5}} > 
+                        <Text style={{margin:10,color:item.id==index?'#ffffff':'black'}} >{item.title}</Text>
+                    </TouchableOpacity>
+                )
+            }}
+        />
         </View>
         </SafeAreaView>
     )
-
-   /* return(
-        <SafeAreaView style={{flex:1, backgroundColor:'#ffde17'}}>
-            <View style={{justifyContent:'center', alignSelf:'center', width:'100%'}}>
-            <Image
-                style={{height:200, width:200, alignSelf:'center', justifyContent:'center'}}
-                source={{uri:'https://pps.whatsapp.net/v/t61.24694-24/138439538_247936526731668_6214712210083773155_n.jpg?ccb=11-4&oh=34c11671276c192536fcb23f9edba0db&oe=60A708C8'}}
-            />
-            </View>
-            <Pressable onPress={()=>navigation.navigate('Creation')} style={{marginVertical:100, backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center'}}>
-            <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Join as chef</Text>
-            </Pressable>
-        </SafeAreaView>
-    )*/
 
 }
 
