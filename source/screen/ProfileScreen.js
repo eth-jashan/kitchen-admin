@@ -73,7 +73,7 @@ const ProfileScreen = ({navigation}) => {
                   }
                 }
             data={{
-               // labels:dates,
+               labels:dates,
       datasets: [
         {
           data:[

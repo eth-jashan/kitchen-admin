@@ -10,16 +10,22 @@ import { changeStatus } from '../../store/action/orders'
 import { ActivityIndicator } from 'react-native-paper'
 import { patchOrder } from '../../store/action/dunzo_delivery'
 import { Alert } from 'react-native'
+import ModalPopup from './ModalPopup'
 
 
 const AllOrderList = (props) => {
     const dispatch = useDispatch()
     const token  = useSelector(x=>x.dunzo.token)
+    const[visible,setVisible]=useState(false)
+    const[taskid,setTaskid]=useState()
+    const[load,setload]=useState(false)
+    const[id,setid]=useState()
   //  console.log('my alwasys aaadddd',myOrder.address[0].SA)
-    
+    const visibility=(bool)=>{
+        setVisible(bool)
+    }
     const orderList = useSelector(x=>x.orders.orders)
 //   console.log('orderrrrrss:',orderList[0].address[0].SA)
-
      const danzoCreateOrder = async(myOrder,id,status,date,len) => {
          let Address = myOrder.address[0].SA
          let myChef = props.myChef[0]
@@ -36,30 +42,30 @@ const AllOrderList = (props) => {
                      "Accept-Language": 'en_US'
                  },
                  body:JSON.stringify({
-                    "request_id":myOrder.id,
-                    "pickup_details":{"lat":myChef.lat,"lng":myChef.long,
-                                        "address":{"apartment_address":myChef.useraddress,"street_address_1":myChef.address,"street_address_2":myChef.landMark,
-                                            "landmark":myChef.landMark,
-                                            "city":myChef.city,
-                                            "state":"Maharashtra",
-                                            "pincode":myChef.pincode,
-                                            "country":"India"
-                                        }
-                                    },
-                    "drop_details"  :{"lat":Address.lat,"lng":Address.long,
-                                        "address":{"apartment_address":Address.houseAddress,
-                                                "street_address_1":Address.generatedAddress,
-                                                "street_address _2":Address.direction,
-                                                "landmark":Address.landmark,
-                                                "city":Address.city,
-                                                "state":"Maharashtra",
-                                                "pincode":Address.postal,
-                                                "country":"India"
-                                        }
-                                    },
-                    "sender_details":{"name":myChef.name,"phone_number":myChef.phone},
-                    "receiver_details":{"name":myOrder.customerName,"phone_number":myOrder.phoneNumber},
-                    "package_content":["Food | Flowers"] 
+                    "request_id":"b115d54b-c044-4387-a629-4df0a3c0a725",
+    "pickup_details":{"lat":19.0584181,"lng":72.8774521,
+                        "address":{"apartment_address":"200 Block 4","street_address_1":"Suncity Apartments","street_address_2":"Andheri",
+                            "landmark":"Airport",
+                            "city":"Mumbai",
+                            "state":"Maharashtra",
+                            "pincode":"400072",
+                            "country":"India"
+                        }
+                    },
+    "drop_details"  :{"lat":19.1334,"lng":72.9133,
+                        "address":{"apartment_address":"204 Block 4",
+                                "street_address_1":"IIT, Bombay",
+                                "street_address _2":"Powai",
+                                "landmark":"Powait Lake",
+                                "city":"Mumbai",
+                                "state":"Maharashtra",
+                                "pincode":"400076",
+                                "country":"India"
+                        }
+                    },
+    "sender_details":{"name":"Puneet","phone_number":"9999999999"},
+    "receiver_details":{"name":"Vijendra","phone_number":"9999999998"},
+    "package_content":["Documents | Books"] 
              })
              })
              const resData = await response.json();
@@ -91,8 +97,10 @@ const AllOrderList = (props) => {
                 // await dispatch(changeStatus(id,status,date,len))
                  await dispatch(patchOrder(id,resData.state,resData.estimated_price,resData.eta,resData.task_id))
                  await dispatch(changeStatus(id,resData.state,date,len))
-                 Alert.alert("Your Order Has Been Placed",`Id-${resData.task_id}`,[{text:'Proceed'}])
+                 //Alert.alert("Your Order Has Been Placed",`Id-${resData.task_id}`,[{text:'Proceed'}])
                  //modal ref changes here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                 setTaskid(resData.task_id)
+                 setVisible(true)
              }
              console.log('brrrrrrrrrruh',resData)
          }
@@ -109,9 +117,12 @@ const AllOrderList = (props) => {
             Alert.alert('Decline Order?','Are you Sure you want to Decline this order',[{text:'Yes',onPress:async()=>await dispatch(changeStatus(id,status,date,len))},{text:'No'}])
         }
         else{
-            props.onLoad()
+            //props.onLoad()
+            setid(id)
+            setload(true)
             await danzoCreateOrder(myOrder,id,status,date,len);
-            props.onEndLoad()
+            setload(false)
+            //props.onEndLoad()
         }
         
      }
@@ -137,9 +148,12 @@ const AllOrderList = (props) => {
                             statusChange = {ChangeStatus}
                             type={props.type}
                             item={item}
+                            load={load}
+                            id={id}
                         />
                 }}
             />
+            <ModalPopup type={'Orders'} visible={visible} visibility={visibility} taskid={taskid} />
         </View>
         //Modal which describe your order has been created, taskid will resData.task_id,from above danzoCreateOrder response
         //remove comments after completion

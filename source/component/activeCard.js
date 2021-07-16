@@ -1,12 +1,14 @@
 import React, { useState } from 'react'
+import { ActivityIndicator } from 'react-native';
 import {View, Dimensions, Text, Image, TouchableOpacity} from 'react-native'
+
 import { useDispatch } from 'react-redux';
 
 
 
 
 
-const ActiveCard = ({item,type,statusChange}) => {
+const ActiveCard = ({item,type,statusChange,load,id}) => {
 
     
 
@@ -52,8 +54,12 @@ const ActiveCard = ({item,type,statusChange}) => {
     }
    // console.log(item.status[item.status.length - 1].status)
     return(
-        <View style={{width:Dimensions.get('window').width, padding:8,marginTop:10}}>
+        <View style={{width:Dimensions.get('window').width, padding:8,marginTop:10,opacity:load && item.id==id?0.5:null}}>
             {/* <Text style={{fontFamily:'light'}}>{item.id}</Text> */}
+            {load && item.id==id?
+            <View style={{alignSelf:'center',backgroundColor:'transparent',position:'absolute'}} >
+                <ActivityIndicator color='green' size='large'   />
+            </View>:null}
             <View  style={{width:'100%', flexDirection:'row', justifyContent:'space-between'}}>
                 <View>
                     <Text style={{fontSize:18, fontFamily:'medium'}}>{item.customerName}</Text>
@@ -96,7 +102,7 @@ const ActiveCard = ({item,type,statusChange}) => {
             </TouchableOpacity>
             <TouchableOpacity onPress= {() => {statusChange(item.id,'Accepted',new Date().toLocaleTimeString(),item.status.length,item)}} 
                 style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'#218721',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
-            <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Accept</Text>
+                <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Accept</Text>
             </TouchableOpacity>
             </View>
             :type === 'all' && item.status[item.status.length - 1].status === 'created' ?
