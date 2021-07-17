@@ -6,8 +6,8 @@ import CreationScreen from '../source/screen/CreationScreen';
 import SettingCuisine from '../source/screen/SettingCuisine';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import HomeScreen from '../source/screen/HomeScreen';
-import ProfileScreen from '../source/screen/ProfileScreen';
-import { Entypo, Feather,MaterialIcons  } from '@expo/vector-icons';
+import PosStats from '../source/screen/PosStats';
+import { Entypo, Feather,MaterialIcons,Ionicons  } from '@expo/vector-icons';
 import {View} from 'react-native'
 import OtpScreen from '../source/screen/OtpScreen';
 import KycScreen from '../source/screen/kycScreen';
@@ -20,6 +20,7 @@ import CheckScreen from '../source/screen/CheckScreen';
 import StartupScreen from '../source/screen/StartupScreen';
 import BannerUploading from '../source/screen/BannerUploading';
 import BannerScreen from '../source/screen/BannerScreen';
+import ProfileScreen from '../source/screen/ProfileScreen';
 
 const AuthStack = createStackNavigator();
 
@@ -65,13 +66,25 @@ const BottomStack = () => {
             }}
           />
           <Tab.Screen
-            name="Profile"
-            component={ProfileScreen}
+            name="PosStats"
+            component={PosStats}
             options={{
               tabBarLabel: 'Stats',
               tabBarIcon: ({ color }) => (
               <View>                
                 <Entypo name="area-graph" size={24} color={color} />
+              </View>
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Profile"
+            component={ProfileScreen}
+            options={{
+              tabBarLabel: 'Profile',
+              tabBarIcon: ({ color }) => (
+              <View>                
+                <Ionicons name="person-circle-outline" size={24} color={color} />
               </View>
               ),
             }}

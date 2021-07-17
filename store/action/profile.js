@@ -6,6 +6,7 @@ export const CREATE='CREATE'
 export const CHECK_USER='CHECK_USER'
 export const FETCH_STATUS='FETCH_STATUS'
 export const FETCH_CHEF = 'FETCH_CHEF';
+export const UPDATE_CHEF='UPDATE_CHEF'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import storage from '@react-native-firebase/storage';
@@ -236,9 +237,53 @@ export const fetchSpecificChef = () => {
                 resData[key].city,
                 resData[key].lat,
                 resData[key].long,
-                resData[key].pincode))
+                resData[key].pincode,
+                resData[key].imguri,
+                resData[key].bguri,
+                resData[key].Recommeded
+                ))
         }
+<<<<<<< Updated upstream
         
         dispatch({type:FETCH_CHEF,pData:profiles.filter(x=>x.uid === chefUid)})
+=======
+        dispatch({type:FETCH_CHEF,pData:profiles,uid:chefUid})
+    }
+}
+
+export const updateChef=(id,name,imguri,bguri,cuisine,recommeded)=>{
+    return async dispatch=>{
+        const images1 = await fetch(imguri);
+        const blob1 = await images1.blob();
+        const ref1 = storage().ref(`${'profileimg/'}${id}`);
+        await ref1.put(blob1);
+        const imgurl= await storage().ref(`${'profileimg/'}${id}`).getDownloadURL();
+        const images2 = await fetch(bguri);
+        const blob2 = await images2.blob();
+        const ref2 = storage().ref(`${'backgroundimg/'}${id}`);
+        await ref2.put(blob2);
+        const bgurl= await storage().ref(`${'backgroundimg/'}${id}`).getDownloadURL();
+        await fetch(`https://mineral-concord-314020-default-rtdb.asia-southeast1.firebasedatabase.app/chef/profile/${id}.json?`,{
+            method:'PATCH',
+            headers:{"Content-Type":'application/json'},
+            body:JSON.stringify({
+                name:name,
+                imguri:imgurl,
+                bguri:bgurl,
+                cuisine:cuisine,
+                Recommeded:recommeded
+
+            })
+            
+        })
+        dispatch({type:UPDATE_CHEF,data:{
+            id,
+            name,
+            imguri:imgurl,
+            bguri:bgurl,
+            cuisine,
+            recommeded
+        }})
+>>>>>>> Stashed changes
     }
 }

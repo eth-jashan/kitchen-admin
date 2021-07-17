@@ -2,14 +2,15 @@ import { LinearGradient } from 'expo-linear-gradient'
 import React, { useEffect } from 'react'
 import {View, Text, Image, Pressable, ScrollView, Dimensions} from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import HomeTab from '../component/homeTab'
 import { createToken } from '../../store/action/dunzo_delivery'
+import { fetchSpecificChef } from '../../store/action/profile'
 
 const {width, height} = Dimensions.get('window')
 
 const HomeScreen = ({navigation}) => {
-
+    const chef=useSelector(x=>x.profile.chef)
     const dispatch = useDispatch();
 
     useEffect(()=>{
@@ -18,6 +19,12 @@ const HomeScreen = ({navigation}) => {
 
     }
         startupCalls()
+    },[dispatch])
+    useEffect(()=>{
+        const fetch=async()=>{
+            await dispatch(fetchSpecificChef())
+        }
+        fetch()
     },[dispatch])
 
     return(

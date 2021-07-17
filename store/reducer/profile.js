@@ -1,6 +1,6 @@
 import Kyc from "../../model/Kyc"
 import Profile from "../../model/Profile"
-import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT, ADD_KYC, CHECK_USER,CREATE, FETCH_STATUS, FETCH_CHEF } from "../action/profile"
+import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT, ADD_KYC, CHECK_USER,CREATE, FETCH_STATUS, FETCH_CHEF, UPDATE_CHEF } from "../action/profile"
 
 const initialState = {
 
@@ -109,7 +109,37 @@ export default (state = initialState, action) => {
                 console.log('**&*&*&&*&*&*&*&&*&*&&*&',action.pData)
                 return{
                     ...state,
-                    chef:action.pData
+                    chef:action.pData.filter(x=>x.uid === action.uid)
+                }
+            case UPDATE_CHEF:
+                const chefIndex = state.chef.findIndex(
+                    chef => chef.id === action.data.id
+                );
+                const chef=new Profile(
+                    state.chef[chefIndex].id,
+                    action.data.name,
+                    state.chef[chefIndex].email,
+                    state.chef[chefIndex].phone,
+                    action.data.cuisine,
+                    state.chef[chefIndex].type,
+                    state.chef[chefIndex].address,
+                    state.chef[chefIndex].useraddress,
+                    state.chef[chefIndex].created,
+                    state.chef[chefIndex].kyc,
+                    state.chef[chefIndex].uid,
+                    state.chef[chefIndex].lat,
+                    state.chef[chefIndex].long,
+                    state.chef[chefIndex].pincode,
+                    action.data.imguri,
+                    action.data.bguri,
+                    action.data.recommeded
+
+                )
+                const copychef=[...state.chef]
+                copychef[chefIndex]=chef
+                return{
+                    ...state,
+                    chef:copychef
                 }
 
         default:
