@@ -243,10 +243,6 @@ export const fetchSpecificChef = () => {
                 resData[key].Recommeded
                 ))
         }
-<<<<<<< Updated upstream
-        
-        dispatch({type:FETCH_CHEF,pData:profiles.filter(x=>x.uid === chefUid)})
-=======
         dispatch({type:FETCH_CHEF,pData:profiles,uid:chefUid})
     }
 }
@@ -284,6 +280,5 @@ export const updateChef=(id,name,imguri,bguri,cuisine,recommeded)=>{
             cuisine,
             recommeded
         }})
->>>>>>> Stashed changes
     }
 }
