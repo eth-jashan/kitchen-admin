@@ -85,7 +85,7 @@ const OrderScreen = () => {
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={activeOrder} style={{padding:8, borderColor:result==='active'?'#08818a':'#bcbcbc', borderBottomWidth:result==='active'?2:1}}>
-                    <Text style={{fontFamily:'book', fontSize:18, color:result==='active'?'#08818a':'#bcbcbc'}}>Accepted Orders</Text>
+                    <Text style={{fontFamily:'book', fontSize:18, color:result==='active'?'#08818a':'#bcbcbc'}}>Created Orders</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={preOrder} style={{padding:8, borderColor:result==='preorder'?'#08818a':'#bcbcbc', borderBottomWidth:result==='preorder'?2:1}}>
@@ -100,7 +100,7 @@ const OrderScreen = () => {
                     </View>
             </View>                
             :
-            result === 'all'?<AllOrderList onLoad = {onLoad} onEndLoad = {onEndLoad} type={result} myChef = {chef}/>:
+            result === 'all'?<AllOrderList onLoad = {onLoad} onEndLoad = {onEndLoad} type={result}/>:
             null}
 
             {load?null

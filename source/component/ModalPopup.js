@@ -39,7 +39,7 @@ const styles=StyleSheet.create({
         width:Dimensions.get('screen').width*0.95,
         backgroundColor:'#ffffff',
         margin:10,
-        borderWidth:1,
+        borderWidth:2,
         borderColor:'#ffde17',
         justifyContent:'center',
         alignItems:'center',

@@ -16,6 +16,7 @@ import ModalPopup from './ModalPopup'
 const AllOrderList = (props) => {
     const dispatch = useDispatch()
     const token  = useSelector(x=>x.dunzo.token)
+    const myChef = useSelector(x=>x.profile.chef)
     const[visible,setVisible]=useState(false)
     const[taskid,setTaskid]=useState()
     const[load,setload]=useState(false)
@@ -26,12 +27,11 @@ const AllOrderList = (props) => {
     }
     const orderList = useSelector(x=>x.orders.orders)
 //   console.log('orderrrrrss:',orderList[0].address[0].SA)
-     const danzoCreateOrder = async(myOrder,id,status,date,len) => {
+     const danzoCreateOrder = async(myOrder,id,status,date,len,myChef) => {
          let Address = myOrder.address[0].SA
-         let myChef = props.myChef[0]
          console.log('my alwasys',myOrder)
          console.log('long',Address.long)
-         console.log('dadaalong,',myChef.long)
+         console.log('chef',myChef)
          try{
              const response = await fetch(`https://apis-staging.dunzo.in/api/v1/tasks`,{
                  method:'POST',
@@ -42,7 +42,6 @@ const AllOrderList = (props) => {
                      "Accept-Language": 'en_US'
                  },
                  body:JSON.stringify({
-                    
                     "request_id":myOrder.id,
                     "pickup_details":{"lat":myChef.lat,"lng":myChef.long,
                                         "address":{"apartment_address":myChef.useraddress,"street_address_1":myChef.address,"street_address_2":myChef.landMark,
@@ -112,16 +111,25 @@ const AllOrderList = (props) => {
 
     const ChangeStatus = async(id,status,date,len,myOrder) => {
         if(status=='Cancelled'){
-            Alert.alert('Cancel Order?','Are you Sure you want to Cancel the order',[{text:'Yes',onPress:async()=>await dispatch(changeStatus(id,status,date,len))},{text:'No'}])
+            setload(true)
+           await Alert.alert('Cancel Order?','Are you Sure you want to Cancel the order',[{text:'Yes',onPress:async()=>await dispatch(changeStatus(id,status,date,len))},{text:'No'}])
+            setload(false)
         }
         else if(status=='Not Accepted'){
-            Alert.alert('Decline Order?','Are you Sure you want to Decline this order',[{text:'Yes',onPress:async()=>await dispatch(changeStatus(id,status,date,len))},{text:'No'}])
+            setload(true)
+           await Alert.alert('Decline Order?','Are you Sure you want to Decline this order',[{text:'Yes',onPress:async()=>await dispatch(changeStatus(id,status,date,len))},{text:'No'}])
+            setload(false)
+        }
+        else if(status=='Accepted'){
+            setload(true)
+           await Alert.alert('Accept Order?','Are you Sure you want to Accept this order',[{text:'Yes',onPress:async()=>await dispatch(changeStatus(id,status,date,len))},{text:'No'}])
+            setload(false)
         }
         else{
             //props.onLoad()
             setid(id)
             setload(true)
-            await danzoCreateOrder(myOrder,id,status,date,len);
+            await danzoCreateOrder(myOrder,id,status,date,len,myChef[0]);
             setload(false)
             //props.onEndLoad()
         }

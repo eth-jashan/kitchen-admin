@@ -238,6 +238,7 @@ export const fetchSpecificChef = () => {
                 resData[key].long,
                 resData[key].pincode))
         }
+        
         dispatch({type:FETCH_CHEF,pData:profiles.filter(x=>x.uid === chefUid)})
     }
 }

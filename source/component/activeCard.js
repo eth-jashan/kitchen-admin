@@ -29,7 +29,7 @@ const ActiveCard = ({item,type,statusChange,load,id}) => {
             return 'red';
         }
         else if (item.status[item.status.length - 1].status=== 'created'){
-            return '#218721'
+            return '#357ABD'
         }
 
     }
@@ -105,19 +105,35 @@ const ActiveCard = ({item,type,statusChange,load,id}) => {
                 <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Accept</Text>
             </TouchableOpacity>
             </View>
-            :type === 'all' && item.status[item.status.length - 1].status === 'created' ?
+            :type === 'all' && (item.status[item.status.length - 1].status === 'created' || item.status[item.status.length - 1].status === 'Accepted') ?
             <View style={{justifyContent:'center',alignItems:'center'}} >
             <TouchableOpacity onPress= {() => {statusChange(item.id,'Cancelled',new Date().toLocaleTimeString(),item.status.length,item)}} 
-                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'red',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'red',marginTop:15,marginHorizontal:15 ,marginBottom:3}}>
             <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Cancel Order</Text>
             </TouchableOpacity>
+            {item.status[item.status.length - 1].status === 'Accepted'?<TouchableOpacity onPress= {() => {statusChange(item.id,'created',new Date().toLocaleTimeString(),item.status.length,item)}} 
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'#357ABD',marginTop:15,marginHorizontal:15 ,marginBottom:3}}>
+            <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Confirm Order</Text>
+            </TouchableOpacity>:null}
+            {item.status[item.status.length - 1].status === 'created'?<TouchableOpacity onPress= {() => {console.log('track Order')}} 
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'#9d20f7',marginTop:15,marginHorizontal:15 ,marginBottom:3}}>
+            <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Track Order</Text>
+            </TouchableOpacity>:null}
             </View>
-            :type === 'active' && item.status[item.status.length - 1].status === 'created' ?
+            :type === 'active' && (item.status[item.status.length - 1].status === 'created' || item.status[item.status.length - 1].status === 'Accepted') ?
             <View style={{justifyContent:'center',alignItems:'center'}} >
             <TouchableOpacity onPress= {() => {statusChange(item.id,'Cancelled',new Date().toLocaleTimeString(),item.status.length)}} 
-                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'red',marginTop:15,marginHorizontal:15 ,marginBottom:16}}>
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'red',marginTop:15,marginHorizontal:15 ,marginBottom:3}}>
             <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Cancel Order</Text>
             </TouchableOpacity>
+            {item.status[item.status.length - 1].status === 'Accepted'?<TouchableOpacity onPress= {() => {statusChange(item.id,'created',new Date().toLocaleTimeString(),item.status.length,item)}} 
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'#357ABD',marginTop:15,marginHorizontal:15 ,marginBottom:3}}>
+            <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Confirm Order</Text>
+            </TouchableOpacity>:null}
+            {item.status[item.status.length - 1].status === 'created'?<TouchableOpacity onPress= {() => {console.log('track Order')}}  
+                style={{width:'70%', padding:10, justifyContent:'center', alignSelf:'center', borderRadius:10, backgroundColor:'#9d20f7',marginTop:15,marginHorizontal:15 ,marginBottom:3}}>
+            <Text style={{fontSize:16,fontFamily:'book', color:'white', alignSelf:'center'}}>Track Order</Text>
+            </TouchableOpacity>:null}
             </View>:null}
 
 

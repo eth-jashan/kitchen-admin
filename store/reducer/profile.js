@@ -106,6 +106,7 @@ export default (state = initialState, action) => {
                     return state
                 }
             case FETCH_CHEF:
+                console.log('**&*&*&&*&*&*&*&&*&*&&*&',action.pData)
                 return{
                     ...state,
                     chef:action.pData
