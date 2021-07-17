@@ -14,7 +14,7 @@ const ModalPopup=props=>{
                  marginTop: 22}} >
                  <View style={styles.model} >
                  <View style={{margin:10,width:120,height:120,borderRadius:50}} >
-                    <Image source={{uri:'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif'}} style={{width:'100%',height:'100%'}} />
+                    <Image source={{uri:props.type=='Orders'?'https://img.dmart.in/images/rwd/misc/order-confirm.gif':'https://i.pinimg.com/originals/06/ae/07/06ae072fb343a704ee80c2c55d2da80a.gif'}} style={{width:'100%',height:'100%'}} />
                 </View>
                  <Text style={{fontFamily:'medium',fontSize:18,color:'black'}} >{props.type=='Dish'?'Dish Uploaded Successfully':props.type=='Orders'?"Your Orders has been created":'Category Added Successfully'}</Text>
                  {props.type=='Orders'?<Text style={{textAlign:'center',margin:5,color:'black',fontFamily:'medium',fontSize:15}} >Order id :{props.taskid}</Text>:null}
