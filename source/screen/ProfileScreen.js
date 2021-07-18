@@ -122,7 +122,7 @@ const ProfileScreen=props=>{
 
         <TouchableOpacity onPress={editable?onOpen2:null} >
         <Image
-            source={{uri:Backimg?Backimg:'https://previews.123rf.com/images/vectorkuk/vectorkuk1507/vectorkuk150700035/43460908-gray-food-line-icon-seamless-pattern-modern-vector-background-.jpg'}}
+            source={{uri:Backimg?Backimg:'https://wallpaperaccess.com/full/767033.jpg'}}
             style={{width:'100%', height:'100%'}}
         />
         </TouchableOpacity>
