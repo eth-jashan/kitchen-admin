@@ -15,6 +15,7 @@ const CreationScreen = ({navigation}) => {
     const [phone, setPhone] = useState('')
     const [name, setName] = useState('')
     const [mail, setMail] = useState('')
+    const[disable,setDisable]=useState(false)
     const[loading,setloading]=useState(false)
     const [confirm, setConfirm] = useState(false)
     const [code, setCode] = useState()
@@ -44,6 +45,7 @@ const CreationScreen = ({navigation}) => {
 
     const createAccount = async() => {
         console.log('Start')
+        setDisable(true)
             auth().onAuthStateChanged( async(user) => {
             if (user) {
                 setloading(true)
@@ -62,7 +64,7 @@ const CreationScreen = ({navigation}) => {
                     throw(error)
                 }
             }})
-        
+        setDisable(false)
        
         console.log('Done')
         
@@ -86,7 +88,7 @@ const CreationScreen = ({navigation}) => {
                 theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
                 style={{ fontFamily: 'medium', fontColor: '#08818a', height: 70, width: Dimensions.get('screen').width*0.95, alignSelf:'center' }}
             />
-            <Pressable onPress={createAccount} style={{margin:10,backgroundColor:'#08818a', padding:8, borderRadius:8, width:Dimensions.get('screen').width*0.90, alignSelf:'center', justifyContent:'center'}}>
+            <Pressable onPress={createAccount} disabled={disable} style={{margin:10,backgroundColor:'#08818a', padding:8, borderRadius:8, width:Dimensions.get('screen').width*0.90, alignSelf:'center', justifyContent:'center'}}>
             <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>Proceed</Text>
             </Pressable>
             </View>

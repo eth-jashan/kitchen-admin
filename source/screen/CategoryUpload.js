@@ -114,7 +114,7 @@ const CategoryUpload = (props) => {
                 </View>
             <View style={{width:'100%'}} >
                 <TouchableOpacity onPress={addCategory}  style={{ backgroundColor:'#08818a', padding:8, borderRadius:8, width:'88%', alignSelf:'center', justifyContent:'center',marginVertical:15}}>
-                   {loading?<ActivityIndicator size='large' color='white' />: <Text style={{fontFamily:'book', fontSize:24, alignSelf:'center', color:'white'}}>{type=='Create'?'Add Category':'Edit Category'}</Text>}
+                   {loading?<ActivityIndicator size='small' color='white' />: <Text style={{fontFamily:'book', fontSize:18, alignSelf:'center', color:'white'}}>{type=='Create'?'Add Category':'Edit Category'}</Text>}
                 </TouchableOpacity>
                 </View>
                 </View>

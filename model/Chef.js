@@ -1,5 +1,5 @@
 class Chef{
-    constructor(id,name,email,phone,cuisine,landMark,address,useraddress,created,kyc,uid,city,lat,long,pincode)
+    constructor(id,name,email,phone,cuisine,landMark,address,useraddress,created,kyc,uid,city,lat,long,pincode,imguri,bguri,recommeded)
     {
         this.id=id
         this.name=name
@@ -16,6 +16,9 @@ class Chef{
         this.lat = lat
         this.long = long,
         this.pincode = pincode
+        this.imguri=imguri
+        this.bguri=bguri
+        this.recommeded=recommeded
     }
 }
 

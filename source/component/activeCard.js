@@ -57,7 +57,7 @@ const ActiveCard = ({item,type,statusChange,load,id}) => {
         <View style={{width:Dimensions.get('window').width, padding:8,marginTop:10,opacity:load && item.id==id?0.5:null}}>
             {/* <Text style={{fontFamily:'light'}}>{item.id}</Text> */}
             {load && item.id==id?
-            <View style={{alignSelf:'center',backgroundColor:'transparent',position:'absolute'}} >
+            <View style={{width:'100%',height:'100%',alignSelf:'center',backgroundColor:'transparent',position:'absolute'}} >
                 <ActivityIndicator color='green' size='large'   />
             </View>:null}
             <View  style={{width:'100%', flexDirection:'row', justifyContent:'space-between'}}>

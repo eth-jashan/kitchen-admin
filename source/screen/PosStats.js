@@ -212,6 +212,7 @@ const PosStats= ({navigation}) => {
         <FlatList
         style={{margin:5}}
         horizontal
+        showsHorizontalScrollIndicator={false}
             data={Months}
             initialScrollIndex={new Date().getMonth()}
             renderItem={({item})=>{

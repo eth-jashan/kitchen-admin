@@ -1,12 +1,13 @@
 import Kyc from "../../model/Kyc"
 import Profile from "../../model/Profile"
-import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT, ADD_KYC, CHECK_USER,CREATE, FETCH_STATUS, FETCH_CHEF, UPDATE_CHEF } from "../action/profile"
+import { ADD_CUISINE, UPDATE_ACC,SIGNUP_ACCOUNT, ADD_KYC, CHECK_USER,CREATE, FETCH_STATUS, FETCH_CHEF, UPDATE_CHEF, USER_CUISINE, USER_RECOMMEDED, ADD_RECOMMEDED } from "../action/profile"
 
 const initialState = {
 
     kyc:[],
     cuisine:[],
     chef:[],
+    recommeded:[],
     status:null,
     name:null,
     number:null,
@@ -34,6 +35,11 @@ export default (state = initialState, action) => {
                 ...state,
                 status:action.status
             }
+        case USER_CUISINE:
+            return{
+                ...state,
+                cuisine:action.data
+            }
         case ADD_CUISINE:
             
             const cuisine = state.cuisine
@@ -53,6 +59,31 @@ export default (state = initialState, action) => {
                     cuisine:cuisine.concat(action.name)
                 }
             } 
+
+        case USER_RECOMMEDED:
+            return{
+                ...state,
+                recommeded:action.data
+            }
+        case ADD_RECOMMEDED:
+            
+            const recommeded = state.recommeded
+            const status1 =recommeded.includes(action.id)
+            console.log('status', status1, recommeded)
+
+            if(status1){
+                console.log('list',recommeded.concat(action.id) )
+                return{
+                    ...state,
+                    recommeded:recommeded.filter(x=> x != action.id)
+                }
+            }else{
+                return{
+                    ...state,
+                    recommeded:recommeded.concat(action.id)
+                }
+            } 
+
             case SIGNUP_ACCOUNT:
 
                 console.log("reducer", action.data.uid, action.data.id)
@@ -106,7 +137,6 @@ export default (state = initialState, action) => {
                     return state
                 }
             case FETCH_CHEF:
-                console.log('**&*&*&&*&*&*&*&&*&*&&*&',action.pData)
                 return{
                     ...state,
                     chef:action.pData.filter(x=>x.uid === action.uid)

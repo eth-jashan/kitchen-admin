@@ -4,16 +4,18 @@ import MapView from 'react-native-maps';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
 import { Ionicons,AntDesign } from '@expo/vector-icons';
-import { fetchSpecificChef, updateChef } from '../../store/action/profile'
+import { addCuisine, addRecommeded, addUserCuisine, addUserRecommeded, fetchSpecificChef, updateChef } from '../../store/action/profile'
 import { Modalize } from 'react-native-modalize';
 import ImageTaker from '../component/ImageTaker';
 import { MaterialIcons } from '@expo/vector-icons';
 import { fetchDish } from '../../store/action/dish';
 import { ActivityIndicator } from 'react-native';
 import { Alert } from 'react-native';
-import { TextInput } from 'react-native';
+import { TextInput } from 'react-native-paper';
 
 const ProfileScreen=props=>{
+    const cuisines=useSelector(x=>x.profile.cuisine)
+    const recommed=useSelector(x=>x.profile.recommeded)
     const chef=useSelector(x=>x.profile.chef)
     const dish=useSelector(x=>x.dish.dish)
     const dispatch=useDispatch()
@@ -49,33 +51,56 @@ const ProfileScreen=props=>{
         {title:'French', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Ffrench%20C.jpg?alt=media&token=2eb8eca5-d5ed-4cc8-9ca3-46ebfe01cce5'}, {title:'European', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Feuropean%20C.jpeg?alt=media&token=686cdafe-6424-4324-abe7-95a5118eb4b6'}, {title:'Japanese', link:'https://firebasestorage.googleapis.com/v0/b/merchant-admin.appspot.com/o/cuisineImages%2Fjapanese%20CU.jpg?alt=media&token=484d0869-089e-4a99-ab55-8ddc4ebf4322'} 
     ]
     var cuisine=[]
-    var cuisines=chef[0].cuisine
-    const recommeded=[]
+    var recommeded=[]
     if(chef.length!=0){
         for(const k in cuisineList){
             for(const id in chef[0].cuisine){
-                console.log(chef[0].cuisine[id])
                 if(chef[0].cuisine[id]==cuisineList[k].title){
                     cuisine.push(cuisineList[k])
                 }
             }
         }
+        for(const k in dish){
+            for(const id in chef[0].recommeded){
+                if(chef[0].recommeded[id]==dish[k].id){
+                    recommeded.push(dish[k])
+                }
+            }
+        }
+
     }
+
     const onSubmit=async()=>{
         setLoad(true)
-        await dispatch(updateChef(chef[0].id,profile,Backimg,cuisines,recommeded))
+        await dispatch(updateChef(chef[0].id,name,profile,Backimg,cuisines,recommed))
         setLoad(false)
         setEditable(false)
     }
-    console.log(chef)
+
+    const cuisineHandler = (name) => {
+        dispatch(addCuisine(name))
+    }
+    const recommededHandler=(id)=>{
+        dispatch(addRecommeded(id))
+    }
+    const addData=async()=>{
+        await dispatch(addUserCuisine(chef[0].cuisine))
+        if(chef[0].recommeded){
+            await dispatch(addUserRecommeded(chef[0].recommeded))
+        }
+        
+    }
     useEffect(()=>{
         const fetch=async()=>{
             setLoading(true)
             await dispatch(fetchSpecificChef())
-            await dispatch(fetchDish())
             setLoading(false)
+            await dispatch(fetchDish())
         }
         fetch()
+        if(chef){
+            addData()
+        }
     },[dispatch])
 
     if(loading){
@@ -89,8 +114,11 @@ const ProfileScreen=props=>{
     }
     return(
         <SafeAreaView>
+        {load?<View style={{width:'100%',height:'100%',justifyContent:'center',alignItems:'center',position:'absolute',backgroundColor: 'rgba(0,0,0,0.5)'}} >
+            <ActivityIndicator color='#08818a' size='large' />
+        </View>:null}
         <ScrollView >
-        <View style={{width:'100%', height:Dimensions.get('window').height*0.25}}>
+        <View style={{width:'100%', height:Dimensions.get('window').height*0.25,opacity:2}}>
 
         <TouchableOpacity onPress={editable?onOpen2:null} >
         <Image
@@ -111,18 +139,18 @@ const ProfileScreen=props=>{
     </TouchableOpacity>
     {editable?<TextInput
     value={name}
+    mode='flat'
+    label='Name'
     onChangeText={setname}
-    style={{fontFamily:'medium',borderBottomWidth:1,borderColor:'black',width:'60%', color:'black',fontSize:18, alignSelf:'center',bottom:Dimensions.get('window').width*0.1}}
-    />:    <Text style={{fontFamily:'medium', color:'black',fontSize:18, alignSelf:'center',bottom:Dimensions.get('window').width*0.1}}>{name}</Text>
+    theme ={{colors:{primary:'#08818a',underlineColor:'transparent'}}}
+    style={{fontFamily:'medium',width:'60%', color:'black',fontSize:18,backgroundColor:'transparent', alignSelf:'center',bottom:Dimensions.get('window').width*0.1}}
+    />:    <Text style={{fontFamily:'medium', color:'black',fontSize:18, textAlign:'center',bottom:Dimensions.get('window').width*0.1}}>{name}</Text>
 }
 
-    <TouchableOpacity onPress={()=>{!editable?setEditable(true):Alert.alert('Update Changes','Are you sure you want to update the changes',[{text:'Yes',onPress:onSubmit},{text:'No'}])}} >
-    {load?<View style={{justifyContent:'center',alignItems:'center'}} >
-        <ActivityIndicator color='#08818a' size='small' />
-    </View>:<View style={{borderColor:'#08818a',borderWidth:0.75, width:'80%', alignSelf:'center', padding:10, borderRadius:8, flexDirection:'row', justifyContent:'center', bottom:Dimensions.get('window').width*0.075}} >
+    <TouchableOpacity onPress={()=>{!editable?setEditable(true):Alert.alert('Update Changes','Are you sure you want to update the changes',[{text:'Yes',onPress:onSubmit},{text:'No',onPress:()=>setEditable(false)}])}} 
+    style={{borderColor:'#08818a',borderWidth:0.75, width:'80%', alignSelf:'center', padding:10, borderRadius:8, flexDirection:'row', justifyContent:'center', bottom:Dimensions.get('window').width*0.075}}>
     <AntDesign name="edit" size={20} color="#08818a" />
     <Text style={{fontFamily:'book', fontSize:16, color:'#08818a', marginLeft:14}}>{editable?'Confirm Changes':'Edit Profile'}</Text>   
-    </View>}
     </TouchableOpacity>
     <View style={{width:'90%', marginVertical:16, borderColor:'gray', borderWidth:0.5, alignSelf:'center'}}/>
             <Text style={{fontSize:18, color:'black', fontFamily:'medium', marginBottom:12, marginLeft:8}}>Famous Cuisines</Text>
@@ -133,11 +161,11 @@ const ProfileScreen=props=>{
                 data={editable?cuisineList:cuisine}
                 keyExtractor={(_,i)=>i.toString()}
                 renderItem={({item}) => {
-                    return<TouchableOpacity  >
+                    return<TouchableOpacity onPress={()=>{cuisineHandler(item.title)}}  >
                     <View style={{width:120, borderRadius:6, alignSelf:'center', height:100, marginLeft:6}}>
                         <Image
                             
-                            style={{width:'100%', height:'100%',borderRadius:8,opacity:editable?cuisines.includes(item.title)?1:0.2:null}}
+                            style={{width:'100%', height:'100%',borderRadius:8,opacity:editable? !cuisines?0.2:cuisines.includes(item.title)?1:0.2:null}}
                             source={{uri:item.link}}
                         />
                         <View style={{position:'absolute', bottom:10, left:20}}>
@@ -166,37 +194,17 @@ const ProfileScreen=props=>{
             <View style={{width:'90%', marginVertical:16, borderColor:'gray', borderWidth:0.5, alignSelf:'center'}}/>
             <Text style={{ fontSize:18, color:'black', fontFamily:'medium', marginBottom:8, marginTop:16, marginLeft:8}}>Recommeded Dishes</Text>
 
-            {/* chef[0].recommeded?<FlatList
+            <View style={{marginBottom:20}} >
+            {chef[0].recommeded?<FlatList
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                data={chef[0].recommeded}
+                data={editable?dish.filter(x=>x.name && x.description):recommeded}
                 keyExtractor={x=>x.id}
                 renderItem={({item}) =>{
-                    return<View style={{marginHorizontal:6, }}>
+                    return<TouchableOpacity onPress={()=>recommededHandler(item.id)} style={{marginHorizontal:6, }}>
                         <Image
                             source={{uri:item.imguri}}
-                            style={{width:170, height:170, borderRadius:8}}
-
-                        />
-                        <View style={{width:170, backgroundColor:'white', borderRadius:8, padding:8}}>
-                            <Text style={{fontFamily:'medium', fontSize:16}}>{item.name}</Text>
-                            <Text numberOfLines={2} style={{fontFamily:'book', fontSize:14}}>{item.description}</Text>
-                        </View>
-                    </View>
-                }}
-            />:<View>
-                <Text style={{fontFamily:'book',margin:20, color:'black',fontSize:14, textAlign:'center',bottom:Dimensions.get('window').width*0.05}} >No Recommeded Dishes Selected for Customer Yet</Text>
-            </View>*/}
-            {editable?<FlatList
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={dish.filter(x=>x.name && x.description)}
-                keyExtractor={x=>x.id}
-                renderItem={({item}) =>{
-                    return<TouchableOpacity style={{marginHorizontal:6, }}>
-                        <Image
-                            source={{uri:item.imguri}}
-                            style={{width:170, height:170, borderRadius:8,opacity:0.2}}
+                            style={{width:170, height:170, borderRadius:8,opacity:editable?recommed.includes(item.id)?1:0.2:null}}
 
                         />
                         <View style={{width:170, backgroundColor:'white', borderRadius:8, padding:8}}>
@@ -204,8 +212,32 @@ const ProfileScreen=props=>{
                             <Text numberOfLines={2} style={{fontFamily:'book', fontSize:14}}>{item.description}</Text>
                         </View>
                     </TouchableOpacity>
-                }}/>:null 
-            }
+                }}
+            />:
+            editable?<FlatList
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                data={dish.filter(x=>x.name && x.description)}
+                keyExtractor={x=>x.id}
+                renderItem={({item}) =>{
+                    return<TouchableOpacity onPress={()=>recommededHandler(item.id)} style={{marginHorizontal:6, }}>
+                        <Image
+                            source={{uri:item.imguri}}
+                            style={{width:170, height:170, borderRadius:8,opacity:editable? !recommed?0.2:recommed.includes(item.id)?1:0.2:null}}
+
+                        />
+                        <View style={{width:170, backgroundColor:'white', borderRadius:8, padding:8}}>
+                            <Text style={{fontFamily:'medium', fontSize:16}}>{item.name}</Text>
+                            <Text numberOfLines={2} style={{fontFamily:'book', fontSize:14}}>{item.description}</Text>
+                        </View>
+                    </TouchableOpacity>
+                }}
+            />
+            :<View>
+                <Text style={{fontFamily:'book',margin:20, color:'black',fontSize:14, textAlign:'center',bottom:Dimensions.get('window').width*0.05}} >No Recommeded Dishes Selected for Customer Yet</Text>
+            </View>}
+            </View>
+           
             
             
         </ScrollView>
